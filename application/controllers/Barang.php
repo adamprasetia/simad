@@ -1,9 +1,9 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Skpd extends MY_Controller {
+class Barang extends MY_Controller {
 
 	private $limit = 15;
-	private $table = 'skpd';
+	private $table = 'barang';
 
 	function __construct()
    	{
@@ -26,11 +26,11 @@ class Skpd extends MY_Controller {
 		$this->_filter();
 		$total = $this->db->count_all_results($this->table);
 		$this->_filter();
-		$skpd_view['data'] 	= $this->db->get($this->table, $this->limit, $offset)->result();
-		$skpd_view['offset'] = $offset;
-		$skpd_view['paging'] = gen_paging($total,$this->limit);
-		$skpd_view['total'] 	= gen_total($total,$this->limit,$offset);
-		$data['content'] 	= $this->load->view('contents/skpd_view', $skpd_view, TRUE);
+		$barang_view['data'] 	= $this->db->get($this->table, $this->limit, $offset)->result();
+		$barang_view['offset'] = $offset;
+		$barang_view['paging'] = gen_paging($total,$this->limit);
+		$barang_view['total'] 	= gen_total($total,$this->limit,$offset);
+		$data['content'] 	= $this->load->view('contents/barang_view', $barang_view, TRUE);
 
 		$this->load->view('template_view', $data);
 	}
@@ -72,8 +72,8 @@ class Skpd extends MY_Controller {
 	{
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
-			$data['content'] = $this->load->view('contents/form_skpd_view', [
-				'action'=>base_url('skpd/add').get_query_string()
+			$data['content'] = $this->load->view('contents/form_barang_view', [
+				'action'=>base_url('barang/add').get_query_string()
 			],true);
 
 			if(!validation_errors())
@@ -104,9 +104,9 @@ class Skpd extends MY_Controller {
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
 			$this->db->where('id', $id);
-			$skpd_view['data'] = $this->db->get($this->table)->row();
-			$skpd_view['action'] = base_url('skpd/edit/'.$id).get_query_string();
-			$data['content'] = $this->load->view('contents/form_skpd_view',$skpd_view,true);
+			$barang_view['data'] = $this->db->get($this->table)->row();
+			$barang_view['action'] = base_url('barang/edit/'.$id).get_query_string();
+			$data['content'] = $this->load->view('contents/form_barang_view',$barang_view,true);
 
 			if(!validation_errors())
 			{

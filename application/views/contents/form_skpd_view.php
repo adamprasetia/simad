@@ -2,14 +2,18 @@
     <form id="form_data" method="post">
         <div class="box-header with-border">
             <div class="pull-left">
-                <h4><strong>FORMULIR MODUL</strong></h4>
+                <h4><strong>FORMULIR SKPD</strong></h4>
             </div>
         </div>
         <div class="box-body">
+            <input type="hidden" id="id" name="id" value="<?php echo isset($data->id)?$data->id:'' ?>">
             <div class="form-group">
-                <input type="hidden" id="id" name="id" value="<?php echo isset($data->id)?$data->id:'' ?>">
-                <label>Nama Modul *</label>
-                <input type="text" id="name" name="name" class="form-control" value="<?php echo isset($data->name)?htmlentities($data->name):'' ?>">
+                <label>Kode SKPD *</label>
+                <input type="text" id="kode" name="kode" class="form-control" value="<?php echo isset($data->kode)?htmlentities($data->kode):'' ?>">
+            </div>
+            <div class="form-group">
+                <label>Nama SKPD *</label>
+                <input type="text" id="nama" name="nama" class="form-control" value="<?php echo isset($data->nama)?htmlentities($data->nama):'' ?>">
             </div>
         </div>
         <div class="box-footer">
