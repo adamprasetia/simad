@@ -1,0 +1,225 @@
+<script>
+// Method or Function
+function updateButton(t, status) {
+  if (!status) {
+    $(t).html($(t).attr('data-idle'));
+    $(t).prop('disabled', false);
+    $('.overlay').remove();
+  } else {
+    $(t).html($(t).attr('data-process'));
+    $(t).prop('disabled', true);
+    $('.box').append('<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+  }
+}
+
+function htmlEntities(str) {
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+// Event Listener
+$('form').submit(function (e) {
+  e.preventDefault();
+});
+
+$(document).on('click', '.btn_action', function () {
+  var form = $(this).attr('data-form');
+  var action = $(this).attr('data-action');
+  var redirect = $(this).attr('data-redirect');
+  var t = $(this);
+  if (action) {
+
+    $.ajax({
+      url: action,
+      method: 'post',
+      data: new FormData($(form)[0]),
+      processData: false,
+      contentType: false,
+      // dataType: 'json',
+      beforeSend: function () {
+        updateButton(t, true);
+      },
+      success: function (str) {
+        var obj = jQuery.parseJSON(str);
+
+        var tipe = 'success';
+        var title = 'Success!';
+        var message = 'Data berhasil disimpan';
+
+        if (obj.tipe != undefined) {
+            tipe = obj.tipe;
+        }
+
+        if (obj.title != undefined) {
+            title = obj.title;
+        }
+
+        if (obj.message != undefined) {
+            message = obj.message;
+        }
+
+        swal({
+            title: title,
+            type: tipe,
+            text: message,
+            timer: 2000,
+            showConfirmButton: false
+        });
+
+        if (obj.tipe == undefined && obj.tipe != 'error') {
+
+          if (redirect) {
+            setTimeout(function () {
+              window.location = redirect;
+            }, 2000);
+          }
+
+        }
+
+        updateButton(t, false);
+      },
+      error: function (xhr, textStatus, errorThrown) {
+        sweetAlert("Oops...", "Terjadi Kesalahan!", "error");
+        updateButton(t, false);
+      }
+    });
+
+  } else {
+    if (redirect) {
+      window.location = redirect;
+    }
+  }
+});
+
+function deleteData(t) {
+  swal({
+    title: "Kamu yakin ?",
+    text: "Kamu mungkin tidak bisa mengembalikan data yang sudah dihapus!",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#DD6B55",
+    confirmButtonText: "Ya, Hapus sekarang!",
+    closeOnConfirm: false
+  },
+    function () {
+      $.ajax({
+        url: $(t).attr("data-url"),
+        type: 'POST',
+        dataType: 'json',
+        success: function (data) {
+          swal({
+              title: 'Deleted!',
+              type: 'success',
+              text: 'Data berhasil dihapus',
+              timer: 2000,
+              showConfirmButton: false
+          });
+
+          setTimeout(function () {
+            location.reload();
+          }, 2000);
+        },
+        error: function (xhr, textStatus, errorThrown) {
+          sweetAlert("Oops...", "Terjadi Kesalahan!", "error");
+          // setTimeout(function() {
+          //   location.reload();
+          // }, 2000);
+        }
+      });
+    });
+};
+
+function restoreData(t) {
+  swal({
+    title: "Are you sure?",
+    text: "You can recover this data!",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#DD6B55",
+    confirmButtonText: "Yes, restore it!",
+    closeOnConfirm: false
+  },
+    function () {
+      $.ajax({
+        url: $(t).attr("data-url"),
+        type: 'POST',
+        dataType: 'json',
+        success: function (data) {
+          swal("Restored!", "Your data has been restored.", "success");
+          setTimeout(function () {
+            location.reload();
+          }, 2000);
+        },
+        error: function (xhr, textStatus, errorThrown) {
+          sweetAlert("Oops...", "Something went wrong!", "error");
+          // setTimeout(function() {
+          //   location.reload();
+          // }, 2000);
+        }
+      });
+    });
+};
+
+$('body').on('click', '.btn-dialog', function () {
+  var title = $(this).attr('data-title');
+  var src = $(this).attr('data-url');
+  $('#general-modal-title').html(title);
+  $('#general-modal-iframe').attr('src', src);
+  $('#general-modal').modal('show');
+});
+
+$(document).on('keypress', '#input_search', function (e) {
+  if (e.which == 13) {
+    var url = $(this).attr('data-url');
+    var queryString = $(this).attr('data-query-string');
+    if (queryString) {
+      url += queryString + '&search=' + $(this).val();
+    } else {
+      url += '?search=' + $(this).val();
+    }
+    window.location = url;
+    return false;
+  }
+});
+
+$(document).on('click', '.btn_close', function () {
+  var t = $(this);
+  var redirect = $(t).attr('data-redirect');
+
+  swal({
+    title: "Kamu yakin ?",
+    text: "Kamu mungkin memiliki perubahan yang belum disimpan yang akan hilang!",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#DD6B55",
+    confirmButtonText: "Ya, Tidak masalah!",
+    closeOnConfirm: false
+  }, function () {
+    window.location = redirect;
+  });
+});
+
+function changeStatus(t) {
+  var st = $(t).attr('data-status') == 2 ? 'PUBLISH' : 'DRAFT';
+  swal({
+    title: 'Change to ' + st + '?',
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#DD6B55',
+    confirmButtonText: 'Yes',
+    closeOnConfirm: false
+  },
+    function () {
+      $.ajax({
+        url: $(t).attr('data-url'),
+        type: 'POST',
+        dataType: 'json',
+        success: function (data) {
+          swal('Success!', '', 'success');
+          location.reload();
+        },
+        error: function (xhr, textStatus, errorThrown) {
+          sweetAlert('Oops...', 'Something went wrong!', 'error');
+        }
+      });
+    });
+};
+</script>
