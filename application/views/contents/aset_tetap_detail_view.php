@@ -20,7 +20,7 @@
         </table>
     </div>
     <div class="box-header with-border">
-        <a href="<?php echo base_url('aset_tetap_detail/add').get_query_string() ?>" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> Tambah Detail Aset Tetap</a>
+        <a href="<?php echo base_url('aset_tetap_detail/add').get_query_string() ?>" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> Tambah Detail</a>
         <a href="<?php echo now_url() ?>" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Refresh</a>
         <a href="<?php echo base_url('aset_tetap').get_query_string() ?>" class="btn btn-default btn-sm"><i class="fa fa-close"></i> Kembali</a>
         <div class="pull-right">
