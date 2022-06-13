@@ -222,4 +222,17 @@ function changeStatus(t) {
       });
     });
 };
+
+$('.datetimepicker').datepicker({
+    dateFormat: 'dd/mm/yy',
+    changeMonth: true,
+    changeYear: true
+  });
+
+  $('.input-uang').priceFormat({
+		prefix: '',
+		thousandsSeparator: ',',
+		centsLimit: 0
+	});
+
 </script>

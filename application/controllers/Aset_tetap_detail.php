@@ -1,9 +1,9 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Module extends MY_Controller {
+class Aset_tetap_detail extends MY_Controller {
 
 	private $limit = 15;
-	private $table = 'module';
+	private $table = 'aset_tetap_detail';
 
 	function __construct()
    	{
@@ -13,8 +13,16 @@ class Module extends MY_Controller {
 	{
 		$search = $this->input->get('search');
 		if ($search) {
-			$this->db->like('name', $search);
+			$this->db->group_start();
+			$this->db->like('kode_barang', $search);
+			$this->db->or_like('nama_barang', $search);
+			$this->db->group_end();
 		}
+        $aset_tetap_id = $this->input->get('aset_tetap_id');
+		if(!empty($aset_tetap_id)){
+			$this->db->where('aset_tetap_id', $aset_tetap_id);
+		}
+
 	}
 	public function index()
 	{
@@ -22,38 +30,42 @@ class Module extends MY_Controller {
 		$this->_filter();
 		$total = $this->db->count_all_results($this->table);
 		$this->_filter();
-		$module_view['data'] 	= $this->db->get($this->table, $this->limit, $offset)->result();
-		$module_view['offset'] = $offset;
-		$module_view['paging'] = gen_paging($total,$this->limit);
-		$module_view['total'] 	= gen_total($total,$this->limit,$offset);
-		$data['content'] 	= $this->load->view('contents/module_view', $module_view, TRUE);
+		$aset_tetap_detail_view['data'] 	= $this->db->get($this->table, $this->limit, $offset)->result();
+		$aset_tetap_detail_view['offset'] = $offset;
+		$aset_tetap_detail_view['paging'] = gen_paging($total,$this->limit);
+		$aset_tetap_detail_view['total'] 	= gen_total($total,$this->limit,$offset);
+		$data['content'] 	= $this->load->view('contents/aset_tetap_detail_view', $aset_tetap_detail_view, TRUE);
 
 		$this->load->view('template_view', $data);
 	}
 
 	private function _set_rules()
 	{
-		$this->form_validation->set_rules('name', 'Nama Modul', 'trim|required');
-		$this->form_validation->set_rules('parent', 'Parent', 'trim');
-		$this->form_validation->set_rules('link', 'Link', 'trim');
-		$this->form_validation->set_rules('icon', 'Icon', 'trim');
-		$this->form_validation->set_rules('order', 'Order', 'trim');
+		$this->form_validation->set_rules('kode_barang', 'Kode Barang', 'trim|required');
+		$this->form_validation->set_rules('nama_barang', 'Nama Barang', 'trim|required');
+		$this->form_validation->set_rules('umur', 'Umur', 'trim');
+		$this->form_validation->set_rules('jumlah', 'Jumlah', 'trim');
+		$this->form_validation->set_rules('nilai', 'Nilai', 'trim');
 	}
 	
 	private function _set_data($type = 'add')
 	{
-		$name 		= $this->input->post('name');
-		$parent 	= $this->input->post('parent');
-		$link 		= $this->input->post('link');
-		$icon 		= $this->input->post('icon');
-		$order 		= $this->input->post('order');
+		$aset_tetap_id	= $this->input->post('aset_tetap_id');
+		$kib	= $this->input->post('kib');
+		$kode_barang	= $this->input->post('kode_barang');
+		$nama_barang	    = $this->input->post('nama_barang');
+		$umur	    = $this->input->post('umur');
+		$jumlah	    = $this->input->post('jumlah');
+		$nilai	    = $this->input->post('nilai');
 
 		$data = array(
-			'name' => $name,
-			'parent' => $parent,
-			'link' => $link,
-			'icon' => $icon,
-			'order' => $order,
+			'aset_tetap_id' => $aset_tetap_id,
+			'kib' => $kib,
+			'kode_barang' => $kode_barang,
+			'nama_barang' => $nama_barang,
+			'umur' => format_uang($umur),
+			'jumlah' => format_uang($jumlah),
+			'nilai' => format_uang($nilai),
 		);
 
 		if($type == 'add'){
@@ -77,8 +89,9 @@ class Module extends MY_Controller {
 	{
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
-			$data['content'] = $this->load->view('contents/form_module_view', [
-				'action'=>base_url('module/add').get_query_string()
+			$data['script'] = $this->load->view('script/aset_tetap_detail_script', '', true);
+			$data['content'] = $this->load->view('contents/form_aset_tetap_detail_view', [
+				'action'=>base_url('aset_tetap_detail/add').get_query_string()
 			],true);
 
 			if(!validation_errors())
@@ -109,9 +122,13 @@ class Module extends MY_Controller {
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
 			$this->db->where('id', $id);
-			$module_view['data'] = $this->db->get($this->table)->row();
-			$module_view['action'] = base_url('module/edit/'.$id).get_query_string();
-			$data['content'] = $this->load->view('contents/form_module_view',$module_view,true);
+			$aset_tetap_detail_view['data'] = $this->db->get($this->table)->row();
+			$aset_tetap_detail_view['data']->nilai = number_format($aset_tetap_detail_view['data']->nilai);
+			$aset_tetap_detail_view['data']->jumlah = number_format($aset_tetap_detail_view['data']->jumlah);
+			$aset_tetap_detail_view['data']->umur = number_format($aset_tetap_detail_view['data']->umur);
+			$aset_tetap_detail_view['action'] = base_url('aset_tetap_detail/edit/'.$id).get_query_string();
+			$data['script'] = $this->load->view('script/aset_tetap_detail_script', '', true);
+			$data['content'] = $this->load->view('contents/form_aset_tetap_detail_view',$aset_tetap_detail_view,true);
 
 			if(!validation_errors())
 			{
@@ -139,7 +156,6 @@ class Module extends MY_Controller {
 	public function delete($id = '')
 	{
 		if ($id) {
-			$data = $this->_set_data('delete');
 			$this->db->delete($this->table, ['id'=>$id]);
 			$error = $this->db->error();
 			if(empty($error['message'])){

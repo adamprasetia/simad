@@ -52,16 +52,16 @@ class Skpd extends MY_Controller {
 		);
 
 		if($type == 'add'){
-			$data['created_by'] = get_id_user_login();
+			$data['created_by'] = $this->session_login['id'];
 			$data['created_at'] = date('Y-m-d H:i:s');
 		}
 		else if($type == 'edit'){
-			$data['modified_by'] = get_id_user_login();
+			$data['modified_by'] = $this->session_login['id'];
 			$data['modified_at'] = date('Y-m-d H:i:s');
 		}
 		else if($type == 'delete'){
 			$data = [
-				'modified_by' => get_id_user_login(),
+				'modified_by' => $this->session_login['id'],
 				'deleted_at' => date('Y-m-d H:i:s')
 			];
 		}

@@ -5,10 +5,10 @@
         </div>
         <div class="box-body">
             <div class="form-group">
-                <input type="hidden" name="id" value="<?php echo get_id_user_login() ?>">
+                <input type="hidden" name="id" value="<?php echo $this->session_login['id'] ?>">
                 <label>Nama Lengkap</label>
                 <input autocomplete="off" type="text"
-                    class="form-control" value="<?php echo get_name_user_login() ?>" readonly>
+                    class="form-control" value="<?php echo $this->session_login['fullname'] ?>" readonly>
             </div>
             <div class="form-group">
                 <label>Password Lama *</label>

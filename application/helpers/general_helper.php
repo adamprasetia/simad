@@ -63,11 +63,11 @@ function gen_total($total, $limit, $offset)
     }
     if ($total) {
         if ($min == $max) {
-            return 'Showing ' . $min . ' of ' . $total . ' entries';
+            return 'Menampilkan ' . $min . ' dari ' . $total . ' data';
         } elseif ($max > $total) {
-            return 'Showing last of ' . $total . ' entries';
+            return 'Menampilkan ' . $total . ' data terakhir';
         } else {
-            return 'Showing ' . $min . ' to ' . $max . ' of ' . $total . ' entries';
+            return 'Menampilkan ' . $min . ' sampai ' . $max . ' dari ' . $total . ' data';
         }
     }
     return 'Data is not found';
@@ -91,15 +91,22 @@ function gen_page()
     return $page;
 }
 
-function format_dmy($date)
-{
-    if (isset($date) && $date <> '0000-00-00 00:00:00' && $date <> null) {
-        $date = date_create($date);
-        $date = date_format($date, 'd-M-Y H:i:s');
-        return $date;
+function format_ymd($date){
+    if($date <> '' && $date <> null){
+        $x = explode("/",$date);
+        return $x[2]."-".$x[1]."-".$x[0];
+    }else{
+        return "0000-00-00";
     }
 }
-
+function format_dmy($date){
+    if($date <> '' && $date <> null){
+        $x = explode("-",$date);
+        return $x[2]."/".$x[1]."/".$x[0];
+    }else{
+        return "00/00/0000";
+    }
+}
 function format_date($vardate, $type = '')
 {
     $hari   = array('Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu');
@@ -134,39 +141,6 @@ function format_date($vardate, $type = '')
     }
 }
 
-function set_session_login($userdata)
-{
-    $ci =& get_instance();
-    $ci->db->select('role_module.id_module');
-    $ci->db->join('role_module','role_user.id_role=role_module.id_role','left');
-    $modules = $ci->db->where('id_user', $userdata['id'])->get('role_user')->result();
-    foreach ($modules as $row) {
-        $userdata['module'][] = $row->id_module;
-    }
-    $userdata['module'] = array_unique($userdata['module']);
-    $ci->session->set_userdata('session_login', $userdata);
-
-}
-
-function get_id_user_login()
-{
-    $ci =& get_instance();
-    $userdata = $ci->session->userdata('session_login');
-    return $userdata['id'];
-}
-function get_name_user_login()
-{
-    $ci =& get_instance();
-    $userdata = $ci->session->userdata('session_login');
-    return $userdata['fullname'];
-}
-function get_module_user_login()
-{
-    $ci =& get_instance();
-    $userdata = $ci->session->userdata('session_login');
-    return $userdata['module'];
-}
-
 function map_menu($v){
     return $v->link;
 }
@@ -177,4 +151,9 @@ function now_url()
 
     $url = $ci->config->site_url($ci->uri->uri_string());
     return $_SERVER['QUERY_STRING'] ? $url . '?' . $_SERVER['QUERY_STRING'] : $url;
+}
+
+function format_uang($str)
+{
+    return str_replace(',', '', $str);
 }

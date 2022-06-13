@@ -46,6 +46,15 @@
                     <div class="checkbox"><label><input type="checkbox" <?php echo (!empty($data_role) && in_array($role->id, $data_role)?'checked':'')?> name="role[]" value="<?php echo $role->id ?>"> <?php echo $role->name ?></label></div>
                 <?php } ?>
             </div>
+            <div class="form-group">
+                <label>Hak Akses SKPD *</label>
+                <select name="skpd[]" multiple class="form-control">
+                    <?php $skpd = $this->db->order_by('nama asc')->get('skpd')->result(); ?>
+                    <?php foreach ($skpd as $row) { ?>
+                        <option <?php echo (!empty($data_skpd) && in_array($row->id, $data_skpd)?'selected':'')?> value="<?php echo $row->id ?>"><?php echo $row->kode.' - '.$row->nama ?></option>
+                    <?php } ?>
+                </select>
+            </div>
         </div>
 
         <div class="box-footer">

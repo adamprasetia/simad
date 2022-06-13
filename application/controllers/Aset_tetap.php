@@ -1,9 +1,9 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Module extends MY_Controller {
+class Aset_Tetap extends MY_Controller {
 
 	private $limit = 15;
-	private $table = 'module';
+	private $table = 'aset_tetap';
 
 	function __construct()
    	{
@@ -11,9 +11,20 @@ class Module extends MY_Controller {
    	}
 	private function _filter()
 	{
+		$skpd_session = $this->session_login['skpd_session'];
+		if(!empty($skpd_session)){
+			$this->db->where('kode_skpd', $skpd_session);
+		}
+		$tahun_session = $this->session_login['tahun_session'];
+		if(!empty($tahun_session)){
+			$this->db->where('year(tanggal)', $tahun_session);
+		}
 		$search = $this->input->get('search');
 		if ($search) {
-			$this->db->like('name', $search);
+			$this->db->group_start();
+			$this->db->like('nomor', $search);
+			$this->db->or_like('uraian', $search);
+			$this->db->group_end();
 		}
 	}
 	public function index()
@@ -22,38 +33,33 @@ class Module extends MY_Controller {
 		$this->_filter();
 		$total = $this->db->count_all_results($this->table);
 		$this->_filter();
-		$module_view['data'] 	= $this->db->get($this->table, $this->limit, $offset)->result();
-		$module_view['offset'] = $offset;
-		$module_view['paging'] = gen_paging($total,$this->limit);
-		$module_view['total'] 	= gen_total($total,$this->limit,$offset);
-		$data['content'] 	= $this->load->view('contents/module_view', $module_view, TRUE);
+		$aset_tetap_view['data'] 	= $this->db->order_by('id desc')->get($this->table, $this->limit, $offset)->result();
+		$aset_tetap_view['offset'] = $offset;
+		$aset_tetap_view['paging'] = gen_paging($total,$this->limit);
+		$aset_tetap_view['total'] 	= gen_total($total,$this->limit,$offset);
+		$data['content'] 	= $this->load->view('contents/aset_tetap_view', $aset_tetap_view, TRUE);
 
 		$this->load->view('template_view', $data);
 	}
 
 	private function _set_rules()
 	{
-		$this->form_validation->set_rules('name', 'Nama Modul', 'trim|required');
-		$this->form_validation->set_rules('parent', 'Parent', 'trim');
-		$this->form_validation->set_rules('link', 'Link', 'trim');
-		$this->form_validation->set_rules('icon', 'Icon', 'trim');
-		$this->form_validation->set_rules('order', 'Order', 'trim');
+		$this->form_validation->set_rules('nomor', 'Nomor', 'trim|required');
+		$this->form_validation->set_rules('tanggal', 'Tanggal', 'trim');
+		$this->form_validation->set_rules('uraian', 'Uraian', 'trim');
 	}
 	
 	private function _set_data($type = 'add')
 	{
-		$name 		= $this->input->post('name');
-		$parent 	= $this->input->post('parent');
-		$link 		= $this->input->post('link');
-		$icon 		= $this->input->post('icon');
-		$order 		= $this->input->post('order');
+		$nomor		= $this->input->post('nomor');
+		$tanggal	= $this->input->post('tanggal');
+		$uraian	    = $this->input->post('uraian');
 
 		$data = array(
-			'name' => $name,
-			'parent' => $parent,
-			'link' => $link,
-			'icon' => $icon,
-			'order' => $order,
+			'nomor' => $nomor,
+			'tanggal' => format_ymd($tanggal),
+			'uraian' => $uraian,
+			'kode_skpd' => $this->session_login['skpd_session'],
 		);
 
 		if($type == 'add'){
@@ -77,8 +83,8 @@ class Module extends MY_Controller {
 	{
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
-			$data['content'] = $this->load->view('contents/form_module_view', [
-				'action'=>base_url('module/add').get_query_string()
+			$data['content'] = $this->load->view('contents/form_aset_tetap_view', [
+				'action'=>base_url('aset_tetap/add').get_query_string(),
 			],true);
 
 			if(!validation_errors())
@@ -109,9 +115,9 @@ class Module extends MY_Controller {
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
 			$this->db->where('id', $id);
-			$module_view['data'] = $this->db->get($this->table)->row();
-			$module_view['action'] = base_url('module/edit/'.$id).get_query_string();
-			$data['content'] = $this->load->view('contents/form_module_view',$module_view,true);
+			$aset_tetap_view['data'] = $this->db->get($this->table)->row();
+			$aset_tetap_view['action'] = base_url('aset_tetap/edit/'.$id).get_query_string();
+			$data['content'] = $this->load->view('contents/form_aset_tetap_view',$aset_tetap_view,true);
 
 			if(!validation_errors())
 			{
@@ -139,7 +145,6 @@ class Module extends MY_Controller {
 	public function delete($id = '')
 	{
 		if ($id) {
-			$data = $this->_set_data('delete');
 			$this->db->delete($this->table, ['id'=>$id]);
 			$error = $this->db->error();
 			if(empty($error['message'])){

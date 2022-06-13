@@ -59,13 +59,13 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <!-- The user image in the navbar-->
                                 <!-- hidden-xs hides the email on small devices so only the image appears. -->
-                                <span><?php echo get_name_user_login() ?></span>
+                                <span><?php echo $this->session_login['fullname'] ?></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- The user image in the menu -->
                                 <li class="user-header">
                                     <p>
-                                        <?php echo get_name_user_login() ?>
+                                        <?php echo $this->session_login['fullname'] ?>
                                     </p>
                                 </li>
                                 <!-- Menu Body -->
@@ -91,15 +91,35 @@
 
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar">
+                <?php $skpd_session = $this->db->where_in('id', $this->session_login['skpd'])->get('skpd')->result(); ?>
+                <form id="form-session" action="<?php echo base_url('user/change_session') ?>">
+                <input type="hidden" name="callback" value="<?php echo now_url() ?>">
+                <div class="form-group" style="margin:15px;">
+                    <label for="">SKPD</label>
+                    <select name="skpd_session" id="skpd_session" class="form-control" onchange="submit()">
+                        <?php foreach ($skpd_session as $row) { ?>
+                            <option <?php echo ($this->session_login['skpd_session']==$row->kode?'selected':'')?> value="<?php echo $row->kode ?>"><?php echo $row->kode.' - '.$row->nama ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <div class="form-group" style="margin:15px;">
+                    <label for="">TAHUN</label>
+                    <select name="tahun_session" id="tahun_session" class="form-control" onchange="submit()">
+                        <?php for ($i=date('Y'); $i >= date('Y')-5; $i--) { ?>
+                            <option <?php echo ($this->session_login['tahun_session']==$i?'selected':'')?> value="<?php echo $i ?>"><?php echo $i ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                </form>
 
                 <!-- Sidebar Menu -->
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="header">MENU UTAMA</li>
                     <!-- Optionally, you can add icons to the links -->
                     <?php $s1 = $this->uri->segment(1); $s2 = $this->uri->segment(2); ?>
-                    <?php $modules = $this->db->where_in('id', get_module_user_login())->where('parent', 0)->order_by('order asc')->get('module')->result(); ?>
+                    <?php $modules = $this->db->where_in('id', $this->session_login['module'])->where('parent', 0)->order_by('order asc')->get('module')->result(); ?>
                     <?php foreach ($modules as $module) { ?>
-                        <?php $childs = $this->db->where_in('id', get_module_user_login())->where('parent', $module->id)->order_by('order asc')->get('module')->result(); ?>
+                        <?php $childs = $this->db->where_in('id', $this->session_login['module'])->where('parent', $module->id)->order_by('order asc')->get('module')->result(); ?>
                         <?php if(!empty($childs)):?>
                             <li class="<?php echo (!empty($s1) && in_array($s1,array_map('map_menu',$childs))?'active treeview menu-open':'treeview') ?>">
                                 <a href="#">
@@ -108,7 +128,7 @@
                                 </a>
                                 <ul class="treeview-menu">
                                     <?php foreach ($childs as $child) { ?>
-                                        <?php $childs2 = $this->db->where_in('id', get_module_user_login())->where('parent', $child->id)->order_by('order asc')->get('module')->result(); ?>                      
+                                        <?php $childs2 = $this->db->where_in('id', $this->session_login['module'])->where('parent', $child->id)->order_by('order asc')->get('module')->result(); ?>                      
                                         <?php if(!empty($childs2)):?>
                                             <li class="<?php echo (!empty($s1) && in_array($s1,array_map('map_menu',$childs2))?'active treeview menu-open':'treeview') ?>">
                                                 <a href="#">
@@ -194,6 +214,7 @@
     <script src="<?php echo base_url('assets/').'plugins/sweetalert/js/sweetalert.min.js';?>"></script>
 
     <script src="<?php echo base_url('assets/').'js/select2.min.js';?>"></script>
+    <script src="<?php echo base_url('assets/').'js/price_format.js';?>"></script>
 
     <!-- custom js general -->
     <?php $this->load->view('script/general_script') ?>

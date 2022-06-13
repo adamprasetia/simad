@@ -45,7 +45,22 @@ class Login extends CI_Controller {
 		$userdata = $this->db->select('id,fullname,password')->where('username', $email)->or_where('email', $email)->or_where('phone', $email)->get('user')->row_array();
 		if (!empty($userdata) && password_verify($password, $userdata['password'])) {
 			unset($userdata['password']);
-			set_session_login($userdata);
+			$this->db->select('role_module.id_module');
+			$this->db->join('role_module','role_user.id_role=role_module.id_role','left');
+			$modules = $this->db->where('id_user', $userdata['id'])->get('role_user')->result();
+			foreach ($modules as $row) {
+				$userdata['module'][] = $row->id_module;
+			}
+			$userdata['module'] = array_unique($userdata['module']);
+			$skpds = $this->db->where('id_user', $userdata['id'])->get('user_skpd')->result();
+			foreach ($skpds as $skpd) {
+				$userdata['skpd'][] = $skpd->id_skpd;
+			}
+			$userdata['skpd_session'] = $this->db->where('id',$userdata['skpd'][0])->get('skpd')->row()->kode;
+			$userdata['tahun_session'] = $this->input->post('year');
+
+			$this->session->set_userdata('session_login', $userdata);
+		
 			return true;
 		} else {
 			$this->form_validation->set_message('check_auth','Login gagal, Silakan Coba lagi');

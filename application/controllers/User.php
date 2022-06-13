@@ -37,6 +37,8 @@ class User extends MY_Controller {
 		$this->form_validation->set_rules('email', 'Email', 'trim');
 		$this->form_validation->set_rules('phone', 'Telepon', 'trim');
 		$this->form_validation->set_rules('username', 'Username', 'trim|required');
+		$this->form_validation->set_rules('role[]', 'Hak Akses', 'trim|required');
+		$this->form_validation->set_rules('skpd[]', 'Hak Akses SKPD', 'trim|required');
 		if($type == 'add'){
 			$this->form_validation->set_rules('password', 'Password', 'trim|required');
 		}else{
@@ -63,16 +65,16 @@ class User extends MY_Controller {
 		}
 
 		if($type == 'add'){
-			$data['created_by'] = get_id_user_login();
+			$data['created_by'] = $this->session_login['id'];
 			$data['created_at'] = date('Y-m-d H:i:s');
 		}
 		else if($type == 'edit'){
-			$data['modified_by'] = get_id_user_login();
+			$data['modified_by'] = $this->session_login['id'];
 			$data['modified_at'] = date('Y-m-d H:i:s');
 		}
 		else if($type == 'delete'){
 			$data = [
-				'modified_by' => get_id_user_login(),
+				'modified_by' => $this->session_login['id'],
 				'deleted_at' => date('Y-m-d H:i:s')
 			];
 		}
@@ -120,6 +122,21 @@ class User extends MY_Controller {
 			if(!empty($error['message'])){
 				$message = $error['message'];
 			}
+
+			$skpds = $this->input->post('skpd');
+			$data_skpd = [];
+			foreach ($skpds as $skpd) {
+				$data_skpd[] = [
+					'id_user'=>$id,
+					'id_skpd'=>$skpd
+				];
+			}
+			$this->db->insert_batch('user_skpd', $data_skpd);
+			$error = $this->db->error();
+			if(!empty($error['message'])){
+				$message = $error['message'];
+			}
+
 			$this->db->trans_complete();
 			if($this->db->trans_status() === FALSE){
 				$response = array('tipe'=>'warning', 'title'=>'Terjadi Kesalahan!', 'message'=>$message);
@@ -143,6 +160,12 @@ class User extends MY_Controller {
 				$data_role[] = $row->id_role;
 			}
 			$user_view['data_role'] = $data_role;
+			$data_skpds = $this->db->where('id_user', $id)->get('user_skpd')->result();
+			$data_skpd = [];
+			foreach ($data_skpds as $row) {
+				$data_skpd[] = $row->id_skpd;
+			}
+			$user_view['data_skpd'] = $data_skpd;
 			$user_view['action'] = base_url('user/edit/'.$id).get_query_string();
 			$data['content'] = $this->load->view('contents/form_user_view',$user_view,true);
 
@@ -179,6 +202,27 @@ class User extends MY_Controller {
 			if(!empty($error['message'])){
 				$message = $error['message'];
 			}
+
+			$skpds = $this->input->post('skpd');
+			$data_skpd = [];
+			foreach ($skpds as $skpd) {
+				$data_skpd[] = [
+					'id_user'=>$id,
+					'id_skpd'=>$skpd
+				];
+			}
+			$this->db->delete('user_skpd', ['id_user'=>$id]);
+			$error = $this->db->error();
+			if(!empty($error['message'])){
+				$message = $error['message'];
+			}
+
+			$this->db->insert_batch('user_skpd', $data_skpd);
+			$error = $this->db->error();
+			if(!empty($error['message'])){
+				$message = $error['message'];
+			}
+
 			$this->db->trans_complete();
 
 			if($this->db->trans_status() === FALSE){
@@ -224,7 +268,7 @@ class User extends MY_Controller {
 			}
 
 		}else{
-			$this->db->update($this->table, ['password' => password_hash($this->input->post('newpass'), PASSWORD_BCRYPT)], ['id'=>get_id_user_login()]);
+			$this->db->update($this->table, ['password' => password_hash($this->input->post('newpass'), PASSWORD_BCRYPT)], ['id'=>$this->session_login['id']]);
 			$error = $this->db->error();
 			if(empty($error['message'])){
 				$response = array('action'=>'edit', 'message'=>'Password berhasil diganti');
@@ -237,7 +281,7 @@ class User extends MY_Controller {
 	}
 	public function password_check($oldpass)
     {
-		$userdata = $this->db->where('id', get_id_user_login())->get('user')->row();
+		$userdata = $this->db->where('id', $this->session_login['id'])->get('user')->row();
 		if (password_verify($oldpass, $userdata->password)) { 
 			return true;
 		} else { 
@@ -245,6 +289,19 @@ class User extends MY_Controller {
             return false;
 		}
     }
-
+	public function change_session(){
+		$calback = $this->input->get('callback');
+		$skpd_session = $this->input->get('skpd_session');
+		$session_login = $this->session->userdata('session_login');
+		if(!empty($skpd_session)){
+			$session_login['skpd_session'] = $skpd_session;
+		}
+		$tahun_session = $this->input->get('tahun_session');
+		if(!empty($tahun_session)){
+			$session_login['tahun_session'] = $tahun_session;
+		}
+		$this->session->set_userdata('session_login', $session_login);
+		redirect($calback);
+	}
 
 }

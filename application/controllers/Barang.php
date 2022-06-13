@@ -52,16 +52,16 @@ class Barang extends MY_Controller {
 		);
 
 		if($type == 'add'){
-			$data['created_by'] = get_id_user_login();
+			$data['created_by'] = $this->session_login['id'];
 			$data['created_at'] = date('Y-m-d H:i:s');
 		}
 		else if($type == 'edit'){
-			$data['modified_by'] = get_id_user_login();
+			$data['modified_by'] = $this->session_login['id'];
 			$data['modified_at'] = date('Y-m-d H:i:s');
 		}
 		else if($type == 'delete'){
 			$data = [
-				'modified_by' => get_id_user_login(),
+				'modified_by' => $this->session_login['id'],
 				'deleted_at' => date('Y-m-d H:i:s')
 			];
 		}
@@ -144,6 +144,22 @@ class Barang extends MY_Controller {
 			}
 			echo json_encode($response);
 		}
+	}
+	
+	public function api()
+	{
+		$search = $this->input->get('search');
+		$kib = $this->input->get('kib');
+		if(!empty($kib)){
+			$this->db->like('kode',$kib,'after');
+		}
+		$this->db->group_start();
+		$this->db->like('nama', $search);
+		$this->db->or_like('kode', $search);
+		$this->db->group_end();
+		$result = $this->db->select('kode as id,concat(kode," | ",nama) as text')->get($this->table, 10, 0)->result_array();
+		// echo $this->db->last_query();exit;
+		echo json_encode(['results'=>$result]);
 	}
 
 }
