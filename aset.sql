@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `aset_tetap_detail` (
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `aset_tetap_id` (`id_aset_tetap`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 -- Dumping data for table aset.aset_tetap_detail: ~4 rows (approximately)
 INSERT INTO `aset_tetap_detail` (`id`, `id_aset_tetap`, `kib`, `kode_barang`, `nama_barang`, `umur`, `jumlah`, `nilai`, `info`, `info_lain`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
@@ -63,7 +63,8 @@ INSERT INTO `aset_tetap_detail` (`id`, `id_aset_tetap`, `kib`, `kode_barang`, `n
 	(2, 2, '02', '02.02.01.01.01', 'Crawler Tractor', 20.000000, 1.000000, 9000000.000000, '{"info":"info lain","noreg":"noreg","merk":"merk"}', '', 1, '2022-06-14 06:09:59', 1, '2022-06-14 08:45:11', NULL),
 	(3, 4, '01', '01.01.01.02.01', 'Emplasmen', 10.000000, 1.000000, 200000000.000000, 'info aja', '{"noreg_01":"838383","luas_01":"1000","alamat_01":"cianjur","hak_01":"adam","tglser_01":"08\\/06\\/2022","noser_01":"123232-23232-232","penggu_01":"cocok tanam","asal_01":"gk tau dari mana"}', 1, '2022-06-15 05:10:24', 1, '2022-06-15 07:57:28', NULL),
 	(4, 4, '01', '01', 'GOLONGAN TANAH', 2.000000, 12.000000, 10000.000000, 'info dong', '{"noreg_01":"838383","luas_01":"90000","alamat_01":"cianur"}', 1, '2022-06-15 05:22:02', 1, '2022-06-15 07:25:51', NULL),
-	(5, 4, '02', '02.02', 'ALAT -ALAT BESAR', 30.000000, 3.000000, 900000.000000, 'info dong', '{"noreg_02":"5656565","merk_02":"yamaha"}', 1, '2022-06-15 07:26:46', NULL, NULL, NULL);
+	(5, 4, '02', '02.02', 'ALAT -ALAT BESAR', 30.000000, 3.000000, 900000.000000, 'info dong', '{"noreg_02":"5656565","merk_02":"yamaha","ukuran_02":"110cc","bahan_02":"bensin","nopab_02":"22323-232","norang_02":"334-3434-3434-","nomes_02":"3343123123-1231-2312-3","nopol_02":"F 2345 YA","nobpkp_02":"34434334343 4343 434 3434","asal_02":"jakarta"}', 1, '2022-06-15 07:26:46', 1, '2022-06-15 08:15:41', NULL),
+	(6, 4, '05', '05.17.01.01.05', 'Essay, Pamflet', 4.000000, 1.000000, 90000.000000, 'info', '[]', 1, '2022-06-15 14:49:12', NULL, NULL, NULL);
 
 -- Dumping structure for table aset.barang
 CREATE TABLE IF NOT EXISTS `barang` (
@@ -9015,8 +9016,9 @@ CREATE TABLE IF NOT EXISTS `kib_info` (
   `modified_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `kode` (`kode`),
   KEY `id_kib` (`id_kib`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 -- Dumping data for table aset.kib_info: ~0 rows (approximately)
 INSERT INTO `kib_info` (`id`, `id_kib`, `kode`, `nama`, `tipe`, `awalan`, `akhiran`, `pilihan`, `urutan`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
@@ -9029,7 +9031,60 @@ INSERT INTO `kib_info` (`id`, `id_kib`, `kode`, `nama`, `tipe`, `awalan`, `akhir
 	(7, 1, 'tglser_01', 'Tanggal Sertifikat', 'tanggal', '', '', '', 0, 1, '2022-06-15 07:47:17', 1, '2022-06-15 07:53:56', NULL),
 	(8, 1, 'noser_01', 'No Setifikat', 'teks', '', '', '', 0, 1, '2022-06-15 07:47:28', 1, '2022-06-15 07:54:21', NULL),
 	(9, 1, 'penggu_01', 'Penggunaan Tanah', 'teks', '', '', '', 0, 1, '2022-06-15 07:47:46', 1, '2022-06-15 07:54:52', NULL),
-	(10, 1, 'asal_01', 'Asal Perolehan Tanah', 'teks', '', '', '', 0, 1, '2022-06-15 07:56:19', NULL, NULL, NULL);
+	(10, 1, 'asal_01', 'Asal Perolehan Tanah', 'teks', '', '', '', 0, 1, '2022-06-15 07:56:19', NULL, NULL, NULL),
+	(11, 2, 'ukuran_02', 'Ukuran', 'teks', '', '', '', 0, 1, '2022-06-15 08:13:10', NULL, NULL, NULL),
+	(12, 2, 'bahan_02', 'Bahan', 'teks', '', '', '', 0, 1, '2022-06-15 08:13:21', NULL, NULL, NULL),
+	(13, 2, 'nopab_02', 'No Pabrik', 'teks', '', '', '', 0, 1, '2022-06-15 08:13:39', NULL, NULL, NULL),
+	(14, 2, 'norang_02', 'No Rangka', 'teks', '', '', '', 0, 1, '2022-06-15 08:13:54', NULL, NULL, NULL),
+	(15, 2, 'nomes_02', 'No Mesin', 'teks', '', '', '', 0, 1, '2022-06-15 08:14:09', NULL, NULL, NULL),
+	(16, 2, 'nopol_02', 'No Polisi', 'teks', '', '', '', 0, 1, '2022-06-15 08:14:22', NULL, NULL, NULL),
+	(17, 2, 'nobpkp_02', 'No BPKB', 'teks', '', '', '', 0, 1, '2022-06-15 08:14:39', NULL, NULL, NULL),
+	(18, 2, 'asal_02', 'Asal Perolehan', 'teks', '', '', '', 0, 1, '2022-06-15 08:14:53', NULL, NULL, NULL),
+	(19, 3, 'noreg_03', 'No Register', 'teks', '', '', '', 0, 1, '2022-06-15 14:51:25', NULL, NULL, NULL),
+	(20, 3, 'kond_03', 'Kondisi Gedung/Bangunan', 'teks', '', '', '', 0, 1, '2022-06-15 14:51:43', NULL, NULL, NULL),
+	(21, 3, 'bertingkat_03', 'Bertingkat ?', 'teks', '', '', '', 0, 1, '2022-06-15 14:51:58', 1, '2022-06-15 14:52:30', NULL),
+	(23, 3, 'bahan_03', 'Bahan Bangunan', 'teks', '', '', '', 0, 1, '2022-06-15 14:53:29', NULL, NULL, NULL),
+	(24, 3, 'berlantai_03', 'Berlantai ?', 'teks', '', '', '', 0, 1, '2022-06-15 14:55:06', NULL, NULL, NULL),
+	(25, 3, 'lokasi_03', 'Lokasi Gedung', 'teks', '', '', '', 0, 1, '2022-06-15 14:55:20', NULL, NULL, NULL),
+	(26, 3, 'tgldok_03', 'Tanggal Dokumen', 'tanggal', '', '', '', 0, 1, '2022-06-15 14:55:40', NULL, NULL, NULL),
+	(27, 3, 'nodok_03', 'No Dokumen', 'teks', '', '', '', 0, 1, '2022-06-15 14:55:56', NULL, NULL, NULL),
+	(28, 3, 'luas_03', 'Luas Gedung/Bangunan', 'teks', '', 'm2', '', 0, 1, '2022-06-15 14:57:11', 1, '2022-06-15 14:58:30', NULL),
+	(29, 3, 'statustnh_03', 'Status Tanah', 'teks', '', '', '', 0, 1, '2022-06-15 14:57:38', NULL, NULL, NULL),
+	(30, 3, 'kodetnh_03', 'Kode Tanah', 'teks', '', '', '', 0, 1, '2022-06-15 14:58:03', NULL, NULL, NULL),
+	(31, 3, 'asal_03', 'Asal Perolehan', 'teks', '', '', '', 0, 1, '2022-06-15 14:58:19', NULL, NULL, NULL),
+	(32, 4, 'noreg_04', 'No Register', 'teks', '', '', '', 0, 1, '2022-06-15 15:00:23', NULL, NULL, NULL),
+	(33, 4, 'jeniskon_04', 'Jenis Kontruksi', 'teks', '', '', '', 0, 1, '2022-06-15 15:00:47', NULL, NULL, NULL),
+	(34, 4, 'panjang_04', 'Panjang', 'teks', '', 'm', '', 0, 1, '2022-06-15 15:02:17', NULL, NULL, NULL),
+	(35, 4, 'lebar_04', 'Lebar', 'teks', '', 'm', '', 0, 1, '2022-06-15 15:02:27', NULL, NULL, NULL),
+	(36, 4, 'luas_04', 'Luas', 'teks', '', 'm2', '', 0, 1, '2022-06-15 15:05:49', NULL, NULL, NULL),
+	(37, 4, 'tgldok_04', 'Tanggal Dokumen', 'tanggal', '', '', '', 0, 1, '2022-06-15 15:06:37', NULL, NULL, NULL),
+	(38, 4, 'nodok_04', 'No Dokumen', 'teks', '', '', '', 0, 1, '2022-06-15 15:07:03', NULL, NULL, NULL),
+	(39, 4, 'statustnh_04', 'Status Tanah', 'teks', '', '', '', 0, 1, '2022-06-15 15:07:42', NULL, NULL, NULL),
+	(40, 4, 'kodetnh_04', 'Kode Tanah', 'teks', '', '', '', 0, 1, '2022-06-15 15:07:57', NULL, NULL, NULL),
+	(41, 4, 'asal_04', 'Asal Perolehan', 'teks', '', '', '', 0, 1, '2022-06-15 15:08:29', NULL, NULL, NULL),
+	(42, 4, 'kond_04', 'Kondisi', 'teks', '', '', '', 0, 1, '2022-06-15 15:08:39', NULL, NULL, NULL),
+	(43, 5, 'noreg_05', 'No Registrasi', 'teks', '', '', '', 0, 1, '2022-06-15 15:09:51', NULL, NULL, NULL),
+	(44, 5, 'pencbuk_05', 'Pencipta Buku', 'teks', '', '', '', 0, 1, '2022-06-15 15:10:16', NULL, NULL, NULL),
+	(45, 5, 'spesif_05', 'Spesifikasi', 'teks', '', '', '', 0, 1, '2022-06-15 15:10:27', NULL, NULL, NULL),
+	(46, 5, 'asaldrh_05', 'Asal Daerah', 'teks', '', '', '', 0, 1, '2022-06-15 15:10:40', NULL, NULL, NULL),
+	(47, 5, 'pncseni_05', 'Pencipta Seni', 'teks', '', '', '', 0, 1, '2022-06-15 15:11:00', NULL, NULL, NULL),
+	(48, 5, 'bhnseni_05', 'Bahan Kesenian', 'teks', '', '', '', 0, 1, '2022-06-15 15:11:28', NULL, NULL, NULL),
+	(49, 5, 'jnsseni_05', 'Jenis Kesenian', 'teks', '', '', '', 0, 1, '2022-06-15 15:11:42', NULL, NULL, NULL),
+	(50, 5, 'ukuran_05', 'Ukuran', 'teks', '', '', '', 0, 1, '2022-06-15 15:11:53', NULL, NULL, NULL),
+	(51, 5, 'asal_05', 'Asal Perolehan', 'teks', '', '', '', 0, 1, '2022-06-15 15:12:12', NULL, NULL, NULL),
+	(52, 6, 'bang_06', 'Bangunan / Konstruksi', 'teks', '', '', '', 0, 1, '2022-06-15 15:13:28', NULL, NULL, NULL),
+	(53, 6, 'berting_06', 'Bertingkat ?', 'teks', '', '', '', 0, 1, '2022-06-15 15:14:19', NULL, NULL, NULL),
+	(54, 6, 'bahanbtn_06', 'Bahan Beton', 'teks', '', '', '', 0, 1, '2022-06-15 15:14:50', NULL, NULL, NULL),
+	(55, 6, 'luas_06', 'Luas Konstruksi', 'teks', '', 'm2', '', 0, 1, '2022-06-15 15:15:03', 1, '2022-06-15 15:15:17', NULL),
+	(56, 6, 'lokasi_06', 'Lokasi', 'teks', '', '', '', 0, 1, '2022-06-15 15:15:29', NULL, NULL, NULL),
+	(57, 6, 'noreg_06', 'No Register', 'teks', '', '', '', 0, 1, '2022-06-15 15:15:45', NULL, NULL, NULL),
+	(58, 6, 'tglmulkon_06', 'Tanggal Mulai Kontruksi', 'tanggal', '', '', '', 0, 1, '2022-06-15 15:16:07', NULL, NULL, NULL),
+	(59, 6, 'stattnhkon_06', 'Status Tanah Konstruksi', 'teks', '', '', '', 0, 1, '2022-06-15 15:16:26', NULL, NULL, NULL),
+	(60, 6, 'kodtnh_06', 'Kode Tanah', 'teks', '', '', '', 0, 1, '2022-06-15 15:16:43', NULL, NULL, NULL),
+	(61, 6, 'asal_06', 'Asal Perolehan', 'teks', '', '', '', 0, 1, '2022-06-15 15:16:54', NULL, NULL, NULL),
+	(62, 7, 'noreg_00', 'No Register', 'teks', '', '', '', 0, 1, '2022-06-15 15:17:41', NULL, NULL, NULL),
+	(63, 7, 'tgldok_00', 'Tanggal Dokumen', 'tanggal', '', '', '', 0, 1, '2022-06-15 15:17:54', NULL, NULL, NULL),
+	(64, 7, 'asal_00', 'Asal Perolehan', 'teks', '', '', '', 0, 1, '2022-06-15 15:18:09', NULL, NULL, NULL);
 
 -- Dumping structure for table aset.module
 CREATE TABLE IF NOT EXISTS `module` (

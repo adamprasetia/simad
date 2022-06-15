@@ -130,7 +130,7 @@
         <div class="box-footer">
             <button type="button" class="btn_action btn btn-primary" data-redirect="<?php echo base_url('aset_tetap_detail/index').get_query_string() ?>" data-action="<?php echo $action ?>" data-form="#form_data" data-idle="<i class='fa fa-save'></i> Simpan" data-process="Menyimpan..."><i class='fa fa-save'></i> Simpan</button>
             <?php if($this->uri->segment(2)=='add'): ?>
-                <button type="button" class="btn_action btn btn-primary" data-redirect="<?php echo base_url('aset_tetap_detail/add').get_query_string() ?>" data-action="<?php echo $action ?>" data-form="#form_data" data-idle="<i class='fa fa-save'></i> Simpan" data-process="Menyimpan..."><i class='fa fa-save'></i> Simpan Lalu Tambah Lagi</button>
+                <button type="button" class="btn_action btn btn-primary" data-redirect="<?php echo base_url('aset_tetap_detail/add').get_query_string() ?>" data-action="<?php echo $action ?>" data-form="#form_data" data-idle="<i class='fa fa-save'></i> Simpan Lalu Tambah Lagi" data-process="Menyimpan..."><i class='fa fa-save'></i> Simpan Lalu Tambah Lagi</button>
             <?php endif ?>
             <button type="button" class="btn_close btn btn-default" data-redirect="<?php echo base_url('aset_tetap_detail/index').get_query_string() ?>"><i class='fa fa-close'></i> Kembali</button>
         </div>
