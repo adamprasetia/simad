@@ -4,29 +4,29 @@
             <div class="pull-left">
                 <h4><strong>FORMULIR PEROLEHAN ASET TETAP DETAIL</strong></h4>
             </div>
-            <?php $aset_tetap = $this->db->where('id', $this->input->get('id_aset_tetap'))->get('aset_tetap')->row(); ?>
-            <table class="table table-bordered" style="margin-bottom:0px;">
-                <tr>
-                    <td colspan=2><i>Dokumen</i></td>
-                </tr>
-                <tr>
-                    <td width="50px"><strong>Nomor</strong></td>
-                    <td>: <?php echo $aset_tetap->nomor ?></td>
-                </tr>
-                <tr>
-                    <td><strong>Tanggal</strong></td>
-                    <td>: <?php echo format_dmy($aset_tetap->tanggal) ?></td>
-                </tr>
-                <tr>
-                    <td><strong>Uraian</strong></td>
-                    <td>: <?php echo $aset_tetap->uraian ?></td>
-                </tr>
-            </table>
         </div>
         <div class="box-body">
             <input type="hidden" name="id_aset_tetap" value="<?php echo $this->input->get('id_aset_tetap') ?>">
             <div class="row">
                 <div class="col-md-6">
+                    <?php $aset_tetap = $this->db->where('id', $this->input->get('id_aset_tetap'))->get('aset_tetap')->row(); ?>
+                    <table class="table table-bordered" style="margin-bottom:0px;">
+                        <tr>
+                            <td colspan=2><i>Dokumen</i></td>
+                        </tr>
+                        <tr>
+                            <td width="50px"><strong>Nomor</strong></td>
+                            <td>: <?php echo $aset_tetap->nomor ?></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tanggal</strong></td>
+                            <td>: <?php echo format_dmy($aset_tetap->tanggal) ?></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Uraian</strong></td>
+                            <td>: <?php echo $aset_tetap->uraian ?></td>
+                        </tr>
+                    </table>
                     <table class="table table-bordered">
                         <tr>
                             <td colspan=2><i>Detail Barang</i></td>
