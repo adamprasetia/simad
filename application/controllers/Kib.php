@@ -1,9 +1,9 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Aset_Tetap extends MY_Controller {
+class Kib extends MY_Controller {
 
 	private $limit = 15;
-	private $table = 'aset_tetap';
+	private $table = 'kib';
 
 	function __construct()
    	{
@@ -11,19 +11,12 @@ class Aset_Tetap extends MY_Controller {
    	}
 	private function _filter()
 	{
-		$skpd_session = $this->session_login['skpd_session'];
-		if(!empty($skpd_session)){
-			$this->db->where('kode_skpd', $skpd_session);
-		}
-		$tahun_session = $this->session_login['tahun_session'];
-		if(!empty($tahun_session)){
-			$this->db->where('year(tanggal)', $tahun_session);
-		}
 		$search = $this->input->get('search');
 		if ($search) {
 			$this->db->group_start();
-			$this->db->like('nomor', $search);
-			$this->db->or_like('uraian', $search);
+			$this->db->like('kode', $search);
+			$this->db->or_like('nomor', $search);
+			$this->db->or_like('nama', $search);
 			$this->db->group_end();
 		}
 	}
@@ -33,33 +26,32 @@ class Aset_Tetap extends MY_Controller {
 		$this->_filter();
 		$total = $this->db->count_all_results($this->table);
 		$this->_filter();
-		$aset_tetap_view['data'] 	= $this->db->order_by('id desc')->get($this->table, $this->limit, $offset)->result();
-		$aset_tetap_view['offset'] = $offset;
-		$aset_tetap_view['paging'] = gen_paging($total,$this->limit);
-		$aset_tetap_view['total'] 	= gen_total($total,$this->limit,$offset);
-		$data['content'] 	= $this->load->view('contents/aset_tetap_view', $aset_tetap_view, TRUE);
+		$kib_view['data'] 	= $this->db->order_by('id desc')->get($this->table, $this->limit, $offset)->result();
+		$kib_view['offset'] = $offset;
+		$kib_view['paging'] = gen_paging($total,$this->limit);
+		$kib_view['total'] 	= gen_total($total,$this->limit,$offset);
+		$data['content'] 	= $this->load->view('contents/kib_view', $kib_view, TRUE);
 
 		$this->load->view('template_view', $data);
 	}
 
 	private function _set_rules()
 	{
+		$this->form_validation->set_rules('kode', 'Kode', 'trim|required');
 		$this->form_validation->set_rules('nomor', 'Nomor', 'trim|required');
-		$this->form_validation->set_rules('tanggal', 'Tanggal', 'trim');
-		$this->form_validation->set_rules('uraian', 'Uraian', 'trim');
+		$this->form_validation->set_rules('nama', 'Nama', 'trim|required');
 	}
 	
 	private function _set_data($type = 'add')
 	{
-		$nomor		= $this->input->post('nomor');
-		$tanggal	= $this->input->post('tanggal');
-		$uraian	    = $this->input->post('uraian');
+		$kode		= $this->input->post('kode');
+		$nomor	= $this->input->post('nomor');
+		$nama	    = $this->input->post('nama');
 
 		$data = array(
+			'kode' => $kode,
 			'nomor' => $nomor,
-			'tanggal' => format_ymd($tanggal),
-			'uraian' => $uraian,
-			'kode_skpd' => $this->session_login['skpd_session'],
+			'nama' => $nama
 		);
 
 		if($type == 'add'){
@@ -83,8 +75,8 @@ class Aset_Tetap extends MY_Controller {
 	{
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
-			$data['content'] = $this->load->view('contents/form_aset_tetap_view', [
-				'action'=>base_url('aset_tetap/add').get_query_string(),
+			$data['content'] = $this->load->view('contents/form_kib_view', [
+				'action'=>base_url('kib/add').get_query_string(),
 			],true);
 
 			if(!validation_errors())
@@ -102,7 +94,7 @@ class Aset_Tetap extends MY_Controller {
 			$id = $this->db->insert_id();
 			$error = $this->db->error();
 			if(empty($error['message'])){
-				$response = array('id'=>$id, 'redirect'=>base_url('aset_tetap_detail/add?id_aset_tetap='.$id), 'action'=>'insert', 'message'=>'Data berhasil disimpan');
+				$response = array('id'=>$id, 'redirect'=>base_url('kib_detail/add?kib_id='.$id), 'action'=>'insert', 'message'=>'Data berhasil disimpan');
 			}else{
 				$response = array('tipe'=>'warning', 'title'=>'Terjadi Kesalahan!', 'message'=>$error['message']);
 			}
@@ -116,9 +108,9 @@ class Aset_Tetap extends MY_Controller {
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
 			$this->db->where('id', $id);
-			$aset_tetap_view['data'] = $this->db->get($this->table)->row();
-			$aset_tetap_view['action'] = base_url('aset_tetap/edit/'.$id).get_query_string();
-			$data['content'] = $this->load->view('contents/form_aset_tetap_view',$aset_tetap_view,true);
+			$kib_view['data'] = $this->db->get($this->table)->row();
+			$kib_view['action'] = base_url('kib/edit/'.$id).get_query_string();
+			$data['content'] = $this->load->view('contents/form_kib_view',$kib_view,true);
 
 			if(!validation_errors())
 			{

@@ -56,6 +56,10 @@ $(document).on('click', '.btn_action', function () {
             message = obj.message;
         }
 
+        if (obj.redirect != undefined) {
+            redirect = obj.redirect;
+        }
+
         swal({
             title: title,
             type: tipe,

@@ -1,0 +1,3 @@
+<script>
+    $('#kode').focus();
+</script>

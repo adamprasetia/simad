@@ -10,3 +10,12 @@ $config['kib'] = [
     '06'=>['id'=>'F', 'name'=>'Kontruksi Dalam Pengerjaan'],
     '07'=>['id'=>'Z', 'name'=>'Aset Tak Berwujud'],
 ];
+
+$config['kib_info_tipe'] = [
+    'teks',
+    'tanggal',
+    'pilihan',
+    'angka',
+    'uang',
+    'keterangan',
+];

@@ -1,11 +1,11 @@
 <div class="box box-default">
     <div class="box-header with-border">
         <div class="pull-left">
-            <h4><strong>DATA PEROLEHAN ASET TETAP</strong></h4>
+            <h4><strong>DATA KIB</strong></h4>
         </div>
     </div>
     <div class="box-header with-border">
-        <a href="<?php echo base_url('aset_tetap/add') ?>" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> Tambah Aset Tetap</a>
+        <a href="<?php echo base_url('kib/add') ?>" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> Tambah KIB</a>
         <a href="<?php echo now_url() ?>" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Refresh</a>
         <div class="pull-right">
             <div class="has-feedback">
@@ -19,10 +19,10 @@
                 <thead>
                     <tr>
                         <th width="50">No</th>
+                        <th>Kode</th>
                         <th>Nomor</th>
-                        <th>Tanggal</th>
-                        <th>Uraian</th>
-                        <th>Detail</th>
+                        <th>Nama</th>
+                        <th>Info</th>
                         <th width="100">Aksi</th>
                     </tr>
                 </thead>
@@ -33,15 +33,15 @@
                       ?>
                     <tr>
                         <td><?php echo $no; ?></td>
+                        <td><?php echo $value->kode; ?></td>
                         <td><?php echo $value->nomor; ?></td>
-                        <td><?php echo format_dmy($value->tanggal); ?></td>
-                        <td><?php echo $value->uraian; ?></td>
+                        <td><?php echo $value->nama; ?></td>
                         <td>
-                            <a class="btn btn-default btn-sm" href="<?php echo base_url('aset_tetap_detail?id_aset_tetap='.$value->id).get_query_string('id_aset_tetap'); ?>"><i class="fa fa-list"></i> Detail</a>
+                            <a class="btn btn-default btn-sm" href="<?php echo base_url('kib_info?id_kib='.$value->id).get_query_string('id_kib'); ?>"><i class="fa fa-list"></i> Info</a>
                         </td>
                         <td>
-                            <a class="btn btn-default btn-sm" href="<?php echo base_url('aset_tetap/edit/'.$value->id).get_query_string(); ?>"><i class="fa fa-edit"></i></a>
-                            <button class="btn btn-default btn-sm" type="button" name="button" data-url="<?php echo base_url('aset_tetap/delete/'.$value->id).get_query_string(); ?>" onclick="return deleteData(this)"><i class="fa fa-trash"></i></button>
+                            <a class="btn btn-default btn-sm" href="<?php echo base_url('kib/edit/'.$value->id).get_query_string(); ?>"><i class="fa fa-edit"></i></a>
+                            <button class="btn btn-default btn-sm" type="button" name="button" data-url="<?php echo base_url('kib/delete/'.$value->id).get_query_string(); ?>" onclick="return deleteData(this)"><i class="fa fa-trash"></i></button>
                         </td>
                     </tr>
                       <?php $no++; } ?>
