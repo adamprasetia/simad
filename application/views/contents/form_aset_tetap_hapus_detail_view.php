@@ -6,23 +6,23 @@
             </div>
         </div>
         <div class="box-body">
-            <input type="hidden" name="id_aset_tetap_tambah" value="<?php echo $this->input->get('id_aset_tetap_tambah') ?>">
-            <?php $aset_tetap_tambah = $this->db->where('id', $this->input->get('id_aset_tetap_tambah'))->get('aset_tetap_tambah')->row(); ?>
+            <input type="hidden" name="id_aset_tetap_hapus" value="<?php echo $this->input->get('id_aset_tetap_hapus') ?>">
+            <?php $aset_tetap_hapus = $this->db->where('id', $this->input->get('id_aset_tetap_hapus'))->get('aset_tetap_hapus')->row(); ?>
             <table class="table table-bordered" style="margin-bottom:0px;">
                 <tr>
                     <td colspan=2><i>Dokumen</i></td>
                 </tr>
                 <tr>
                     <td width="50px"><strong>Nomor</strong></td>
-                    <td>: <?php echo $aset_tetap_tambah->nomor ?></td>
+                    <td>: <?php echo $aset_tetap_hapus->nomor ?></td>
                 </tr>
                 <tr>
                     <td><strong>Tanggal</strong></td>
-                    <td>: <?php echo format_dmy($aset_tetap_tambah->tanggal) ?></td>
+                    <td>: <?php echo format_dmy($aset_tetap_hapus->tanggal) ?></td>
                 </tr>
                 <tr>
                     <td><strong>Uraian</strong></td>
-                    <td>: <?php echo $aset_tetap_tambah->uraian ?></td>
+                    <td>: <?php echo $aset_tetap_hapus->uraian ?></td>
                 </tr>
             </table>
             <table class="table table-bordered">
@@ -81,26 +81,17 @@
                     <td><textarea name="info" id="info" cols="30" rows="2" class="form-control"><?php echo isset($data->info)?htmlentities($data->info):'' ?></textarea></td>
                 </tr>
                 <tr>
-                    <td><label>Umur Bertambah *</label></td>
-                    <td>
-                        <div class="input-group">
-                            <input type="text" id="umur" name="umur" class="input-uang form-control" value="<?php echo isset($data->umur)?$data->umur:'' ?>">
-                            <span class="input-group-addon">Tahun</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label>Nilai Bertambah *</label></td>
+                    <td><label>Nilai</label></td>
                     <td><input type="text" id="nilai" name="nilai" class="input-uang form-control" value="<?php echo isset($data->nilai)?$data->nilai:'' ?>"></td>
                 </tr>
             </table>
         </div>
         <div class="box-footer">
-            <button type="button" class="btn_action btn btn-primary" data-redirect="<?php echo base_url('aset_tetap_tambah_detail/index').get_query_string() ?>" data-action="<?php echo $action ?>" data-form="#form_data" data-idle="<i class='fa fa-save'></i> Simpan" data-process="Menyimpan..."><i class='fa fa-save'></i> Simpan</button>
+            <button type="button" class="btn_action btn btn-primary" data-redirect="<?php echo base_url('aset_tetap_hapus_detail/index').get_query_string() ?>" data-action="<?php echo $action ?>" data-form="#form_data" data-idle="<i class='fa fa-save'></i> Simpan" data-process="Menyimpan..."><i class='fa fa-save'></i> Simpan</button>
             <?php if($this->uri->segment(2)=='add'): ?>
-                <button type="button" class="btn_action btn btn-primary" data-redirect="<?php echo base_url('aset_tetap_tambah_detail/add').get_query_string() ?>" data-action="<?php echo $action ?>" data-form="#form_data" data-idle="<i class='fa fa-save'></i> Simpan Lalu Tambah Lagi" data-process="Menyimpan..."><i class='fa fa-save'></i> Simpan Lalu Tambah Lagi</button>
+                <button type="button" class="btn_action btn btn-primary" data-redirect="<?php echo base_url('aset_tetap_hapus_detail/add').get_query_string() ?>" data-action="<?php echo $action ?>" data-form="#form_data" data-idle="<i class='fa fa-save'></i> Simpan Lalu Tambah Lagi" data-process="Menyimpan..."><i class='fa fa-save'></i> Simpan Lalu Tambah Lagi</button>
             <?php endif ?>
-            <button type="button" class="btn_close btn btn-default" data-redirect="<?php echo base_url('aset_tetap_tambah_detail/index').get_query_string() ?>"><i class='fa fa-close'></i> Kembali</button>
+            <button type="button" class="btn_close btn btn-default" data-redirect="<?php echo base_url('aset_tetap_hapus_detail/index').get_query_string() ?>"><i class='fa fa-close'></i> Kembali</button>
         </div>
     </form>
 </div>

@@ -57,14 +57,108 @@ CREATE TABLE IF NOT EXISTS `aset_tetap_detail` (
   KEY `aset_tetap_id` (`id_aset_tetap`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
--- Dumping data for table aset.aset_tetap_detail: ~4 rows (approximately)
+-- Dumping data for table aset.aset_tetap_detail: ~6 rows (approximately)
 INSERT INTO `aset_tetap_detail` (`id`, `id_aset_tetap`, `kib`, `kode_barang`, `nama_barang`, `umur`, `jumlah`, `nilai`, `info`, `info_lain`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
-	(1, 2, '01', '01.01.01.01.01', 'Kampung', 10.000000, 2.000000, 100000000.000000, '{"info":"info lain","luas":"100","alamat":"alamat"}', '', 1, '2022-06-14 06:07:28', 1, '2022-06-14 08:45:23', NULL),
-	(2, 2, '02', '02.02.01.01.01', 'Crawler Tractor', 20.000000, 1.000000, 9000000.000000, '{"info":"info lain","noreg":"noreg","merk":"merk"}', '', 1, '2022-06-14 06:09:59', 1, '2022-06-14 08:45:11', NULL),
+	(1, 2, '01', '01.01.01.01.01', 'Kampung', 10.000000, 2.000000, 100000000.000000, 'info info', '', 1, '2022-06-14 06:07:28', 1, '2022-06-14 08:45:23', NULL),
+	(2, 2, '02', '02.02.01.01.01', 'Crawler Tractor', 20.000000, 1.000000, 9000000.000000, 'info lah', '', 1, '2022-06-14 06:09:59', 1, '2022-06-14 08:45:11', NULL),
 	(3, 4, '01', '01.01.01.02.01', 'Emplasmen', 10.000000, 1.000000, 200000000.000000, 'info aja', '{"noreg_01":"838383","luas_01":"1000","alamat_01":"cianjur","hak_01":"adam","tglser_01":"08\\/06\\/2022","noser_01":"123232-23232-232","penggu_01":"cocok tanam","asal_01":"gk tau dari mana"}', 1, '2022-06-15 05:10:24', 1, '2022-06-15 07:57:28', NULL),
 	(4, 4, '01', '01', 'GOLONGAN TANAH', 2.000000, 12.000000, 10000.000000, 'info dong', '{"noreg_01":"838383","luas_01":"90000","alamat_01":"cianur"}', 1, '2022-06-15 05:22:02', 1, '2022-06-15 07:25:51', NULL),
 	(5, 4, '02', '02.02', 'ALAT -ALAT BESAR', 30.000000, 3.000000, 900000.000000, 'info dong', '{"noreg_02":"5656565","merk_02":"yamaha","ukuran_02":"110cc","bahan_02":"bensin","nopab_02":"22323-232","norang_02":"334-3434-3434-","nomes_02":"3343123123-1231-2312-3","nopol_02":"F 2345 YA","nobpkp_02":"34434334343 4343 434 3434","asal_02":"jakarta"}', 1, '2022-06-15 07:26:46', 1, '2022-06-15 08:15:41', NULL),
 	(6, 4, '05', '05.17.01.01.05', 'Essay, Pamflet', 4.000000, 1.000000, 90000.000000, 'info', '[]', 1, '2022-06-15 14:49:12', NULL, NULL, NULL);
+
+-- Dumping structure for table aset.aset_tetap_hapus
+CREATE TABLE IF NOT EXISTS `aset_tetap_hapus` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nomor` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `kode_skpd` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `tanggal` date NOT NULL,
+  `uraian` text CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `created_by` int DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `modified_by` int DEFAULT NULL,
+  `modified_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `nomor_skpd_tahun` (`nomor`,`kode_skpd`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+
+-- Dumping data for table aset.aset_tetap_hapus: ~0 rows (approximately)
+INSERT INTO `aset_tetap_hapus` (`id`, `nomor`, `kode_skpd`, `tanggal`, `uraian`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
+	(5, '001', '1.01.01.00', '2022-06-16', 'pelepasan cinta', 1, '2022-06-16 08:04:09', NULL, NULL, NULL);
+
+-- Dumping structure for table aset.aset_tetap_hapus_detail
+CREATE TABLE IF NOT EXISTS `aset_tetap_hapus_detail` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_aset_tetap_hapus` int NOT NULL DEFAULT '0',
+  `id_aset_tetap_detail` int DEFAULT NULL,
+  `kib` char(2) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
+  `kode_barang` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  `nama_barang` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
+  `tahun` year DEFAULT NULL,
+  `nomor` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
+  `info` text CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `nilai` decimal(20,6) DEFAULT NULL,
+  `created_by` int DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `modified_by` int DEFAULT NULL,
+  `modified_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `aset_tetap_nomor` (`id_aset_tetap_detail`) USING BTREE,
+  KEY `aset_tetap_id` (`id_aset_tetap_hapus`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+
+-- Dumping data for table aset.aset_tetap_hapus_detail: ~0 rows (approximately)
+INSERT INTO `aset_tetap_hapus_detail` (`id`, `id_aset_tetap_hapus`, `id_aset_tetap_detail`, `kib`, `kode_barang`, `nama_barang`, `tahun`, `nomor`, `info`, `nilai`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
+	(5, 5, 2, '02', '02.02.01.01.01', 'Crawler Tractor', '2022', '001', 'info lah', 9000000.000000, 1, '2022-06-16 08:06:10', 1, '2022-06-16 08:13:10', NULL);
+
+-- Dumping structure for table aset.aset_tetap_tambah
+CREATE TABLE IF NOT EXISTS `aset_tetap_tambah` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nomor` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `kode_skpd` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `tanggal` date NOT NULL,
+  `uraian` text CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `created_by` int DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `modified_by` int DEFAULT NULL,
+  `modified_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `nomor_skpd_tahun` (`nomor`,`kode_skpd`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+
+-- Dumping data for table aset.aset_tetap_tambah: ~0 rows (approximately)
+INSERT INTO `aset_tetap_tambah` (`id`, `nomor`, `kode_skpd`, `tanggal`, `uraian`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
+	(5, '001', '1.01.01.00', '2022-06-15', 'Penambahan', 1, '2022-06-15 16:45:53', NULL, NULL, NULL);
+
+-- Dumping structure for table aset.aset_tetap_tambah_detail
+CREATE TABLE IF NOT EXISTS `aset_tetap_tambah_detail` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_aset_tetap_tambah` int NOT NULL DEFAULT '0',
+  `id_aset_tetap_detail` int DEFAULT NULL,
+  `kib` char(2) COLLATE latin1_general_ci DEFAULT NULL,
+  `kode_barang` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  `nama_barang` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
+  `tahun` year DEFAULT NULL,
+  `nomor` varchar(50) COLLATE latin1_general_ci DEFAULT NULL,
+  `umur` decimal(20,6) DEFAULT NULL,
+  `nilai` decimal(20,6) DEFAULT NULL,
+  `info` text CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `created_by` int DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `modified_by` int DEFAULT NULL,
+  `modified_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `aset_tetap_id` (`id_aset_tetap_tambah`) USING BTREE,
+  KEY `aset_tetap_nomor` (`id_aset_tetap_detail`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+
+-- Dumping data for table aset.aset_tetap_tambah_detail: ~0 rows (approximately)
+INSERT INTO `aset_tetap_tambah_detail` (`id`, `id_aset_tetap_tambah`, `id_aset_tetap_detail`, `kib`, `kode_barang`, `nama_barang`, `tahun`, `nomor`, `umur`, `nilai`, `info`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
+	(5, 5, 2, '02', '02.02.01.01.01', 'Crawler Tractor', '2022', '001', 10.000000, 30000.000000, 'info lah', 1, '2022-06-15 17:39:59', 1, '2022-06-16 07:31:39', NULL),
+	(6, 5, 4, '01', '01', 'GOLONGAN TANAH', '2022', '001', 2.000000, 20000.000000, 'info dong', 1, '2022-06-16 07:30:23', NULL, NULL, NULL);
 
 -- Dumping structure for table aset.barang
 CREATE TABLE IF NOT EXISTS `barang` (
@@ -8989,7 +9083,7 @@ CREATE TABLE IF NOT EXISTS `kib` (
   UNIQUE KEY `nomor` (`nomor`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
--- Dumping data for table aset.kib: ~0 rows (approximately)
+-- Dumping data for table aset.kib: ~7 rows (approximately)
 INSERT INTO `kib` (`id`, `kode`, `nomor`, `nama`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
 	(1, 'A', '01', 'Tanah', NULL, NULL, NULL, NULL, NULL),
 	(2, 'B', '02', 'Peralatan dan Mesin', NULL, NULL, NULL, NULL, NULL),
@@ -9020,7 +9114,7 @@ CREATE TABLE IF NOT EXISTS `kib_info` (
   KEY `id_kib` (`id_kib`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
--- Dumping data for table aset.kib_info: ~0 rows (approximately)
+-- Dumping data for table aset.kib_info: ~63 rows (approximately)
 INSERT INTO `kib_info` (`id`, `id_kib`, `kode`, `nama`, `tipe`, `awalan`, `akhiran`, `pilihan`, `urutan`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
 	(1, 1, 'noreg_01', 'No Register', 'teks', '', '', NULL, NULL, 1, '2022-06-15 06:40:05', NULL, NULL, NULL),
 	(2, 1, 'luas_01', 'Luas Tanah', 'teks', '', 'm2', NULL, NULL, 1, '2022-06-15 06:43:26', NULL, NULL, NULL),
@@ -9102,14 +9196,14 @@ CREATE TABLE IF NOT EXISTS `module` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_parent` (`name`,`parent`),
   KEY `parent_order` (`parent`,`order`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 -- Dumping data for table aset.module: ~17 rows (approximately)
 INSERT INTO `module` (`id`, `name`, `parent`, `link`, `icon`, `order`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
 	(2, 'Aset Tetap', 0, '', 'fa fa-cab', 2, 1, '2022-06-11 18:51:40', 1, '2022-06-12 06:30:04', NULL),
 	(4, 'Laporan', 0, '', 'fa fa-newspaper-o', 4, 1, '2022-06-11 19:50:38', 1, '2022-06-12 06:30:26', '2022-06-11 19:53:29'),
 	(5, 'Perolehan', 2, 'aset_tetap', '', 0, 1, '2022-06-11 18:53:33', 1, '2022-06-13 05:31:11', NULL),
-	(6, 'Penambahan', 2, '', '', 1, 1, '2022-06-11 18:55:05', 1, '2022-06-12 06:28:48', '2022-06-11 19:54:29'),
+	(6, 'Penambahan', 2, 'aset_tetap_tambah', '', 1, 1, '2022-06-11 18:55:05', 1, '2022-06-15 16:45:04', '2022-06-11 19:54:29'),
 	(7, 'Penyusutan', 2, '', '', 1, 1, '2022-06-12 05:36:52', NULL, NULL, NULL),
 	(8, 'Persediaan', 0, '', 'fa fa-cubes', 3, 1, '2022-06-12 05:37:41', 1, '2022-06-12 06:30:15', NULL),
 	(9, 'Master Data', 0, '', 'fa fa-database', 1, 1, '2022-06-12 05:38:18', 1, '2022-06-12 05:51:05', NULL),
@@ -9122,7 +9216,8 @@ INSERT INTO `module` (`id`, `name`, `parent`, `link`, `icon`, `order`, `created_
 	(17, 'Modul', 22, 'module', 'fa fa-cogs', 7, 1, '2022-06-12 05:53:09', 1, '2022-06-12 06:54:03', NULL),
 	(18, 'SKPD', 9, 'skpd', '', 1, 1, '2022-06-12 06:32:06', NULL, NULL, NULL),
 	(20, 'Perolehan', 8, '', '', 0, 1, '2022-06-12 06:51:26', 1, '2022-06-12 06:51:52', NULL),
-	(22, 'Keamanan', 0, '', 'fa fa-lock', 5, 1, '2022-06-12 06:53:22', 1, '2022-06-12 07:04:49', NULL);
+	(22, 'Keamanan', 0, '', 'fa fa-lock', 5, 1, '2022-06-12 06:53:22', 1, '2022-06-12 07:04:49', NULL),
+	(23, 'Pelepasan', 2, 'aset_tetap_hapus', '', 0, 1, '2022-06-16 08:03:23', NULL, NULL, NULL);
 
 -- Dumping structure for table aset.role
 CREATE TABLE IF NOT EXISTS `role` (
@@ -9139,7 +9234,7 @@ CREATE TABLE IF NOT EXISTS `role` (
 
 -- Dumping data for table aset.role: ~4 rows (approximately)
 INSERT INTO `role` (`id`, `name`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
-	(1, 'Admin', 1, '2022-06-12 07:19:41', 1, '2022-06-14 06:42:01', NULL),
+	(1, 'Admin', 1, '2022-06-12 07:19:41', 1, '2022-06-16 08:03:35', NULL),
 	(3, 'Editor', 1, '2022-06-12 07:35:38', 1, '2022-06-12 08:37:18', NULL),
 	(14, 'Reporter', 1, '2022-06-12 07:48:57', 1, '2022-06-12 08:37:46', NULL);
 
@@ -9153,22 +9248,17 @@ CREATE TABLE IF NOT EXISTS `role_module` (
 -- Dumping data for table aset.role_module: ~26 rows (approximately)
 INSERT INTO `role_module` (`id_role`, `id_module`) VALUES
 	(1, 2),
-	(1, 4),
 	(1, 5),
 	(1, 6),
-	(1, 7),
-	(1, 8),
 	(1, 9),
 	(1, 10),
-	(1, 12),
-	(1, 13),
 	(1, 14),
 	(1, 15),
 	(1, 16),
 	(1, 17),
 	(1, 18),
-	(1, 20),
 	(1, 22),
+	(1, 23),
 	(3, 9),
 	(3, 10),
 	(3, 14),

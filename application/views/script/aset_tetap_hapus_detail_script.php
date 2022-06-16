@@ -38,6 +38,7 @@ $('#id_aset_tetap_detail').select2({
 $('#id_aset_tetap_detail').change(function(){
     $('#nomor').val($('#id_aset_tetap_detail option:selected').text().split(' | ')[0]);
     $('#info').val($('#id_aset_tetap_detail option:selected').text().split(' | ')[1]);
+    $('#nilai').val($('#id_aset_tetap_detail option:selected').text().split(' | ')[2]);
 })
 
 </script>
