@@ -4,6 +4,8 @@ class Aset_tetap extends MY_Controller {
 
 	private $limit = 15;
 	private $table = 'aset_tetap';
+	public $module = 'aset_tetap';
+	public $title = 'Perolehan Aset Tetap';
 
 	function __construct()
    	{
@@ -33,11 +35,11 @@ class Aset_tetap extends MY_Controller {
 		$this->_filter();
 		$total = $this->db->count_all_results($this->table);
 		$this->_filter();
-		$aset_tetap_view['data'] 	= $this->db->order_by('id desc')->get($this->table, $this->limit, $offset)->result();
-		$aset_tetap_view['offset'] = $offset;
-		$aset_tetap_view['paging'] = gen_paging($total,$this->limit);
-		$aset_tetap_view['total'] 	= gen_total($total,$this->limit,$offset);
-		$data['content'] 	= $this->load->view('contents/aset_tetap_view', $aset_tetap_view, TRUE);
+		$content['data'] 	= $this->db->order_by('id desc')->get($this->table, $this->limit, $offset)->result();
+		$content['offset'] = $offset;
+		$content['paging'] = gen_paging($total,$this->limit);
+		$content['total'] 	= gen_total($total,$this->limit,$offset);
+		$data['content'] 	= $this->load->view('contents/'.$this->module.'_view', $content, TRUE);
 
 		$this->load->view('template_view', $data);
 	}
@@ -83,8 +85,8 @@ class Aset_tetap extends MY_Controller {
 	{
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
-			$data['content'] = $this->load->view('contents/form_aset_tetap_view', [
-				'action'=>base_url('aset_tetap/add').get_query_string(),
+			$data['content'] = $this->load->view('contents/form_'.$this->module.'_view', [
+				'action'=>base_url($this->module.'/add').get_query_string(),
 			],true);
 
 			if(!validation_errors())
@@ -102,7 +104,7 @@ class Aset_tetap extends MY_Controller {
 			$id = $this->db->insert_id();
 			$error = $this->db->error();
 			if(empty($error['message'])){
-				$response = array('id'=>$id, 'redirect'=>base_url('aset_tetap_detail/add?id_aset_tetap='.$id), 'action'=>'insert', 'message'=>'Data berhasil disimpan');
+				$response = array('id'=>$id, 'redirect'=>base_url($this->module.'_detail/add?id_'.$this->module.'='.$id), 'action'=>'insert', 'message'=>'Data berhasil disimpan');
 			}else{
 				$response = array('tipe'=>'warning', 'title'=>'Terjadi Kesalahan!', 'message'=>$error['message']);
 			}
@@ -116,9 +118,9 @@ class Aset_tetap extends MY_Controller {
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
 			$this->db->where('id', $id);
-			$aset_tetap_view['data'] = $this->db->get($this->table)->row();
-			$aset_tetap_view['action'] = base_url('aset_tetap/edit/'.$id).get_query_string();
-			$data['content'] = $this->load->view('contents/form_aset_tetap_view',$aset_tetap_view,true);
+			$content['data'] = $this->db->get($this->table)->row();
+			$content['action'] = base_url($this->module.'/edit/'.$id).get_query_string();
+			$data['content'] = $this->load->view('contents/form_'.$this->module.'_view',$content,true);
 
 			if(!validation_errors())
 			{

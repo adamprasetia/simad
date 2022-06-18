@@ -11,6 +11,11 @@ $config['kib'] = [
     '00'=>['id'=>'Z', 'name'=>'Aset Tak Berwujud'],
 ];
 
+$config['metode'] = [
+    'periodik'=>['id'=>'periodik', 'name'=>'Periodik/Beban'],
+    'perpetual'=>['id'=>'perpetual', 'name'=>'Perpetual/Aset']
+];
+
 $config['kib_info_tipe'] = [
     'teks',
     'tanggal',

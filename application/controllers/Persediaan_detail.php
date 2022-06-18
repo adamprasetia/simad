@@ -1,12 +1,12 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Aset_tetap_detail extends MY_Controller {
+class Persediaan_detail extends MY_Controller {
 
 	private $limit = 15;
-	private $table = 'aset_tetap_detail';
-	public $module = 'aset_tetap_detail';
-	public $module_parent = 'aset_tetap';
-	public $title = 'PEROLEHAN ASET TETAP DETAIL';
+	private $table = 'persediaan_detail';
+	public $module = 'persediaan_detail';
+	public $module_parent = 'persediaan';
+	public $title = 'Perolehan Persediaan';
 
 	function __construct()
    	{
@@ -44,9 +44,10 @@ class Aset_tetap_detail extends MY_Controller {
 
 	private function _set_rules()
 	{
+		$this->form_validation->set_rules('metode', 'Metode', 'trim|required');
 		$this->form_validation->set_rules('kode_barang', 'Kode Barang', 'trim|required');
 		$this->form_validation->set_rules('nama_barang', 'Nama Barang', 'trim|required');
-		$this->form_validation->set_rules('umur', 'Umur', 'trim');
+		$this->form_validation->set_rules('masa_berlaku', 'Masa Berlaku', 'trim');
 		$this->form_validation->set_rules('jumlah', 'Jumlah', 'trim');
 		$this->form_validation->set_rules('nilai', 'Nilai', 'trim');
 	}
@@ -54,31 +55,22 @@ class Aset_tetap_detail extends MY_Controller {
 	private function _set_data($type = 'add')
 	{
 		$id_parent	= $this->input->post('id_'.$this->module_parent);
-		$kib	= $this->input->post('kib');
+		$metode	= $this->input->post('metode');
 		$kode_barang	= $this->input->post('kode_barang');
 		$nama_barang	    = $this->input->post('nama_barang');
-		$umur	    = $this->input->post('umur');
+		$masa_berlaku	    = $this->input->post('masa_berlaku');
 		$jumlah	    = $this->input->post('jumlah');
 		$nilai	    = $this->input->post('nilai');
-		$info	    = $this->input->post('info');
 
 		$data = array(
 			'id_'.$this->module_parent => $id_parent,
-			'kib' => $kib,
+			'metode' => $metode,
 			'kode_barang' => $kode_barang,
 			'nama_barang' => $nama_barang,
-			'umur' => format_uang($umur),
+			'masa_berlaku' => format_ymd($masa_berlaku),
 			'jumlah' => format_uang($jumlah),
 			'nilai' => format_uang($nilai),
-			'info' => $info,
 		);
-		/* kib */
-		$kib_info = $this->db->select('a.*, b.nomor')->where('nomor',$kib)->order_by('urutan asc')->join('kib b','a.id_kib=b.id','left')->get('kib_info a')->result();
-		$info_lain = [];
-		foreach ($kib_info as $row) {
-			$info_lain[$row->kode] = $this->input->post($row->kode);
-		}
-		$data['info_lain'] = json_encode($info_lain);
 
 		if($type == 'add'){
 			$data['created_by'] = $this->session_login['id'];
@@ -137,8 +129,6 @@ class Aset_tetap_detail extends MY_Controller {
 			$content['data'] = $this->db->get($this->table)->row();
 			$content['data']->nilai = number_format($content['data']->nilai);
 			$content['data']->jumlah = number_format($content['data']->jumlah);
-			$content['data']->umur = number_format($content['data']->umur);
-			$content['data']->info_lain = json_decode($content['data']->info_lain);
 			$content['action'] = base_url($this->module.'/edit/'.$id).get_query_string();
 			$data['script'] = $this->load->view('script/'.$this->module.'_script', '', true);
 			$data['content'] = $this->load->view('contents/form_'.$this->module.'_view',$content,true);

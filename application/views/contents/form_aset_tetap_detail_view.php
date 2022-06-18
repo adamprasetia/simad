@@ -2,29 +2,29 @@
     <form id="form_data" method="post">
         <div class="box-header with-border">
             <div class="pull-left">
-                <h4><strong>FORMULIR PEROLEHAN ASET TETAP DETAIL</strong></h4>
+                <h4><strong>FORMULIR <?php echo strtoupper($this->title) ?></strong></h4>
             </div>
         </div>
         <div class="box-body">
-            <input type="hidden" name="id_aset_tetap" value="<?php echo $this->input->get('id_aset_tetap') ?>">
+            <input type="hidden" name="id_<?php echo $this->module_parent ?>" value="<?php echo $this->input->get('id_'.$this->module_parent) ?>">
             <div class="row">
                 <div class="col-md-6">
-                    <?php $aset_tetap = $this->db->where('id', $this->input->get('id_aset_tetap'))->get('aset_tetap')->row(); ?>
+                    <?php $parent = $this->db->where('id', $this->input->get('id_'.$this->module_parent))->get($this->module_parent)->row(); ?>
                     <table class="table table-bordered" style="margin-bottom:0px;">
                         <tr>
                             <td colspan=2><i>Dokumen</i></td>
                         </tr>
                         <tr>
                             <td width="50px"><strong>Nomor</strong></td>
-                            <td>: <?php echo $aset_tetap->nomor ?></td>
+                            <td>: <?php echo $parent->nomor ?></td>
                         </tr>
                         <tr>
                             <td><strong>Tanggal</strong></td>
-                            <td>: <?php echo format_dmy($aset_tetap->tanggal) ?></td>
+                            <td>: <?php echo format_dmy($parent->tanggal) ?></td>
                         </tr>
                         <tr>
                             <td><strong>Uraian</strong></td>
-                            <td>: <?php echo $aset_tetap->uraian ?></td>
+                            <td>: <?php echo $parent->uraian ?></td>
                         </tr>
                     </table>
                     <table class="table table-bordered">
@@ -128,11 +128,11 @@
             </div>
         </div>
         <div class="box-footer">
-            <button type="button" class="btn_action btn btn-primary" data-redirect="<?php echo base_url('aset_tetap_detail/index').get_query_string() ?>" data-action="<?php echo $action ?>" data-form="#form_data" data-idle="<i class='fa fa-save'></i> Simpan" data-process="Menyimpan..."><i class='fa fa-save'></i> Simpan</button>
+            <button type="button" class="btn_action btn btn-primary" data-redirect="<?php echo base_url($this->module.'/index').get_query_string() ?>" data-action="<?php echo $action ?>" data-form="#form_data" data-idle="<i class='fa fa-save'></i> Simpan" data-process="Menyimpan..."><i class='fa fa-save'></i> Simpan</button>
             <?php if($this->uri->segment(2)=='add'): ?>
-                <button type="button" class="btn_action btn btn-primary" data-redirect="<?php echo base_url('aset_tetap_detail/add').get_query_string() ?>" data-action="<?php echo $action ?>" data-form="#form_data" data-idle="<i class='fa fa-save'></i> Simpan Lalu Tambah Lagi" data-process="Menyimpan..."><i class='fa fa-save'></i> Simpan Lalu Tambah Lagi</button>
+                <button type="button" class="btn_action btn btn-primary" data-redirect="<?php echo base_url($this->module.'/add').get_query_string() ?>" data-action="<?php echo $action ?>" data-form="#form_data" data-idle="<i class='fa fa-save'></i> Simpan Lalu Tambah Lagi" data-process="Menyimpan..."><i class='fa fa-save'></i> Simpan Lalu Tambah Lagi</button>
             <?php endif ?>
-            <button type="button" class="btn_close btn btn-default" data-redirect="<?php echo base_url('aset_tetap_detail/index').get_query_string() ?>"><i class='fa fa-close'></i> Kembali</button>
+            <button type="button" class="btn_close btn btn-default" data-redirect="<?php echo base_url($this->module.'/index').get_query_string() ?>"><i class='fa fa-close'></i> Kembali</button>
         </div>
     </form>
 </div>

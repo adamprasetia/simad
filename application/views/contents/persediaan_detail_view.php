@@ -35,10 +35,10 @@
                 <thead>
                     <tr>
                         <th width="50">No</th>
-                        <th>KIB</th>
+                        <th>Metode</th>
                         <th>Kode Barang</th>
                         <th>Nama Barang</th>
-                        <th>Umur</th>
+                        <th>Masa Berlaku</th>
                         <th>Jumlah</th>
                         <th>Nilai</th>
                         <th width="100">Aksi</th>
@@ -51,10 +51,10 @@
                       ?>
                     <tr>
                         <td><?php echo $no; ?></td>
-                        <td><?php echo config_item('kib')[$value->kib]['id']; ?></td>
+                        <td><?php echo $value->metode; ?></td>
                         <td><?php echo $value->kode_barang; ?></td>
                         <td><?php echo $value->nama_barang; ?></td>
-                        <td><?php echo number_format($value->umur); ?></td>
+                        <td><?php echo format_dmy($value->masa_berlaku); ?></td>
                         <td><?php echo number_format($value->jumlah); ?></td>
                         <td><?php echo number_format($value->nilai); ?></td>
                         <td>

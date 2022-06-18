@@ -70,7 +70,7 @@ function gen_total($total, $limit, $offset)
             return 'Menampilkan ' . $min . ' sampai ' . $max . ' dari ' . $total . ' data';
         }
     }
-    return 'Data is not found';
+    return 'Tidak ada data';
 }
 function gen_offset($limit = 10)
 {
