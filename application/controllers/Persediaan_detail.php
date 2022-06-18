@@ -49,6 +49,7 @@ class Persediaan_detail extends MY_Controller {
 		$this->form_validation->set_rules('nama_barang', 'Nama Barang', 'trim|required');
 		$this->form_validation->set_rules('masa_berlaku', 'Masa Berlaku', 'trim');
 		$this->form_validation->set_rules('jumlah', 'Jumlah', 'trim');
+		$this->form_validation->set_rules('satuan', 'Satuan', 'trim');
 		$this->form_validation->set_rules('nilai', 'Nilai', 'trim');
 	}
 	
@@ -60,6 +61,7 @@ class Persediaan_detail extends MY_Controller {
 		$nama_barang	    = $this->input->post('nama_barang');
 		$masa_berlaku	    = $this->input->post('masa_berlaku');
 		$jumlah	    = $this->input->post('jumlah');
+		$satuan	    = $this->input->post('satuan');
 		$nilai	    = $this->input->post('nilai');
 
 		$data = array(
@@ -69,6 +71,7 @@ class Persediaan_detail extends MY_Controller {
 			'nama_barang' => $nama_barang,
 			'masa_berlaku' => format_ymd($masa_berlaku),
 			'jumlah' => format_uang($jumlah),
+			'satuan' => $satuan,
 			'nilai' => format_uang($nilai),
 		);
 
@@ -173,12 +176,12 @@ class Persediaan_detail extends MY_Controller {
 	public function api()
 	{
 		$search = $this->input->get('search');
-		$kib = $this->input->get('kib');
+		$metode = $this->input->get('metode');
 		$kode_barang = $this->input->get('kode_barang');
 		$tahun = $this->input->get('tahun');
 		$this->db->where('b.kode_skpd', $this->session_login['skpd_session']);
-		if(!empty($kib)){
-			$this->db->where('a.kib', $kib);
+		if(!empty($metode)){
+			$this->db->where('a.metode', $metode);
 		}
 		if(!empty($kode_barang)){
 			$this->db->where('a.kode_barang', $kode_barang);
@@ -189,8 +192,8 @@ class Persediaan_detail extends MY_Controller {
 		$this->db->group_start();
 		$this->db->like('b.nomor', $search);
 		$this->db->group_end();
-		$result = $this->db->select('b.id as id,concat(b.nomor," | ",a.info," | ",FORMAT(a.nilai,0)) as text')
-		->join('aset_tetap b','b.id = a.id_aset_tetap','left')
+		$result = $this->db->select('b.id as id,concat(b.nomor," | ",FORMAT(a.jumlah,0)," | ",a.satuan," | ",FORMAT(a.nilai,0)) as text')
+		->join('persediaan b','b.id = a.id_persediaan','left')
 		->get($this->table.' a', 10, 0)->result_array();
 		// echo $this->db->last_query();exit;
 		echo json_encode(['results'=>$result]);

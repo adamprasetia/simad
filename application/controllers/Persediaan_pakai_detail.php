@@ -1,12 +1,12 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Aset_tetap_tambah_detail extends MY_Controller {
+class Persediaan_pakai_detail extends MY_Controller {
 
 	private $limit = 15;
-	private $table = 'aset_tetap_tambah_detail';
-	public $module = 'aset_tetap_tambah_detail';
-	public $module_parent = 'aset_tetap_tambah';
-	public $title = 'PENAMBAHAN ASET TETAP DETAIL';
+	private $table = 'persediaan_pakai_detail';
+	public $module = 'persediaan_pakai_detail';
+	public $module_parent = 'persediaan_pakai';
+	public $title = 'PEMAKAIAN PERSEDIAAN DETAIL';
 
 	function __construct()
    	{
@@ -47,34 +47,29 @@ class Aset_tetap_tambah_detail extends MY_Controller {
 		$this->form_validation->set_rules('kode_barang', 'Kode Barang', 'trim|required');
 		$this->form_validation->set_rules('nama_barang', 'Nama Barang', 'trim|required');
 		$this->form_validation->set_rules('id_'.$this->module_parent, 'Nomor Perolehan', 'trim|required');
-		$this->form_validation->set_rules('umur', 'Umur', 'trim');
-		$this->form_validation->set_rules('nilai', 'Nilai', 'trim');
+		$this->form_validation->set_rules('jumlah', 'Jumlah', 'trim');
 	}
 	
 	private function _set_data($type = 'add')
 	{
 		$id_parent	= $this->input->post('id_'.$this->module_parent);
-		$id_aset_tetap_detail	= $this->input->post('id_aset_tetap_detail');
+		$id_persediaan_detail	= $this->input->post('id_persediaan_detail');
 		$nomor	= $this->input->post('nomor');
 		$tahun	= $this->input->post('tahun');
-		$kib	= $this->input->post('kib');
+		$metode	= $this->input->post('metode');
 		$kode_barang	= $this->input->post('kode_barang');
 		$nama_barang	    = $this->input->post('nama_barang');
-		$umur	    = $this->input->post('umur');
-		$nilai	    = $this->input->post('nilai');
-		$info	    = $this->input->post('info');
+		$jumlah	    = $this->input->post('jumlah');
 
 		$data = array(
 			'id_'.$this->module_parent => $id_parent,
-			'id_aset_tetap_detail' => $id_aset_tetap_detail,
-			'kib' => $kib,
+			'id_persediaan_detail' => $id_persediaan_detail,
+			'metode' => $metode,
 			'kode_barang' => $kode_barang,
 			'nama_barang' => $nama_barang,
 			'tahun' => $tahun,
 			'nomor' => $nomor,
-			'umur' => format_uang($umur),
-			'nilai' => format_uang($nilai),
-			'info' => $info,
+			'jumlah' => format_uang($jumlah),
 		);
 
 		if($type == 'add'){

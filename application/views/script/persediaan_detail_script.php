@@ -2,7 +2,7 @@
 $('#kib').focus();
 $('#kode_barang').select2({
     ajax: {
-        url: '<?php echo base_url('barang/api') ?>',
+        url: '<?php echo base_url('barang_persediaan/api') ?>',
         dataType: 'json',
         data: function (params) {
         var query = {

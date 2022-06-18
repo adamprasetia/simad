@@ -66,6 +66,12 @@
                     <td><input type="text" id="jumlah" name="jumlah" class="input-uang form-control" value="<?php echo isset($data->jumlah)?$data->jumlah:'' ?>"></td>
                 </tr>
                 <tr>
+                    <td><label>Satuan</label></td>
+                    <td>
+                        <input type="text" id="satuan" name="satuan" class="form-control" value="<?php echo isset($data->satuan)?$data->satuan:'' ?>">        
+                    </td>
+                </tr>
+                <tr>
                     <td><label>Nilai</label></td>
                     <td><input type="text" id="nilai" name="nilai" class="input-uang form-control" value="<?php echo isset($data->nilai)?$data->nilai:'' ?>"></td>
                 </tr>

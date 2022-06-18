@@ -1,11 +1,11 @@
 <div class="box box-default">
     <div class="box-header with-border">
         <div class="pull-left">
-            <h4><strong>DATA <?php echo strtoupper($title) ?></strong></h4>
+            <h4><strong>DATA <?php echo strtoupper($this->title) ?></strong></h4>
         </div>
     </div>
     <div class="box-header with-border">
-        <a href="<?php echo base_url($this->module.'/add') ?>" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> Tambah <?php echo $title ?></a>
+        <a href="<?php echo base_url($this->module.'/add') ?>" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> Tambah <?php echo $this->title ?></a>
         <a href="<?php echo now_url() ?>" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Refresh</a>
         <div class="pull-right">
             <div class="has-feedback">

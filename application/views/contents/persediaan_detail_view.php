@@ -40,6 +40,7 @@
                         <th>Nama Barang</th>
                         <th>Masa Berlaku</th>
                         <th>Jumlah</th>
+                        <th>Satuan</th>
                         <th>Nilai</th>
                         <th width="100">Aksi</th>
                     </tr>
@@ -56,6 +57,7 @@
                         <td><?php echo $value->nama_barang; ?></td>
                         <td><?php echo format_dmy($value->masa_berlaku); ?></td>
                         <td><?php echo number_format($value->jumlah); ?></td>
+                        <td><?php echo $value->satuan; ?></td>
                         <td><?php echo number_format($value->nilai); ?></td>
                         <td>
                             <a class="btn btn-default" href="<?php echo base_url($this->module.'/edit/'.$value->id).get_query_string(); ?>"><i class="fa fa-edit"></i></a>

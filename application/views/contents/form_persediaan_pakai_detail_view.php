@@ -30,11 +30,11 @@
                     <td colspan=2><i>Detail Barang</i></td>
                 </tr>
                 <tr>
-                    <td style="width:150px"><label>KIB *</label></td>
+                    <td style="width:150px"><label>Metode Pencatatan *</label></td>
                     <td>
-                    <select name="kib" id="kib" class="form-control">
-                        <?php foreach (config_item('kib') as $key => $value) { ?>
-                            <option <?php echo isset($data->kib) && $data->kib==$key?'selected':'' ?> value="<?php echo $key ?>"><?php echo $value['id'].' | '.$value['name'] ?></option>
+                    <select name="metode" id="metode" class="form-control">
+                        <?php foreach (config_item('metode') as $key => $value) { ?>
+                            <option <?php echo isset($data->metode) && $data->metode==$key?'selected':'' ?> value="<?php echo $key ?>"><?php echo $value['name'] ?></option>
                         <?php } ?>
                     </select>
                     </td>
@@ -68,30 +68,25 @@
                 <tr>
                     <td><label>Nomor Perolehan *</label></td>
                     <td>
-                        <select name="id_aset_tetap_detail" id="id_aset_tetap_detail" class="form-control" style="width: 100%">
-                        <?php if(!empty($data->id_aset_tetap_detail)){ ?>
-                            <option value="<?php echo $data->id_aset_tetap_detail ?>"><?php echo $data->nomor ?></option>
+                        <select name="id_persediaan_detail" id="id_persediaan_detail" class="form-control" style="width: 100%">
+                        <?php if(!empty($data->id_persediaan_detail)){ ?>
+                            <option value="<?php echo $data->id_persediaan_detail ?>"><?php echo $data->nomor ?></option>
                             <?php } ?>
                         </select>
                         <input type="hidden" id="nomor" name="nomor" class="form-control" value="<?php echo isset($data->nomor)?$data->nomor:'' ?>">        
                     </td>
                 </tr>
                 <tr>
-                    <td><label>Info</label></td>
-                    <td><textarea name="info" id="info" cols="30" rows="2" class="form-control"><?php echo isset($data->info)?htmlentities($data->info):'' ?></textarea></td>
-                </tr>
-                <tr>
-                    <td><label>Umur Bertambah *</label></td>
+                    <td><label>Jumlah Tersedia *</label></td>
                     <td>
-                        <div class="input-group">
-                            <input type="text" id="umur" name="umur" class="input-uang form-control" value="<?php echo isset($data->umur)?$data->umur:'' ?>">
-                            <span class="input-group-addon">Tahun</span>
-                        </div>
+                        <input type="text" id="jumlah_tersedia" name="jumlah_tersedia" class="input-uang form-control" value="<?php echo isset($data->jumlah_tersedia)?$data->jumlah_tersedia:'' ?>">
                     </td>
                 </tr>
                 <tr>
-                    <td><label>Nilai Bertambah *</label></td>
-                    <td><input type="text" id="nilai" name="nilai" class="input-uang form-control" value="<?php echo isset($data->nilai)?$data->nilai:'' ?>"></td>
+                    <td><label>Jumlah Dipakai *</label></td>
+                    <td>
+                        <input type="text" id="jumlah" name="jumlah" class="input-uang form-control" value="<?php echo isset($data->jumlah)?$data->jumlah:'' ?>">
+                    </td>
                 </tr>
             </table>
         </div>

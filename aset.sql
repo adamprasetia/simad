@@ -23837,8 +23837,53 @@ CREATE TABLE IF NOT EXISTS `persediaan_detail` (
 
 -- Dumping data for table aset.persediaan_detail: ~0 rows (approximately)
 INSERT INTO `persediaan_detail` (`id`, `id_persediaan`, `metode`, `kode_barang`, `nama_barang`, `masa_berlaku`, `satuan`, `jumlah`, `nilai`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
-	(7, 6, 'periodik', '02.06.02.07.10', 'Pakaian Panas/Lengkap', '2022-06-30', NULL, 100.000000, 40000000.000000, 1, '2022-06-18 11:53:04', 1, '2022-06-18 11:54:07', NULL),
-	(8, 6, 'perpetual', '00.01.01', 'Persediaan Bahan Pakai Habis', '2022-06-22', NULL, 3.000000, 900000.000000, 1, '2022-06-18 11:55:55', NULL, NULL, NULL);
+	(7, 6, 'periodik', '117010101002', 'Semen', '2022-06-30', 'sak', 100.000000, 40000000.000000, 1, '2022-06-18 11:53:04', 1, '2022-06-18 14:50:24', NULL),
+	(8, 6, 'perpetual', '117010101001', 'Aspal', '2022-06-22', 'liter', 300.000000, 90000000.000000, 1, '2022-06-18 11:55:55', 1, '2022-06-18 14:51:42', NULL);
+
+-- Dumping structure for table aset.persediaan_pakai
+CREATE TABLE IF NOT EXISTS `persediaan_pakai` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nomor` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `kode_skpd` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `tanggal` date NOT NULL,
+  `uraian` text CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `created_by` int DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `modified_by` int DEFAULT NULL,
+  `modified_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `nomor_skpd_tahun` (`nomor`,`kode_skpd`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+
+-- Dumping data for table aset.persediaan_pakai: ~0 rows (approximately)
+INSERT INTO `persediaan_pakai` (`id`, `nomor`, `kode_skpd`, `tanggal`, `uraian`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
+	(6, '001', '1.01.01.00', '2022-06-18', 'Pengaspalan Jalan kalibunder', 1, '2022-06-18 14:54:41', NULL, NULL, NULL);
+
+-- Dumping structure for table aset.persediaan_pakai_detail
+CREATE TABLE IF NOT EXISTS `persediaan_pakai_detail` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_persediaan_pakai` int NOT NULL DEFAULT '0',
+  `id_persediaan_detail` int DEFAULT NULL,
+  `metode` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
+  `kode_barang` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  `nama_barang` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
+  `tahun` year DEFAULT NULL,
+  `nomor` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
+  `jumlah` decimal(20,6) DEFAULT NULL,
+  `created_by` int DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `modified_by` int DEFAULT NULL,
+  `modified_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `aset_tetap_id` (`id_persediaan_pakai`) USING BTREE,
+  KEY `aset_tetap_nomor` (`id_persediaan_detail`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+
+-- Dumping data for table aset.persediaan_pakai_detail: ~0 rows (approximately)
+INSERT INTO `persediaan_pakai_detail` (`id`, `id_persediaan_pakai`, `id_persediaan_detail`, `metode`, `kode_barang`, `nama_barang`, `tahun`, `nomor`, `jumlah`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
+	(7, 6, 6, 'perpetual', '117010101001', 'Aspal', '2022', '002', 15.000000, 1, '2022-06-18 15:05:24', NULL, NULL, NULL);
 
 -- Dumping structure for table aset.role
 CREATE TABLE IF NOT EXISTS `role` (
