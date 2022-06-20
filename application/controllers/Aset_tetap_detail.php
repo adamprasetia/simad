@@ -14,11 +14,31 @@ class Aset_tetap_detail extends MY_Controller {
    	}
 	private function _filter()
 	{
+		if(!empty($this->input->get('popup'))){
+			$this->db->select($this->table.'.*, concat(kib,DATE_FORMAT('.$this->table.'.created_at,"%Y%m%d"),'.$this->table.'.id) as kode_unik, aset_tetap.nomor');
+			$this->db->join('aset_tetap','aset_tetap.id='.$this->table.'.id_aset_tetap','left');
+		}else{
+			$this->db->select($this->table.'.*, concat(kib,DATE_FORMAT(created_at,"%Y%m%d"),id) as kode_unik');
+		}
+
+		$kib = $this->input->get('kib');
+		if ($kib) {
+			$this->db->where('kib', $kib);
+		}
+		$tahun = $this->input->get('tahun');
+		if ($tahun) {
+			$this->db->where('year(aset_tetap.tanggal)', $tahun);
+		}
+		$kode_barang = $this->input->get('kode_barang');
+		if ($kode_barang) {
+			$this->db->where('kode_barang', $kode_barang);
+		}
 		$search = $this->input->get('search');
 		if ($search) {
 			$this->db->group_start();
 			$this->db->like('kode_barang', $search);
 			$this->db->or_like('nama_barang', $search);
+			$this->db->or_like('concat(kib,DATE_FORMAT('.$this->table.'.created_at,"%Y%m%d"),'.$this->table.'.id)', $search);
 			$this->db->group_end();
 		}
         $parent = $this->input->get('id_'.$this->module_parent);
@@ -39,7 +59,7 @@ class Aset_tetap_detail extends MY_Controller {
 		$content['total'] 	= gen_total($total,$this->limit,$offset);
 		$data['content'] 	= $this->load->view('contents/'.$this->module.'_view', $content, TRUE);
 
-		$this->load->view('template_view', $data);
+		$this->load->view(!empty($this->input->get('popup'))?'modals/template_view':'template_view', $data);
 	}
 
 	private function _set_rules()
@@ -47,7 +67,9 @@ class Aset_tetap_detail extends MY_Controller {
 		$this->form_validation->set_rules('kode_barang', 'Kode Barang', 'trim|required');
 		$this->form_validation->set_rules('nama_barang', 'Nama Barang', 'trim|required');
 		$this->form_validation->set_rules('umur', 'Umur', 'trim');
-		$this->form_validation->set_rules('jumlah', 'Jumlah', 'trim');
+		if($this->uri->segment(1)=='add'){
+		$this->form_validation->set_rules('jumlah', 'Jumlah', 'trim|required');
+		}
 		$this->form_validation->set_rules('nilai', 'Nilai', 'trim');
 	}
 	
@@ -58,7 +80,6 @@ class Aset_tetap_detail extends MY_Controller {
 		$kode_barang	= $this->input->post('kode_barang');
 		$nama_barang	    = $this->input->post('nama_barang');
 		$umur	    = $this->input->post('umur');
-		$jumlah	    = $this->input->post('jumlah');
 		$nilai	    = $this->input->post('nilai');
 		$info	    = $this->input->post('info');
 
@@ -68,7 +89,6 @@ class Aset_tetap_detail extends MY_Controller {
 			'kode_barang' => $kode_barang,
 			'nama_barang' => $nama_barang,
 			'umur' => format_uang($umur),
-			'jumlah' => format_uang($jumlah),
 			'nilai' => format_uang($nilai),
 			'info' => $info,
 		);
@@ -116,8 +136,12 @@ class Aset_tetap_detail extends MY_Controller {
 			}
 
 		}else{
-			$data = $this->_set_data();
-			$this->db->insert($this->table, $data);
+			$jumlah = $this->input->post('jumlah');
+			$data = [];
+			for ($i=1; $i <= $jumlah; $i++) { 
+				$data[] = $this->_set_data();
+			}
+			$this->db->insert_batch($this->table, $data);
 			$error = $this->db->error();
 			if(empty($error['message'])){
 				$response = array('id'=>$this->db->insert_id(), 'action'=>'insert', 'message'=>'Data berhasil disimpan');
@@ -136,7 +160,6 @@ class Aset_tetap_detail extends MY_Controller {
 			$this->db->where('id', $id);
 			$content['data'] = $this->db->get($this->table)->row();
 			$content['data']->nilai = number_format($content['data']->nilai);
-			$content['data']->jumlah = number_format($content['data']->jumlah);
 			$content['data']->umur = number_format($content['data']->umur);
 			$content['data']->info_lain = json_decode($content['data']->info_lain);
 			$content['action'] = base_url($this->module.'/edit/'.$id).get_query_string();
@@ -179,32 +202,4 @@ class Aset_tetap_detail extends MY_Controller {
 			echo json_encode($response);
 		}
 	}
-
-	public function api()
-	{
-		$search = $this->input->get('search');
-		$kib = $this->input->get('kib');
-		$kode_barang = $this->input->get('kode_barang');
-		$tahun = $this->input->get('tahun');
-		$this->db->where('b.kode_skpd', $this->session_login['skpd_session']);
-		if(!empty($kib)){
-			$this->db->where('a.kib', $kib);
-		}
-		if(!empty($kode_barang)){
-			$this->db->where('a.kode_barang', $kode_barang);
-		}
-		if(!empty($tahun)){
-			$this->db->where('year(b.tanggal)', $tahun);
-		}
-		$this->db->group_start();
-		$this->db->like('b.nomor', $search);
-		$this->db->group_end();
-		$result = $this->db->select('b.id as id,concat(b.nomor," | ",a.info," | ",FORMAT(a.nilai,0)) as text')
-		->join('aset_tetap b','b.id = a.id_aset_tetap','left')
-		->get($this->table.' a', 10, 0)->result_array();
-		// echo $this->db->last_query();exit;
-		echo json_encode(['results'=>$result]);
-	}
-
-
 }

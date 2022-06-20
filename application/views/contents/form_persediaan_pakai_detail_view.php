@@ -42,11 +42,12 @@
                 <tr>
                     <td><label>Kode Barang *</label></td>
                     <td>
-                    <select name="kode_barang" id="kode_barang" class="form-control" style="width: 100%">
-                        <?php if(!empty($data->kode_barang)){ ?>
-                            <option value="<?php echo $data->kode_barang ?>"><?php echo $data->kode_barang.' | '.$data->nama_barang ?></option>
-                        <?php } ?>
-                    </select>
+                        <div class="input-group">
+                            <input type="text" id="kode_barang" name="kode_barang" class="form-control" value="<?php echo isset($data->kode_barang)?$data->kode_barang:'' ?>">
+                            <span class="input-group-btn">
+                                <button type="button" data-title="Pilih Kode Barang" class="btn btn-success btn-flat btn-pilih-barang-persediaan">Pilih</button>
+                            </span>
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -68,12 +69,13 @@
                 <tr>
                     <td><label>Nomor Perolehan *</label></td>
                     <td>
-                        <select name="id_persediaan_detail" id="id_persediaan_detail" class="form-control" style="width: 100%">
-                        <?php if(!empty($data->id_persediaan_detail)){ ?>
-                            <option value="<?php echo $data->id_persediaan_detail ?>"><?php echo $data->nomor ?></option>
-                            <?php } ?>
-                        </select>
-                        <input type="hidden" id="nomor" name="nomor" class="form-control" value="<?php echo isset($data->nomor)?$data->nomor:'' ?>">        
+                        <div class="input-group">
+                            <input type="text" id="nomor" name="nomor" class="form-control" value="<?php echo isset($data->nomor)?$data->nomor:'' ?>">
+                            <input type="hidden" id="id_persediaan_detail" name="id_persediaan_detail" value="<?php echo isset($data->id_persediaan_detail)?$data->id_persediaan_detail:'' ?>">
+                            <span class="input-group-btn">
+                                <button type="button" data-title="Pilih Nomor Perolehan" class="btn btn-success btn-flat btn-pilih-nomor-persediaan">Pilih</button>
+                            </span>
+                        </div>
                     </td>
                 </tr>
                 <tr>

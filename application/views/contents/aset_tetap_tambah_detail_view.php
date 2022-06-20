@@ -35,6 +35,7 @@
                 <thead>
                     <tr>
                         <th width="50">No</th>
+                        <th>Kode Unik</th>
                         <th>KIB</th>
                         <th>Kode Barang</th>
                         <th>Nama Barang</th>
@@ -52,6 +53,7 @@
                       ?>
                     <tr>
                         <td><?php echo $no; ?></td>
+                        <td><?php echo $value->kode_unik; ?></td>
                         <td><?php echo config_item('kib')[$value->kib]['id']; ?></td>
                         <td><?php echo $value->kode_barang; ?></td>
                         <td><?php echo $value->nama_barang; ?></td>

@@ -44,11 +44,12 @@
                         <tr>
                             <td><label>Kode Barang *</label></td>
                             <td>
-                            <select name="kode_barang" id="kode_barang" class="form-control" style="width: 100%">
-                                <?php if(!empty($data->kode_barang)){ ?>
-                                    <option value="<?php echo $data->kode_barang ?>"><?php echo $data->kode_barang.' | '.$data->nama_barang ?></option>
-                                <?php } ?>
-                            </select>
+                                <div class="input-group">
+                                    <input type="text" id="kode_barang" name="kode_barang" class="form-control" value="<?php echo isset($data->kode_barang)?$data->kode_barang:'' ?>">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-success btn-flat btn-pilih-barang">Pilih</button>
+                                    </span>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -66,12 +67,14 @@
                                 </div>
                             </td>
                         </tr>
+                        <?php if($this->uri->segment(2)=='add'):?>
                         <tr>
                             <td><label>Jumlah</label></td>
-                            <td><input type="text" id="jumlah" name="jumlah" class="input-uang form-control" value="<?php echo isset($data->jumlah)?$data->jumlah:'' ?>"></td>
+                            <td><input type="text" id="jumlah" name="jumlah" class="input-uang form-control" value="<?php echo isset($data->jumlah)?$data->jumlah:'1' ?>"></td>
                         </tr>
+                        <?php endif?>
                         <tr>
-                            <td><label>Nilai</label></td>
+                            <td><label>Nilai Satuan</label></td>
                             <td><input type="text" id="nilai" name="nilai" class="input-uang form-control" value="<?php echo isset($data->nilai)?$data->nilai:'' ?>"></td>
                         </tr>
                         <tr>

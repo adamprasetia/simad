@@ -56,6 +56,7 @@ class Aset_tetap_tambah_detail extends MY_Controller {
 		$id_parent	= $this->input->post('id_'.$this->module_parent);
 		$id_aset_tetap_detail	= $this->input->post('id_aset_tetap_detail');
 		$nomor	= $this->input->post('nomor');
+		$kode_unik	= $this->input->post('kode_unik');
 		$tahun	= $this->input->post('tahun');
 		$kib	= $this->input->post('kib');
 		$kode_barang	= $this->input->post('kode_barang');
@@ -72,6 +73,7 @@ class Aset_tetap_tambah_detail extends MY_Controller {
 			'nama_barang' => $nama_barang,
 			'tahun' => $tahun,
 			'nomor' => $nomor,
+			'kode_unik' => $kode_unik,
 			'umur' => format_uang($umur),
 			'nilai' => format_uang($nilai),
 			'info' => $info,

@@ -42,11 +42,12 @@
                 <tr>
                     <td><label>Kode Barang *</label></td>
                     <td>
-                    <select name="kode_barang" id="kode_barang" class="form-control" style="width: 100%">
-                        <?php if(!empty($data->kode_barang)){ ?>
-                            <option value="<?php echo $data->kode_barang ?>"><?php echo $data->kode_barang.' | '.$data->nama_barang ?></option>
-                        <?php } ?>
-                    </select>
+                        <div class="input-group">
+                            <input type="text" id="kode_barang" name="kode_barang" class="form-control" value="<?php echo isset($data->kode_barang)?$data->kode_barang:'' ?>">
+                            <span class="input-group-btn">
+                                <button type="button" data-title="Pilih Kode Barang" class="btn btn-success btn-flat btn-pilih-barang">Pilih</button>
+                            </span>
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -66,14 +67,21 @@
                     </td>
                 </tr>
                 <tr>
+                    <td><label>Kode Unik *</label></td>
+                    <td>
+                        <div class="input-group">
+                            <input type="text" id="kode_unik" name="kode_unik" class="form-control" value="<?php echo isset($data->kode_unik)?$data->kode_unik:'' ?>">
+                            <input type="hidden" id="id_aset_tetap_detail" name="id_aset_tetap_detail" value="<?php echo isset($data->id_aset_tetap_detail)?$data->id_aset_tetap_detail:'' ?>">
+                            <span class="input-group-btn">
+                                <button type="button" data-title="Pilih Nomor Perolehan" class="btn btn-success btn-flat btn-pilih-nomor">Pilih</button>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
                     <td><label>Nomor Perolehan *</label></td>
                     <td>
-                        <select name="id_aset_tetap_detail" id="id_aset_tetap_detail" class="form-control" style="width: 100%">
-                        <?php if(!empty($data->id_aset_tetap_detail)){ ?>
-                            <option value="<?php echo $data->id_aset_tetap_detail ?>"><?php echo $data->nomor ?></option>
-                            <?php } ?>
-                        </select>
-                        <input type="hidden" id="nomor" name="nomor" class="form-control" value="<?php echo isset($data->nomor)?$data->nomor:'' ?>">        
+                        <input type="text" id="nomor" name="nomor" class="form-control" value="<?php echo isset($data->nomor)?$data->nomor:'' ?>">        
                     </td>
                 </tr>
                 <tr>

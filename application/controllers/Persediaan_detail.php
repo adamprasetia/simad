@@ -14,6 +14,14 @@ class Persediaan_detail extends MY_Controller {
    	}
 	private function _filter()
 	{
+		if(!empty($this->input->get('popup'))){
+			$this->db->select($this->table.'.*, persediaan.nomor');
+			$this->db->join('persediaan','persediaan.id='.$this->table.'.id_persediaan','left');
+		}
+		$metode = $this->input->get('metode');
+		if ($metode) {
+			$this->db->where('metode', $metode);
+		}
 		$search = $this->input->get('search');
 		if ($search) {
 			$this->db->group_start();
@@ -39,7 +47,7 @@ class Persediaan_detail extends MY_Controller {
 		$content['total'] 	= gen_total($total,$this->limit,$offset);
 		$data['content'] 	= $this->load->view('contents/'.$this->module.'_view', $content, TRUE);
 
-		$this->load->view('template_view', $data);
+		$this->load->view(!empty($this->input->get('popup'))?'modals/template_view':'template_view', $data);
 	}
 
 	private function _set_rules()

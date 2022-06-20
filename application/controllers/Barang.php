@@ -12,6 +12,10 @@ class Barang extends MY_Controller {
 	private function _filter()
 	{
 		$this->db->where('deleted_at', null);
+		$kib = $this->input->get('kib');
+		if ($kib) {
+			$this->db->like('kode', $kib, 'after');
+		}
 		$search = $this->input->get('search');
 		if ($search) {
 			$this->db->group_start();
@@ -25,6 +29,7 @@ class Barang extends MY_Controller {
 		$offset = gen_offset($this->limit);
 		$this->_filter();
 		$total = $this->db->count_all_results($this->table);
+		// echo $this->db->last_query();exit;
 		$this->_filter();
 		$barang_view['data'] 	= $this->db->get($this->table, $this->limit, $offset)->result();
 		$barang_view['offset'] = $offset;
@@ -32,7 +37,7 @@ class Barang extends MY_Controller {
 		$barang_view['total'] 	= gen_total($total,$this->limit,$offset);
 		$data['content'] 	= $this->load->view('contents/barang_view', $barang_view, TRUE);
 
-		$this->load->view('template_view', $data);
+		$this->load->view(!empty($this->input->get('popup'))?'modals/template_view':'template_view', $data);
 	}
 
 	private function _set_rules()
@@ -145,21 +150,4 @@ class Barang extends MY_Controller {
 			echo json_encode($response);
 		}
 	}
-	
-	public function api()
-	{
-		$search = $this->input->get('search');
-		$kib = $this->input->get('kib');
-		if(!empty($kib)){
-			$this->db->like('kode',$kib,'after');
-		}
-		$this->db->group_start();
-		$this->db->like('nama', $search);
-		$this->db->or_like('kode', $search);
-		$this->db->group_end();
-		$result = $this->db->select('kode as id,concat(kode," | ",nama) as text')->get($this->table, 10, 0)->result_array();
-		// echo $this->db->last_query();exit;
-		echo json_encode(['results'=>$result]);
-	}
-
 }

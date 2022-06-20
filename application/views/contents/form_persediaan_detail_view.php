@@ -42,11 +42,12 @@
                 <tr>
                     <td><label>Kode Barang *</label></td>
                     <td>
-                    <select name="kode_barang" id="kode_barang" class="form-control" style="width: 100%">
-                        <?php if(!empty($data->kode_barang)){ ?>
-                            <option value="<?php echo $data->kode_barang ?>"><?php echo $data->kode_barang.' | '.$data->nama_barang ?></option>
-                        <?php } ?>
-                    </select>
+                        <div class="input-group">
+                            <input type="text" id="kode_barang" name="kode_barang" class="form-control" value="<?php echo isset($data->kode_barang)?$data->kode_barang:'' ?>">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-success btn-flat btn-pilih-barang-persediaan">Pilih</button>
+                            </span>
+                        </div>
                     </td>
                 </tr>
                 <tr>

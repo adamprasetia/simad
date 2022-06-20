@@ -32,7 +32,7 @@ class Barang_persediaan extends MY_Controller {
 		$barang_persediaan_view['total'] 	= gen_total($total,$this->limit,$offset);
 		$data['content'] 	= $this->load->view('contents/barang_persediaan_view', $barang_persediaan_view, TRUE);
 
-		$this->load->view('template_view', $data);
+		$this->load->view(!empty($this->input->get('popup'))?'modals/template_view':'template_view', $data);
 	}
 
 	private function _set_rules()
