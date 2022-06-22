@@ -1,9 +1,11 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Skpd extends MY_Controller {
+class Aset_tetap_mutasi extends MY_Controller {
 
 	private $limit = 15;
-	private $table = 'skpd';
+	private $table = 'aset_tetap_mutasi';
+	public $module = 'aset_tetap_mutasi';
+	public $title = 'MUTASI ASET TETAP';
 
 	function __construct()
    	{
@@ -11,14 +13,14 @@ class Skpd extends MY_Controller {
    	}
 	private function _filter()
 	{
-		$this->db->where('deleted_at', null);
 		$search = $this->input->get('search');
 		if ($search) {
 			$this->db->group_start();
-			$this->db->like('kode', $search);
-			$this->db->or_like('nama', $search);
+			$this->db->like('kode_barang', $search);
+			$this->db->or_like('nama_barang', $search);
 			$this->db->group_end();
 		}
+
 	}
 	public function index()
 	{
@@ -26,29 +28,53 @@ class Skpd extends MY_Controller {
 		$this->_filter();
 		$total = $this->db->count_all_results($this->table);
 		$this->_filter();
-		$skpd_view['data'] 	= $this->db->get($this->table, $this->limit, $offset)->result();
-		$skpd_view['offset'] = $offset;
-		$skpd_view['paging'] = gen_paging($total,$this->limit);
-		$skpd_view['total'] 	= gen_total($total,$this->limit,$offset);
-		$data['content'] 	= $this->load->view('contents/skpd_view', $skpd_view, TRUE);
+		$content['data'] 	= $this->db->get($this->table, $this->limit, $offset)->result();
+		$content['offset'] = $offset;
+		$content['paging'] = gen_paging($total,$this->limit);
+		$content['total'] 	= gen_total($total,$this->limit,$offset);
+		$data['content'] 	= $this->load->view('contents/'.$this->module.'_view', $content, TRUE);
 
-		$this->load->view(!empty($this->input->get('popup'))?'modals/template_view':'template_view', $data);
+		$this->load->view('template_view', $data);
 	}
 
 	private function _set_rules()
 	{
-		$this->form_validation->set_rules('kode', 'Kode Barang', 'trim|required');
-		$this->form_validation->set_rules('nama', 'Nama Barang', 'trim|required');
+		$this->form_validation->set_rules('kode_barang', 'Kode Barang', 'trim');
+		$this->form_validation->set_rules('nama_barang', 'Nama Barang', 'trim');
 	}
 	
 	private function _set_data($type = 'add')
 	{
-		$kode		= $this->input->post('kode');
-		$nama		= $this->input->post('nama');
+		$id_aset_tetap_detail	= $this->input->post('id_aset_tetap_detail');
+		$kode_unik	= $this->input->post('kode_unik');
+		$tanggal	= $this->input->post('tanggal');
+		$tahun	= $this->input->post('tahun');
+		$nomor	= $this->input->post('nomor');
+		$kib	= $this->input->post('kib');
+		$kode_skpd	= $this->input->post('kode_skpd');
+		$kode_barang	= $this->input->post('kode_barang');
+		$nama_barang	    = $this->input->post('nama_barang');
+		$nomor_baru	= $this->input->post('nomor_baru');
+		$kib_baru	= $this->input->post('kib_baru');
+		$kode_skpd_baru	= $this->input->post('kode_skpd_baru');
+		$kode_barang_baru	= $this->input->post('kode_barang_baru');
+		$nama_barang_baru	    = $this->input->post('nama_barang_baru');
 
 		$data = array(
-			'kode' => $kode,
-			'nama' => $nama,
+			'id_aset_tetap_detail' => $id_aset_tetap_detail,
+            'tanggal' => format_ymd($tanggal),
+			'kode_unik' => $kode_unik,
+			'kib' => $kib,
+			'tahun' => $tahun,
+			'kode_skpd' => $kode_skpd,
+			'kode_barang' => $kode_barang,
+			'nama_barang' => $nama_barang,
+			'nomor' => $nomor,
+			'kib_baru' => $kib_baru,
+			'kode_skpd_baru' => $kode_skpd_baru,
+			'kode_barang_baru' => $kode_barang_baru,
+			'nama_barang_baru' => $nama_barang_baru,
+			'nomor_baru' => $nomor_baru,
 		);
 
 		if($type == 'add'){
@@ -72,8 +98,9 @@ class Skpd extends MY_Controller {
 	{
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
-			$data['content'] = $this->load->view('contents/form_skpd_view', [
-				'action'=>base_url('skpd/add').get_query_string()
+			$data['script'] = $this->load->view('script/'.$this->module.'_script', '', true);
+			$data['content'] = $this->load->view('contents/form_'.$this->module.'_view', [
+				'action'=>base_url($this->module.'/add').get_query_string()
 			],true);
 
 			if(!validation_errors())
@@ -104,9 +131,10 @@ class Skpd extends MY_Controller {
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
 			$this->db->where('id', $id);
-			$skpd_view['data'] = $this->db->get($this->table)->row();
-			$skpd_view['action'] = base_url('skpd/edit/'.$id).get_query_string();
-			$data['content'] = $this->load->view('contents/form_skpd_view',$skpd_view,true);
+			$content['data'] = $this->db->get($this->table)->row();
+			$content['action'] = base_url($this->module.'/edit/'.$id).get_query_string();
+			$data['script'] = $this->load->view('script/'.$this->module.'_script', '', true);
+			$data['content'] = $this->load->view('contents/form_'.$this->module.'_view',$content,true);
 
 			if(!validation_errors())
 			{
@@ -134,8 +162,7 @@ class Skpd extends MY_Controller {
 	public function delete($id = '')
 	{
 		if ($id) {
-			$data = $this->_set_data('delete');
-			$this->db->update($this->table, $data,['id'=>$id]);
+			$this->db->delete($this->table, ['id'=>$id]);
 			$error = $this->db->error();
 			if(empty($error['message'])){
 				$response = array('id'=>$id, 'action'=>'delete', 'message'=>'Data berhasil dihapus');

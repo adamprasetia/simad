@@ -69,7 +69,7 @@
                         <td><?php echo number_format($value->nilai); ?></td>
                         <td>
                             <?php if(!empty($this->input->get('popup'))): ?>
-                                <button class="btn btn-primary btn-choose-nomor" type="button" name="button" data-id="<?php echo $value->id ?>"><i class="fa fa-use"></i> Pilih</button>
+                                <button class="btn btn-primary btn-choose-aset-tetap-detail" type="button" name="button" data-id="<?php echo $value->id ?>"><i class="fa fa-use"></i> Pilih</button>
                                 <div style="display:none" id="data-<?php echo $value->id ?>"><?php echo json_encode($value) ?></div>
                             <?php else: ?>                                
                                 <a class="btn btn-default" href="<?php echo base_url($this->module.'/edit/'.$value->id).get_query_string(); ?>"><i class="fa fa-edit"></i></a>
