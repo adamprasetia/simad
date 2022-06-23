@@ -28,11 +28,9 @@ CREATE TABLE IF NOT EXISTS `aset_tetap` (
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nomor_skpd_tahun` (`nomor`,`kode_skpd`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
--- Dumping data for table aset.aset_tetap: ~1 rows (approximately)
-INSERT INTO `aset_tetap` (`id`, `nomor`, `kode_skpd`, `tanggal`, `uraian`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
-	(7, '001', '1.01.01.00', '2022-06-20', 'uraian 001', 1, '2022-06-20 19:41:38', NULL, NULL, NULL);
+-- Dumping data for table aset.aset_tetap: ~0 rows (approximately)
 
 -- Dumping structure for table aset.aset_tetap_detail
 CREATE TABLE IF NOT EXISTS `aset_tetap_detail` (
@@ -55,20 +53,9 @@ CREATE TABLE IF NOT EXISTS `aset_tetap_detail` (
   PRIMARY KEY (`id`),
   KEY `aset_tetap_id` (`id_aset_tetap`) USING BTREE,
   CONSTRAINT `FK_aset_tetap_detail_aset_tetap` FOREIGN KEY (`id_aset_tetap`) REFERENCES `aset_tetap` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
--- Dumping data for table aset.aset_tetap_detail: ~10 rows (approximately)
-INSERT INTO `aset_tetap_detail` (`id`, `id_aset_tetap`, `kib`, `kode_barang`, `nama_barang`, `umur`, `nilai`, `info`, `info_lain`, `status`, `note`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
-	(11, 7, '02', '02.02.01.01.01', 'Crawler Tractor', 10.000000, 30000.000000, 'traktor', '{"noreg_02":"","merk_02":"","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, '', 1, '2022-06-20 19:51:04', 1, '2022-06-20 20:08:09', NULL),
-	(12, 7, '02', '02.02.01.01.01', 'Crawler Tractor', 10.000000, 30000.000000, 'traktor', '{"noreg_02":"","merk_02":"","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, '', 1, '2022-06-20 19:51:04', NULL, NULL, NULL),
-	(13, 7, '02', '02.02.01.01.01', 'Crawler Tractor', 10.000000, 30000.000000, 'traktor', '{"noreg_02":"","merk_02":"","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, '', 1, '2022-06-20 19:51:04', NULL, NULL, NULL),
-	(14, 7, '02', '02.02.01.01.01', 'Crawler Tractor', 10.000000, 30000.000000, 'traktor', '{"noreg_02":"","merk_02":"","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, '', 1, '2022-06-20 19:51:04', NULL, NULL, NULL),
-	(15, 7, '02', '02.02.01.01.01', 'Crawler Tractor', 10.000000, 30000.000000, 'traktor', '{"noreg_02":"","merk_02":"","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, '', 1, '2022-06-20 19:51:04', NULL, NULL, NULL),
-	(16, 7, '02', '02.02.01.01.01', 'Crawler Tractor', 10.000000, 30000.000000, 'traktor', '{"noreg_02":"","merk_02":"","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, '', 1, '2022-06-20 19:51:04', NULL, NULL, NULL),
-	(17, 7, '02', '02.02.01.01.01', 'Crawler Tractor', 10.000000, 30000.000000, 'traktor', '{"noreg_02":"","merk_02":"","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, '', 1, '2022-06-20 19:51:04', NULL, NULL, NULL),
-	(18, 7, '02', '02.02.01.01.01', 'Crawler Tractor', 10.000000, 30000.000000, 'traktor', '{"noreg_02":"","merk_02":"","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, '', 1, '2022-06-20 19:51:04', NULL, NULL, NULL),
-	(19, 7, '02', '02.02.01.01.01', 'Crawler Tractor', 10.000000, 30000.000000, 'traktor', '{"noreg_02":"","merk_02":"","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, '', 1, '2022-06-20 19:51:04', NULL, NULL, NULL),
-	(20, 7, '02', '02.02.01.01.01', 'Crawler Tractor', 10.000000, 30000.000000, 'traktor', '{"noreg_02":"","merk_02":"","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, '', 1, '2022-06-20 19:51:04', NULL, NULL, NULL);
+-- Dumping data for table aset.aset_tetap_detail: ~0 rows (approximately)
 
 -- Dumping structure for table aset.aset_tetap_hapus
 CREATE TABLE IF NOT EXISTS `aset_tetap_hapus` (
@@ -86,9 +73,7 @@ CREATE TABLE IF NOT EXISTS `aset_tetap_hapus` (
   UNIQUE KEY `nomor_skpd_tahun` (`nomor`,`kode_skpd`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table aset.aset_tetap_hapus: ~1 rows (approximately)
-INSERT INTO `aset_tetap_hapus` (`id`, `nomor`, `kode_skpd`, `tanggal`, `uraian`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
-	(6, '002', '1.01.01.00', '2022-06-20', 'pelepasan 001', 1, '2022-06-20 20:22:06', NULL, NULL, NULL);
+-- Dumping data for table aset.aset_tetap_hapus: ~0 rows (approximately)
 
 -- Dumping structure for table aset.aset_tetap_hapus_detail
 CREATE TABLE IF NOT EXISTS `aset_tetap_hapus_detail` (
@@ -112,23 +97,39 @@ CREATE TABLE IF NOT EXISTS `aset_tetap_hapus_detail` (
   KEY `aset_tetap_nomor` (`id_aset_tetap_detail`) USING BTREE,
   KEY `aset_tetap_id` (`id_aset_tetap_hapus`) USING BTREE,
   CONSTRAINT `FK_aset_tetap_hapus_detail_aset_tetap_hapus` FOREIGN KEY (`id_aset_tetap_hapus`) REFERENCES `aset_tetap_hapus` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table aset.aset_tetap_hapus_detail: ~1 rows (approximately)
-INSERT INTO `aset_tetap_hapus_detail` (`id`, `id_aset_tetap_hapus`, `id_aset_tetap_detail`, `kib`, `kode_barang`, `nama_barang`, `tahun`, `nomor`, `kode_unik`, `info`, `nilai`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
-	(7, 6, 13, '02', '02.02.01.01.01', 'Crawler Tractor', '2022', '001', '022022062013', 'traktor', 50000.000000, 1, '2022-06-20 20:25:23', NULL, NULL, NULL);
+-- Dumping data for table aset.aset_tetap_hapus_detail: ~0 rows (approximately)
 
 -- Dumping structure for table aset.aset_tetap_mutasi
 CREATE TABLE IF NOT EXISTS `aset_tetap_mutasi` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `id_aset_tetap_detail` int NOT NULL DEFAULT '0',
+  `nomor` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `kode_skpd` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
   `tanggal` date NOT NULL,
+  `uraian` text CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `created_by` int DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `modified_by` int DEFAULT NULL,
+  `modified_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `nomor_skpd_tahun` (`nomor`,`kode_skpd`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+
+-- Dumping data for table aset.aset_tetap_mutasi: ~0 rows (approximately)
+
+-- Dumping structure for table aset.aset_tetap_mutasi_detail
+CREATE TABLE IF NOT EXISTS `aset_tetap_mutasi_detail` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_aset_tetap_mutasi` int NOT NULL DEFAULT '0',
+  `id_aset_tetap_detail` int NOT NULL DEFAULT '0',
   `kode_unik` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
   `tahun` year NOT NULL,
   `nomor` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
   `kode_skpd` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
-  `kib` char(2) COLLATE latin1_general_ci NOT NULL DEFAULT '',
-  `kode_barang` varchar(50) COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  `kib` char(2) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  `kode_barang` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '',
   `nama_barang` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '',
   `nomor_baru` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
   `kode_skpd_baru` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
@@ -141,12 +142,12 @@ CREATE TABLE IF NOT EXISTS `aset_tetap_mutasi` (
   `modified_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  KEY `id_aset_tetap_detail` (`id_aset_tetap_detail`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+  KEY `id_aset_tetap_detail` (`id_aset_tetap_detail`) USING BTREE,
+  KEY `id_aset_tetap_mutasi` (`id_aset_tetap_mutasi`),
+  CONSTRAINT `FK_aset_tetap_mutasi_detail_aset_tetap_mutasi` FOREIGN KEY (`id_aset_tetap_mutasi`) REFERENCES `aset_tetap_mutasi` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table aset.aset_tetap_mutasi: ~1 rows (approximately)
-INSERT INTO `aset_tetap_mutasi` (`id`, `id_aset_tetap_detail`, `tanggal`, `kode_unik`, `tahun`, `nomor`, `kode_skpd`, `kib`, `kode_barang`, `nama_barang`, `nomor_baru`, `kode_skpd_baru`, `kib_baru`, `kode_barang_baru`, `nama_barang_baru`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
-	(8, 17, '0000-00-00', '022022062017', '2022', '001', '1.01.01.00', '02', '02.02.01.01.01', 'Crawler Tractor', '007', '2.05.01.00', '03', '03.11.01.01.01', 'Bangunan Gedung Kantor Permanen', 1, '2022-06-22 07:45:17', NULL, NULL, NULL);
+-- Dumping data for table aset.aset_tetap_mutasi_detail: ~0 rows (approximately)
 
 -- Dumping structure for table aset.aset_tetap_tambah
 CREATE TABLE IF NOT EXISTS `aset_tetap_tambah` (
@@ -162,11 +163,9 @@ CREATE TABLE IF NOT EXISTS `aset_tetap_tambah` (
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `nomor_skpd_tahun` (`nomor`,`kode_skpd`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table aset.aset_tetap_tambah: ~1 rows (approximately)
-INSERT INTO `aset_tetap_tambah` (`id`, `nomor`, `kode_skpd`, `tanggal`, `uraian`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
-	(6, '001', '1.01.01.00', '2022-06-19', 'Penambahan Tanki', 1, '2022-06-19 09:57:34', NULL, NULL, NULL);
+-- Dumping data for table aset.aset_tetap_tambah: ~0 rows (approximately)
 
 -- Dumping structure for table aset.aset_tetap_tambah_detail
 CREATE TABLE IF NOT EXISTS `aset_tetap_tambah_detail` (
@@ -191,12 +190,9 @@ CREATE TABLE IF NOT EXISTS `aset_tetap_tambah_detail` (
   KEY `aset_tetap_id` (`id_aset_tetap_tambah`) USING BTREE,
   KEY `aset_tetap_nomor` (`id_aset_tetap_detail`) USING BTREE,
   CONSTRAINT `FK_aset_tetap_tambah_detail_aset_tetap_tambah` FOREIGN KEY (`id_aset_tetap_tambah`) REFERENCES `aset_tetap_tambah` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table aset.aset_tetap_tambah_detail: ~2 rows (approximately)
-INSERT INTO `aset_tetap_tambah_detail` (`id`, `id_aset_tetap_tambah`, `id_aset_tetap_detail`, `kib`, `kode_barang`, `nama_barang`, `tahun`, `kode_unik`, `nomor`, `umur`, `nilai`, `info`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
-	(8, 6, 11, '02', '02.02.01.01.01', 'Crawler Tractor', '2022', '022022062011', '001', 4.000000, 50000.000000, 'traktor', 1, '2022-06-20 20:18:34', 1, '2022-06-20 20:19:54', NULL),
-	(9, 6, 17, '02', '02.02.01.01.01', 'Crawler Tractor', '2022', '022022062017', '001', 2.000000, 60000.000000, 'traktor', 1, '2022-06-20 20:21:33', NULL, NULL, NULL);
+-- Dumping data for table aset.aset_tetap_tambah_detail: ~0 rows (approximately)
 
 -- Dumping structure for table aset.barang
 CREATE TABLE IF NOT EXISTS `barang` (
@@ -23805,9 +23801,9 @@ CREATE TABLE IF NOT EXISTS `module` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_parent` (`name`,`parent`),
   KEY `parent_order` (`parent`,`order`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
--- Dumping data for table aset.module: ~21 rows (approximately)
+-- Dumping data for table aset.module: ~22 rows (approximately)
 INSERT INTO `module` (`id`, `name`, `parent`, `link`, `icon`, `order`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
 	(2, 'Aset Tetap', 0, '', 'fa fa-cab', 2, 1, '2022-06-11 18:51:40', 1, '2022-06-12 06:30:04', NULL),
 	(4, 'Laporan', 0, '', 'fa fa-newspaper-o', 4, 1, '2022-06-11 19:50:38', 1, '2022-06-12 06:30:26', '2022-06-11 19:53:29'),
@@ -23829,7 +23825,8 @@ INSERT INTO `module` (`id`, `name`, `parent`, `link`, `icon`, `order`, `created_
 	(23, 'Pelepasan', 2, 'aset_tetap_hapus', '', 1, 1, '2022-06-16 08:03:23', 1, '2022-06-17 06:52:19', NULL),
 	(24, 'Barang Persediaan', 9, 'barang_persediaan', '', 0, 1, '2022-06-17 07:12:19', NULL, NULL, NULL),
 	(25, 'KIB', 9, 'kib', '', 0, 1, '2022-06-17 07:12:42', NULL, NULL, NULL),
-	(26, 'Pemakaian', 8, 'persediaan_pakai', '', 0, 1, '2022-06-19 09:38:23', NULL, NULL, NULL);
+	(26, 'Pemakaian', 8, 'persediaan_pakai', '', 0, 1, '2022-06-19 09:38:23', NULL, NULL, NULL),
+	(27, 'Mutasi', 2, 'aset_tetap_mutasi', '', 5, 1, '2022-06-23 05:56:20', NULL, NULL, NULL);
 
 -- Dumping structure for table aset.persediaan
 CREATE TABLE IF NOT EXISTS `persediaan` (
@@ -23940,7 +23937,7 @@ CREATE TABLE IF NOT EXISTS `role` (
 
 -- Dumping data for table aset.role: ~1 rows (approximately)
 INSERT INTO `role` (`id`, `name`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
-	(1, 'Admin', 1, '2022-06-12 07:19:41', 1, '2022-06-19 09:38:32', NULL);
+	(1, 'Admin', 1, '2022-06-12 07:19:41', 1, '2022-06-23 05:56:42', NULL);
 
 -- Dumping structure for table aset.role_module
 CREATE TABLE IF NOT EXISTS `role_module` (
@@ -23949,7 +23946,7 @@ CREATE TABLE IF NOT EXISTS `role_module` (
   PRIMARY KEY (`id_role`,`id_module`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
--- Dumping data for table aset.role_module: ~26 rows (approximately)
+-- Dumping data for table aset.role_module: ~27 rows (approximately)
 INSERT INTO `role_module` (`id_role`, `id_module`) VALUES
 	(1, 2),
 	(1, 5),
@@ -23968,6 +23965,7 @@ INSERT INTO `role_module` (`id_role`, `id_module`) VALUES
 	(1, 24),
 	(1, 25),
 	(1, 26),
+	(1, 27),
 	(3, 9),
 	(3, 10),
 	(3, 14),

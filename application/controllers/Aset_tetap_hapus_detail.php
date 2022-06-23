@@ -108,8 +108,15 @@ class Aset_tetap_hapus_detail extends MY_Controller {
 			}
 
 		}else{
+			$this->db->trans_start();
 			$data = $this->_set_data();
 			$this->db->insert($this->table, $data);
+			$this->db->update('aset_tetap_detail',[
+				'status'=>0,
+				'modified_by'=>$this->session_login['id'],
+				'modified_at'=>date('Y-m-d H:i:s'),
+			],['id'=>$data['id_aset_tetap_detail']]);
+			$this->db->trans_complete();
 			$error = $this->db->error();
 			if(empty($error['message'])){
 				$response = array('id'=>$this->db->insert_id(), 'action'=>'insert', 'message'=>'Data berhasil disimpan');
