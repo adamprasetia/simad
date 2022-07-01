@@ -30,7 +30,7 @@
                     <td colspan=2><i>Detail Barang</i></td>
                 </tr>
                 <tr>
-                    <td style="width:150px"><label>Metode Pencatatan *</label></td>
+                    <td style="width:150px"><label>Metode *</label></td>
                     <td>
                     <select name="metode" id="metode" class="form-control">
                         <?php foreach (config_item('metode') as $key => $value) { ?>
@@ -57,25 +57,21 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><label>Tahun Perolehan *</label></td>
+                    <td><label>Kode Unik *</label></td>
                     <td>
-                        <select name="tahun" id="tahun" class="form-control">
-                        <?php for ($i=date('Y'); $i >= date('Y')-5; $i--) { ?>
-                            <option <?php echo (isset($data->tahun) && $data->tahun==$i?'selected':'')?> value="<?php echo $i ?>"><?php echo $i ?></option>
-                        <?php } ?>
-                        </select>
+                        <div class="input-group">
+                            <input type="text" id="kode_unik" name="kode_unik" class="form-control" value="<?php echo isset($data->kode_unik)?$data->kode_unik:'' ?>">
+                            <input type="hidden" id="id_persediaan_detail" name="id_persediaan_detail" value="<?php echo isset($data->id_persediaan_detail)?$data->id_persediaan_detail:'' ?>">
+                            <span class="input-group-btn">
+                                <button type="button" data-title="Pilih Persediaan" class="btn btn-success btn-flat btn-pilih-persediaan-detail">Pilih</button>
+                            </span>
+                        </div>
                     </td>
                 </tr>
                 <tr>
                     <td><label>Nomor Perolehan *</label></td>
                     <td>
-                        <div class="input-group">
-                            <input type="text" id="nomor" name="nomor" class="form-control" value="<?php echo isset($data->nomor)?$data->nomor:'' ?>">
-                            <input type="hidden" id="id_persediaan_detail" name="id_persediaan_detail" value="<?php echo isset($data->id_persediaan_detail)?$data->id_persediaan_detail:'' ?>">
-                            <span class="input-group-btn">
-                                <button type="button" data-title="Pilih Nomor Perolehan" class="btn btn-success btn-flat btn-pilih-nomor-persediaan">Pilih</button>
-                            </span>
-                        </div>
+                        <input type="text" id="nama_barang" name="nama_barang" class="form-control" value="<?php echo isset($data->nama_barang)?$data->nama_barang:'' ?>">        
                     </td>
                 </tr>
                 <tr>

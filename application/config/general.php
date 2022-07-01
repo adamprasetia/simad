@@ -12,8 +12,8 @@ $config['kib'] = [
 ];
 
 $config['metode'] = [
-    'periodik'=>['id'=>'periodik', 'name'=>'Periodik/Beban'],
-    'perpetual'=>['id'=>'perpetual', 'name'=>'Perpetual/Aset']
+    1=>['id'=>'periodik', 'name'=>'Periodik/Beban'],
+    2=>['id'=>'perpetual', 'name'=>'Perpetual/Aset']
 ];
 
 $config['kib_info_tipe'] = [

@@ -46,6 +46,7 @@ class Persediaan_pakai_detail extends MY_Controller {
 	{
 		$this->form_validation->set_rules('kode_barang', 'Kode Barang', 'trim|required');
 		$this->form_validation->set_rules('nama_barang', 'Nama Barang', 'trim|required');
+		$this->form_validation->set_rules('metode', 'Metode', 'trim|required');
 		$this->form_validation->set_rules('id_'.$this->module_parent, 'Nomor Perolehan', 'trim|required');
 		$this->form_validation->set_rules('jumlah', 'Jumlah', 'trim');
 	}
@@ -54,21 +55,17 @@ class Persediaan_pakai_detail extends MY_Controller {
 	{
 		$id_parent	= $this->input->post('id_'.$this->module_parent);
 		$id_persediaan_detail	= $this->input->post('id_persediaan_detail');
-		$nomor	= $this->input->post('nomor');
-		$tahun	= $this->input->post('tahun');
-		$metode	= $this->input->post('metode');
 		$kode_barang	= $this->input->post('kode_barang');
 		$nama_barang	    = $this->input->post('nama_barang');
+		$metode	    = $this->input->post('metode');
 		$jumlah	    = $this->input->post('jumlah');
 
 		$data = array(
 			'id_'.$this->module_parent => $id_parent,
 			'id_persediaan_detail' => $id_persediaan_detail,
-			'metode' => $metode,
 			'kode_barang' => $kode_barang,
 			'nama_barang' => $nama_barang,
-			'tahun' => $tahun,
-			'nomor' => $nomor,
+			'metode' => $metode,
 			'jumlah' => format_uang($jumlah),
 		);
 

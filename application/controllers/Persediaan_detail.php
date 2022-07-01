@@ -14,34 +14,27 @@ class Persediaan_detail extends MY_Controller {
    	}
 	private function _filter()
 	{
-		if(!empty($this->input->get('popup'))){
-			$this->db->select($this->table.'.*, persediaan.nomor');
-			$this->db->join('persediaan','persediaan.id='.$this->table.'.id_persediaan','left');
-		}
-		$metode = $this->input->get('metode');
-		if ($metode) {
-			$this->db->where('metode', $metode);
-		}
+		$this->db->select('a.*, b.nama as nama_barang, b.satuan');
+		$this->db->join('barang_persediaan b','a.kode_barang=b.kode','left');
 		$search = $this->input->get('search');
 		if ($search) {
 			$this->db->group_start();
-			$this->db->like('kode_barang', $search);
-			$this->db->or_like('nama_barang', $search);
+			$this->db->like('a.kode_barang', $search);
+			$this->db->or_like('b.nama_barang', $search);
 			$this->db->group_end();
 		}
         $parent = $this->input->get('id_'.$this->module_parent);
 		if(!empty($parent)){
-			$this->db->where('id_'.$this->module_parent, $parent);
+			$this->db->where('a.id_'.$this->module_parent, $parent);
 		}
-
 	}
 	public function index()
 	{
 		$offset = gen_offset($this->limit);
 		$this->_filter();
-		$total = $this->db->count_all_results($this->table);
+		$total = $this->db->count_all_results($this->table.' a');
 		$this->_filter();
-		$content['data'] 	= $this->db->get($this->table, $this->limit, $offset)->result();
+		$content['data'] 	= $this->db->get($this->table.' a', $this->limit, $offset)->result();
 		$content['offset'] = $offset;
 		$content['paging'] = gen_paging($total,$this->limit);
 		$content['total'] 	= gen_total($total,$this->limit,$offset);
@@ -52,35 +45,23 @@ class Persediaan_detail extends MY_Controller {
 
 	private function _set_rules()
 	{
-		$this->form_validation->set_rules('metode', 'Metode', 'trim|required');
 		$this->form_validation->set_rules('kode_barang', 'Kode Barang', 'trim|required');
-		$this->form_validation->set_rules('nama_barang', 'Nama Barang', 'trim|required');
-		$this->form_validation->set_rules('masa_berlaku', 'Masa Berlaku', 'trim');
-		$this->form_validation->set_rules('jumlah', 'Jumlah', 'trim');
-		$this->form_validation->set_rules('satuan', 'Satuan', 'trim');
-		$this->form_validation->set_rules('nilai', 'Nilai', 'trim');
+		$this->form_validation->set_rules('jumlah', 'Jumlah', 'trim|required');
+		$this->form_validation->set_rules('nilai', 'Nilai', 'trim|required');
 	}
 	
 	private function _set_data($type = 'add')
 	{
 		$id_parent	= $this->input->post('id_'.$this->module_parent);
-		$metode	= $this->input->post('metode');
 		$kode_barang	= $this->input->post('kode_barang');
-		$nama_barang	    = $this->input->post('nama_barang');
-		$masa_berlaku	    = $this->input->post('masa_berlaku');
 		$jumlah	    = $this->input->post('jumlah');
-		$satuan	    = $this->input->post('satuan');
 		$nilai	    = $this->input->post('nilai');
 
 		$data = array(
 			'id_'.$this->module_parent => $id_parent,
-			'metode' => $metode,
 			'kode_barang' => $kode_barang,
-			'nama_barang' => $nama_barang,
-			'masa_berlaku' => format_ymd($masa_berlaku),
 			'jumlah' => format_uang($jumlah),
-			'satuan' => $satuan,
-			'nilai' => format_uang($nilai),
+			'nilai' => format_uang($nilai)
 		);
 
 		if($type == 'add'){
@@ -120,7 +101,22 @@ class Persediaan_detail extends MY_Controller {
 
 		}else{
 			$data = $this->_set_data();
+			$this->db->trans_start();
 			$this->db->insert($this->table, $data);
+
+			$persediaan_stok = $this->db->where('kode_skpd', $this->session_login['skpd_session'])->where('kode_barang', $data['kode_barang'])->get('persediaan_stok')->row();
+			if(!empty($persediaan_stok)){
+				$this->db->where('id', $persediaan_stok->id);
+				$this->db->set('stok', 'stok+'.$data['jumlah'], FALSE);
+				$this->db->update('persediaan_stok');
+			}else{
+				$this->db->insert('persediaan_stok',[
+					'kode_skpd'=>$this->session_login['skpd_session'],
+					'kode_barang'=>$data['kode_barang'],
+					'stok'=>$data['jumlah']
+				]);
+			}
+			$this->db->trans_complete();
 			$error = $this->db->error();
 			if(empty($error['message'])){
 				$response = array('id'=>$this->db->insert_id(), 'action'=>'insert', 'message'=>'Data berhasil disimpan');
@@ -138,8 +134,11 @@ class Persediaan_detail extends MY_Controller {
 		if ($this->form_validation->run()===FALSE) {
 			$this->db->where('id', $id);
 			$content['data'] = $this->db->get($this->table)->row();
+			$barang = $this->db->where('kode', $content['data']->kode_barang)->get('barang_persediaan')->row();
 			$content['data']->nilai = number_format($content['data']->nilai);
 			$content['data']->jumlah = number_format($content['data']->jumlah);
+			$content['data']->nama_barang = $barang->nama;
+			$content['data']->satuan = $barang->satuan;
 			$content['action'] = base_url($this->module.'/edit/'.$id).get_query_string();
 			$data['script'] = $this->load->view('script/'.$this->module.'_script', '', true);
 			$data['content'] = $this->load->view('contents/form_'.$this->module.'_view',$content,true);
@@ -154,8 +153,18 @@ class Persediaan_detail extends MY_Controller {
 			}
 
 		}else{
+			$this->db->trans_start();
 			$data = $this->_set_data('edit');
+			$before = $this->db->where('id', $id)->get($this->table)->row();
+			$selisih = $data['jumlah'] - $before->jumlah;
+			$persediaan_stok = $this->db->where('kode_skpd', $this->session_login['skpd_session'])->where('kode_barang', $data['kode_barang'])->get('persediaan_stok')->row();
+			if(!empty($persediaan_stok)){
+				$this->db->where('id', $persediaan_stok->id);
+				$this->db->set('stok', 'stok+'.$selisih, FALSE);
+				$this->db->update('persediaan_stok');
+			}
 			$this->db->update($this->table, $data, ['id'=>$id]);
+			$this->db->trans_complete();
 			$error = $this->db->error();
 			if(empty($error['message'])){
 				$response = array('id'=>$id, 'action'=>'update', 'message'=>'Data berhasil disimpan');
@@ -170,6 +179,14 @@ class Persediaan_detail extends MY_Controller {
 	public function delete($id = '')
 	{
 		if ($id) {
+			$before = $this->db->where('id', $id)->get($this->table)->row();
+			if(!empty($before)){
+				$this->db->where('kode_skpd', $this->session_login['skpd_session']);
+				$this->db->where('kode_barang', $before->kode_barang);
+				$this->db->set('stok', 'stok-'.$before->jumlah, FALSE);
+				$this->db->update('persediaan_stok');
+			}
+
 			$this->db->delete($this->table, ['id'=>$id]);
 			$error = $this->db->error();
 			if(empty($error['message'])){

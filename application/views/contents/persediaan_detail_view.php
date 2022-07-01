@@ -41,16 +41,12 @@
                 <thead>
                     <tr>
                         <th width="50">No</th>
-                        <?php if(!empty($this->input->get('popup'))): ?>
-                            <th>Nomor</th>
-                        <?php endif ?>
-                        <th>Metode</th>
                         <th>Kode Barang</th>
                         <th>Nama Barang</th>
-                        <th>Masa Berlaku</th>
-                        <th>Jumlah</th>
                         <th>Satuan</th>
+                        <th>Jumlah</th>
                         <th>Nilai</th>
+                        <th>Total</th>
                         <th width="100">Aksi</th>
                     </tr>
                 </thead>
@@ -61,16 +57,12 @@
                       ?>
                     <tr>
                         <td><?php echo $no; ?></td>
-                        <?php if(!empty($this->input->get('popup'))): ?>
-                            <td><?php echo $value->nomor; ?></td>
-                        <?php endif ?>
-                        <td><?php echo $value->metode; ?></td>
                         <td><?php echo $value->kode_barang; ?></td>
                         <td><?php echo $value->nama_barang; ?></td>
-                        <td><?php echo format_dmy($value->masa_berlaku); ?></td>
-                        <td><?php echo number_format($value->jumlah); ?></td>
                         <td><?php echo $value->satuan; ?></td>
+                        <td><?php echo number_format($value->jumlah); ?></td>
                         <td><?php echo number_format($value->nilai); ?></td>
+                        <td><?php echo number_format($value->jumlah*$value->nilai); ?></td>
                         <td>
                             <a class="btn btn-default" href="<?php echo base_url($this->module.'/edit/'.$value->id).get_query_string(); ?>"><i class="fa fa-edit"></i></a>
                             <button class="btn btn-default" type="button" name="button" data-url="<?php echo base_url($this->module.'/delete/'.$value->id).get_query_string(); ?>" onclick="return deleteData(this)"><i class="fa fa-trash"></i></button>

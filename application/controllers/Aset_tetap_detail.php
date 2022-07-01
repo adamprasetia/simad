@@ -18,6 +18,7 @@ class Aset_tetap_detail extends MY_Controller {
 			$this->db->where('status', 1);
 			$this->db->select($this->table.'.*, concat(kib,DATE_FORMAT('.$this->table.'.created_at,"%Y%m%d"),'.$this->table.'.id) as kode_unik, aset_tetap.nomor');
 			$this->db->join('aset_tetap','aset_tetap.id='.$this->table.'.id_aset_tetap','left');
+			$this->db->where('kode_skpd', $this->session_login['skpd_session']);
 		}else{
 			$this->db->select($this->table.'.*, concat(kib,DATE_FORMAT(created_at,"%Y%m%d"),id) as kode_unik');
 		}
@@ -46,8 +47,6 @@ class Aset_tetap_detail extends MY_Controller {
 		if(!empty($parent)){
 			$this->db->where('id_'.$this->module_parent, $parent);
 		}
-		$this->db->where('kode_skpd', $this->session_login['skpd_session']);
-
 	}
 	public function index()
 	{

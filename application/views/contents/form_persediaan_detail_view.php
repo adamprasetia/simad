@@ -30,16 +30,6 @@
                     <td colspan=2><i>Detail Barang</i></td>
                 </tr>
                 <tr>
-                    <td style="width:150px"><label>Metode Pencatatan *</label></td>
-                    <td>
-                    <select name="metode" id="metode" class="form-control">
-                        <?php foreach (config_item('metode') as $key => $value) { ?>
-                            <option <?php echo isset($data->metode) && $data->metode==$key?'selected':'' ?> value="<?php echo $key ?>"><?php echo $value['name'] ?></option>
-                        <?php } ?>
-                    </select>
-                    </td>
-                </tr>
-                <tr>
                     <td><label>Kode Barang *</label></td>
                     <td>
                         <div class="input-group">
@@ -53,13 +43,13 @@
                 <tr>
                     <td><label>Nama Barang</label></td>
                     <td>
-                        <input type="text" id="nama_barang" name="nama_barang" class="form-control" value="<?php echo isset($data->nama_barang)?$data->nama_barang:'' ?>">        
+                        <input readonly type="text" id="nama_barang" name="nama_barang" class="form-control" value="<?php echo isset($data->nama_barang)?$data->nama_barang:'' ?>">        
                     </td>
                 </tr>
                 <tr>
-                    <td><label>Masa Berlaku</label></td>
+                    <td><label>Satuan</label></td>
                     <td>
-                        <input type="text" id="masa_berlaku" name="masa_berlaku" class="form-control datetimepicker" value="<?php echo isset($data->masa_berlaku)?format_dmy($data->masa_berlaku):'' ?>">
+                        <input readonly type="text" id="satuan" name="satuan" class="form-control" value="<?php echo isset($data->satuan)?$data->satuan:'' ?>">        
                     </td>
                 </tr>
                 <tr>
@@ -67,14 +57,14 @@
                     <td><input type="text" id="jumlah" name="jumlah" class="input-uang form-control" value="<?php echo isset($data->jumlah)?$data->jumlah:'' ?>"></td>
                 </tr>
                 <tr>
-                    <td><label>Satuan</label></td>
-                    <td>
-                        <input type="text" id="satuan" name="satuan" class="form-control" value="<?php echo isset($data->satuan)?$data->satuan:'' ?>">        
-                    </td>
-                </tr>
-                <tr>
                     <td><label>Nilai</label></td>
                     <td><input type="text" id="nilai" name="nilai" class="input-uang form-control" value="<?php echo isset($data->nilai)?$data->nilai:'' ?>"></td>
+                </tr>
+                <tr>
+                    <td><label>Total</label></td>
+                    <td>
+                        <input readonly type="text" id="total" name="total" class="input-uang form-control" value="<?php echo isset($data->total)?$data->total:'' ?>">        
+                    </td>
                 </tr>
             </table>
         </div>

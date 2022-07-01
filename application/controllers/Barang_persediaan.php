@@ -39,16 +39,19 @@ class Barang_persediaan extends MY_Controller {
 	{
 		$this->form_validation->set_rules('kode', 'Kode Barang', 'trim|required');
 		$this->form_validation->set_rules('nama', 'Nama Barang', 'trim|required');
+		$this->form_validation->set_rules('satuan', 'Satuan', 'trim|required');
 	}
 	
 	private function _set_data($type = 'add')
 	{
 		$kode		= $this->input->post('kode');
 		$nama		= $this->input->post('nama');
+		$satuan		= $this->input->post('satuan');
 
 		$data = array(
 			'kode' => $kode,
 			'nama' => $nama,
+			'satuan' => $satuan,
 		);
 
 		if($type == 'add'){
@@ -78,7 +81,7 @@ class Barang_persediaan extends MY_Controller {
 
 			if(!validation_errors())
 			{
-				$this->load->view('template_view',$data);
+				$this->load->view(!empty($this->input->get('popup'))?'modals/template_view':'template_view', $data);
 			}
 			else
 			{
@@ -110,7 +113,7 @@ class Barang_persediaan extends MY_Controller {
 
 			if(!validation_errors())
 			{
-				$this->load->view('template_view',$data);
+				$this->load->view(!empty($this->input->get('popup'))?'modals/template_view':'template_view', $data);
 			}
 			else
 			{

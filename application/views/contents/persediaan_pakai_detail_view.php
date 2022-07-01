@@ -35,10 +35,11 @@
                 <thead>
                     <tr>
                         <th width="50">No</th>
-                        <th>Metode</th>
+                        <th>Kode Unik</th>
                         <th>Kode Barang</th>
                         <th>Nama Barang</th>
-                        <th>Nomor Perolehan</th>
+                        <th>Metode</th>
+                        <th>Nomor</th>
                         <th>Jumlah</th>
                         <th width="100">Aksi</th>
                     </tr>
@@ -50,9 +51,10 @@
                       ?>
                     <tr>
                         <td><?php echo $no; ?></td>
-                        <td><?php echo $value->metode; ?></td>
+                        <td><?php echo $value->kode_unik; ?></td>
                         <td><?php echo $value->kode_barang; ?></td>
                         <td><?php echo $value->nama_barang; ?></td>
+                        <td><?php echo config_item('metode')[$value->metode]['name']; ?></td>
                         <td><?php echo $value->nomor; ?></td>
                         <td><?php echo number_format($value->jumlah); ?></td>
                         <td>

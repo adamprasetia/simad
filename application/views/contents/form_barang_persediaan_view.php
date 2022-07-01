@@ -14,6 +14,10 @@
                 <label>Nama Barang *</label>
                 <input type="text" id="nama" name="nama" class="form-control" value="<?php echo isset($data->nama)?htmlentities($data->nama):'' ?>">
             </div>
+            <div class="form-group">
+                <label>Satuan *</label>
+                <input type="text" id="satuan" name="satuan" class="form-control" value="<?php echo isset($data->satuan)?htmlentities($data->satuan):'' ?>">
+            </div>
         </div>
         <div class="box-footer">
             <button type="button" class="btn_action btn btn-primary" data-redirect="<?php echo base_url('barang_persediaan/index').get_query_string() ?>" data-action="<?php echo $action ?>" data-form="#form_data" data-idle="<i class='fa fa-save'></i> Simpan" data-process="Menyimpan..."><i class='fa fa-save'></i> Simpan</button>
