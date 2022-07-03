@@ -1,11 +1,11 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Aset_tetap_detail extends MY_Controller {
+class Aset_tetap_oleh_detail extends MY_Controller {
 
 	private $limit = 15;
-	private $table = 'aset_tetap_detail';
-	public $module = 'aset_tetap_detail';
-	public $module_parent = 'aset_tetap';
+	private $table = 'aset_tetap_oleh_detail';
+	public $module = 'aset_tetap_oleh_detail';
+	public $module_parent = 'aset_tetap_oleh';
 	public $title = 'PEROLEHAN ASET TETAP DETAIL';
 
 	function __construct()
@@ -14,32 +14,29 @@ class Aset_tetap_detail extends MY_Controller {
    	}
 	private function _filter()
 	{
-		if(!empty($this->input->get('popup'))){
-			$this->db->where('status', 1);
-			$this->db->select($this->table.'.*, concat(kib,DATE_FORMAT('.$this->table.'.created_at,"%Y%m%d"),'.$this->table.'.id) as kode_unik, aset_tetap.nomor');
-			$this->db->join('aset_tetap','aset_tetap.id='.$this->table.'.id_aset_tetap','left');
-			$this->db->where('kode_skpd', $this->session_login['skpd_session']);
-		}else{
-			$this->db->select($this->table.'.*, concat(kib,DATE_FORMAT(created_at,"%Y%m%d"),id) as kode_unik');
-		}
+		$this->db->select($this->table.'.*, concat(DATE_FORMAT(aset_tetap_oleh_detail.created_at,"%Y%m%d"),aset_tetap_oleh_detail.id) as kode_unik, aset_tetap_oleh.nomor, barang.nama as nama_barang,barang.kib');
+		$this->db->where('kode_skpd', $this->session_login['skpd_session']);
+		$this->db->join('aset_tetap_oleh','aset_tetap_oleh.id='.$this->table.'.id_aset_tetap_oleh','left');
+		$this->db->join('barang','barang.kode=aset_tetap_oleh_detail.kode_barang','left');
 
 		$kib = $this->input->get('kib');
 		if ($kib) {
-			$this->db->where('kib', $kib);
+			$this->db->where('barang.kib', $kib);
 		}
 		$tahun = $this->input->get('tahun');
 		if ($tahun) {
-			$this->db->where('year(aset_tetap.tanggal)', $tahun);
+			$this->db->where('year(aset_tetap_oleh.tanggal)', $tahun);
 		}
 		$kode_barang = $this->input->get('kode_barang');
 		if ($kode_barang) {
-			$this->db->where('kode_barang', $kode_barang);
+			$this->db->where('barang.kode', $kode_barang);
 		}
 		$search = $this->input->get('search');
 		if ($search) {
 			$this->db->group_start();
-			$this->db->like('kode_barang', $search);
-			$this->db->or_like('nama_barang', $search);
+			$this->db->like('barang.kode', $search);
+			$this->db->or_like('aset_tetap_oleh.nomor', $search);
+			$this->db->or_like('barang.nama', $search);
 			$this->db->or_like('concat(kib,DATE_FORMAT('.$this->table.'.created_at,"%Y%m%d"),'.$this->table.'.id)', $search);
 			$this->db->group_end();
 		}
@@ -66,7 +63,6 @@ class Aset_tetap_detail extends MY_Controller {
 	private function _set_rules()
 	{
 		$this->form_validation->set_rules('kode_barang', 'Kode Barang', 'trim|required');
-		$this->form_validation->set_rules('nama_barang', 'Nama Barang', 'trim|required');
 		$this->form_validation->set_rules('umur', 'Umur', 'trim');
 		if($this->uri->segment(1)=='add'){
 		$this->form_validation->set_rules('jumlah', 'Jumlah', 'trim|required');
@@ -79,16 +75,13 @@ class Aset_tetap_detail extends MY_Controller {
 		$id_parent	= $this->input->post('id_'.$this->module_parent);
 		$kib	= $this->input->post('kib');
 		$kode_barang	= $this->input->post('kode_barang');
-		$nama_barang	    = $this->input->post('nama_barang');
 		$umur	    = $this->input->post('umur');
 		$nilai	    = $this->input->post('nilai');
 		$info	    = $this->input->post('info');
 
 		$data = array(
 			'id_'.$this->module_parent => $id_parent,
-			'kib' => $kib,
 			'kode_barang' => $kode_barang,
-			'nama_barang' => $nama_barang,
 			'umur' => format_uang($umur),
 			'nilai' => format_uang($nilai),
 			'info' => $info,
@@ -137,12 +130,20 @@ class Aset_tetap_detail extends MY_Controller {
 			}
 
 		}else{
+			$this->db->trans_start();
+			$data = $this->_set_data();
+			$aset_tetap_oleh = $this->db->where('id', $data['id_aset_tetap_oleh'])->get('aset_tetap_oleh')->row();
 			$jumlah = $this->input->post('jumlah');
-			$data = [];
 			for ($i=1; $i <= $jumlah; $i++) { 
-				$data[] = $this->_set_data();
+				$this->db->insert($this->table, $data);
+				$data['id'] = $this->db->insert_id();
+				$data['kode_skpd'] = $this->session_login['skpd_session'];
+				$data['nomor'] = $aset_tetap_oleh->nomor;
+				$data['tanggal'] = $aset_tetap_oleh->tanggal;
+				$data['uraian'] = $aset_tetap_oleh->uraian;
+				$this->db->insert('aset_tetap', $data);
 			}
-			$this->db->insert_batch($this->table, $data);
+			$this->db->trans_complete();
 			$error = $this->db->error();
 			if(empty($error['message'])){
 				$response = array('id'=>$this->db->insert_id(), 'action'=>'insert', 'message'=>'Data berhasil disimpan');
@@ -158,7 +159,9 @@ class Aset_tetap_detail extends MY_Controller {
 	{
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
-			$this->db->where('id', $id);
+			$this->db->where('aset_tetap_oleh_detail.id', $id);
+			$this->db->join('barang','barang.kode=aset_tetap_oleh_detail.kode_barang','left');
+			$this->db->select('aset_tetap_oleh_detail.*, barang.nama as nama_barang, barang.kib');
 			$content['data'] = $this->db->get($this->table)->row();
 			$content['data']->nilai = number_format($content['data']->nilai);
 			$content['data']->umur = number_format($content['data']->umur);
@@ -177,8 +180,11 @@ class Aset_tetap_detail extends MY_Controller {
 			}
 
 		}else{
+			$this->db->trans_start();
 			$data = $this->_set_data('edit');
 			$this->db->update($this->table, $data, ['id'=>$id]);
+			$this->db->update('aset_tetap', $data, ['id'=>$id]);
+			$this->db->trans_complete();
 			$error = $this->db->error();
 			if(empty($error['message'])){
 				$response = array('id'=>$id, 'action'=>'update', 'message'=>'Data berhasil disimpan');
@@ -193,7 +199,10 @@ class Aset_tetap_detail extends MY_Controller {
 	public function delete($id = '')
 	{
 		if ($id) {
+			$this->db->trans_start();
 			$this->db->delete($this->table, ['id'=>$id]);
+			$this->db->delete('aset_tetap', ['id'=>$id]);
+			$this->db->trans_complete();
 			$error = $this->db->error();
 			if(empty($error['message'])){
 				$response = array('id'=>$id, 'action'=>'delete', 'message'=>'Data berhasil dihapus');

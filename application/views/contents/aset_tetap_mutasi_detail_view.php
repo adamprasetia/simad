@@ -38,14 +38,15 @@
                     <tr>
                         <th width="50">No</th>
                         <th>Kode Unik</th>
-                        <th>KIB</th>
+                        <th>Nomor Perolehan</th>
                         <th>Kode Barang</th>
                         <th>Nama Barang</th>
-                        <th>Nomor Perolehan</th>
-                        <th>KIB Baru</th>
+                        <th>KIB</th>
+                        <th>Kode SKPD Baru</th>
+                        <th>Nomor Perolehan Baru</th>
                         <th>Kode Barang Baru</th>
                         <th>Nama Barang Baru</th>
-                        <th>Nomor Perolehan Baru</th>
+                        <th>KIB Baru</th>
                         <th width="100">Aksi</th>
                     </tr>
                 </thead>
@@ -57,14 +58,15 @@
                     <tr>
                         <td><?php echo $no; ?></td>
                         <td><?php echo $value->kode_unik; ?></td>
-                        <td><?php echo config_item('kib')[$value->kib]['id']; ?></td>
+                        <td><?php echo $value->nomor; ?></td>
                         <td><?php echo $value->kode_barang; ?></td>
                         <td><?php echo $value->nama_barang; ?></td>
-                        <td><?php echo $value->nomor; ?></td>
-                        <td><?php echo config_item('kib')[$value->kib_baru]['id']; ?></td>
+                        <td><?php echo config_item('kib')[$value->kib]['id']; ?></td>
+                        <td><?php echo $value->kode_skpd_baru; ?></td>
+                        <td><?php echo $value->nomor_baru; ?></td>
                         <td><?php echo $value->kode_barang_baru; ?></td>
                         <td><?php echo $value->nama_barang_baru; ?></td>
-                        <td><?php echo $value->nomor_baru; ?></td>
+                        <td><?php echo config_item('kib')[$value->kib_baru]['id']; ?></td>
                         <td>
                             <a class="btn btn-default" href="<?php echo base_url($this->module.'/edit/'.$value->id).get_query_string(); ?>"><i class="fa fa-edit"></i></a>
                             <button class="btn btn-default" type="button" name="button" data-url="<?php echo base_url($this->module.'/delete/'.$value->id).get_query_string(); ?>" onclick="return deleteData(this)"><i class="fa fa-trash"></i></button>

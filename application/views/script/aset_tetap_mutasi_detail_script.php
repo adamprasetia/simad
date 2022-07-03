@@ -10,8 +10,8 @@ $('.btn-pilih-barang').click(function(){
     $('#general-modal-iframe').attr('src', '<?php echo base_url('barang?popup=1') ?>&kib='+$('#kib').val());
     $('#general-modal').modal('show');
 })
-$('.btn-pilih-kode-unik').click(function(){
-    $('#general-modal-title').html('Pilih Kode Unik');
+$('.btn-pilih-aset-tetap-detail').click(function(){
+    $('#general-modal-title').html('Pilih Barang');
     $('#general-modal-iframe').attr('src', '<?php echo base_url('aset_tetap_detail?popup=1') ?>&kib='+$('#kib').val()+'&kode_barang='+$('#kode_barang').val()+'&tahun='+$('#tahun').val());
     $('#general-modal').modal('show');
 })
@@ -51,6 +51,7 @@ $(this).contents().find('.btn-choose-aset-tetap-detail').click(function () {
     $('#nomor').val(data.nomor);
     $('#kode_barang').val(data.kode_barang);
     $('#nama_barang').val(data.nama_barang);
+    $('#kib').val(data.kib);
     $('#general-modal').modal('hide');
 });
 });

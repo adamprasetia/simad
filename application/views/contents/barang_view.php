@@ -11,10 +11,27 @@
             <a href="<?php echo base_url('barang/add') ?>" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> Tambah barang</a>
         <?php endif ?>
         <a href="<?php echo now_url() ?>" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Refresh</a>
+    </div>
+    <div class="box-header with-border">
+        <div class="pull-left">
+            <form id="form-filter" action="<?php echo base_url('barang') ?>" method="get" class="form-inline">
+                <input type="hidden" name="popup" value="<?php echo $this->input->get('popup') ?>">
+                <div class="form-group">
+                    <input name="search" type="text" class="form-control" placeholder="Search..." data-url="<?php echo current_url() ?>" data-query-string="<?php echo get_query_string(array('search','page')) ?>" value="<?php echo $this->input->get('search') ?>">
+                </div>
+                <div class="form-group">
+                    <select name="kib" id="kib" class="form-control">
+                        <option value="">- pilih kib -</option>
+                        <?php foreach (config_item('kib') as $key => $value) { ?>
+                            <option <?php echo $this->input->get('kib')==$key?'selected':'' ?> value="<?php echo $key ?>"><?php echo $value['id'].' | '.$value['name'] ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <input type="submit" value="Filter" class="btn btn-primary" onclick="document.getElementById('form-filter').submit()">
+            </form>
+        </div>
         <div class="pull-right">
-            <div class="has-feedback">
-                <input id="input_search" type="text" class="form-control input-sm" placeholder="Search..." data-url="<?php echo current_url() ?>" data-query-string="<?php echo get_query_string(array('search','page')) ?>" value="<?php echo $this->input->get('search') ?>">
-            </div>
+            <?php echo isset($paging)?$paging:'' ?>
         </div>
     </div>
     <div class="box-body no-padding">

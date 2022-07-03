@@ -29,7 +29,6 @@ class Barang extends MY_Controller {
 		$offset = gen_offset($this->limit);
 		$this->_filter();
 		$total = $this->db->count_all_results($this->table);
-		// echo $this->db->last_query();exit;
 		$this->_filter();
 		$barang_view['data'] 	= $this->db->get($this->table, $this->limit, $offset)->result();
 		$barang_view['offset'] = $offset;

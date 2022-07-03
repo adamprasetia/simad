@@ -11,11 +11,16 @@ class Aset_tetap_hapus_detail extends MY_Controller {
    	}
 	private function _filter()
 	{
+		$this->db->select($this->table.'.*,barang.kode as kode_barang,barang.nama as nama_barang,barang.kib,aset_tetap.nomor, concat(DATE_FORMAT(aset_tetap_detail.created_at,"%Y%m%d"),aset_tetap_detail.id) as kode_unik');
+		$this->db->join('aset_tetap_detail', 'aset_tetap_detail.id='.$this->table.'.id_aset_tetap_detail', 'left');
+		$this->db->join('barang', 'barang.kode=aset_tetap_detail.kode_barang', 'left');
+		$this->db->join('aset_tetap', 'aset_tetap.id=aset_tetap_detail.id_aset_tetap', 'left');
+
 		$search = $this->input->get('search');
 		if ($search) {
 			$this->db->group_start();
-			$this->db->like('kode_barang', $search);
-			$this->db->or_like('nama_barang', $search);
+			$this->db->like('barang.kode', $search);
+			$this->db->or_like('barang.nama', $search);
 			$this->db->group_end();
 		}
         $id_aset_tetap_hapus = $this->input->get('id_aset_tetap_hapus');
@@ -30,44 +35,30 @@ class Aset_tetap_hapus_detail extends MY_Controller {
 		$this->_filter();
 		$total = $this->db->count_all_results($this->table);
 		$this->_filter();
-		$aset_tetap_hapus_detail_view['data'] 	= $this->db->get($this->table, $this->limit, $offset)->result();
-		$aset_tetap_hapus_detail_view['offset'] = $offset;
-		$aset_tetap_hapus_detail_view['paging'] = gen_paging($total,$this->limit);
-		$aset_tetap_hapus_detail_view['total'] 	= gen_total($total,$this->limit,$offset);
-		$data['content'] 	= $this->load->view('contents/aset_tetap_hapus_detail_view', $aset_tetap_hapus_detail_view, TRUE);
+		$content['data'] 	= $this->db->get($this->table, $this->limit, $offset)->result();
+		$content['offset'] = $offset;
+		$content['paging'] = gen_paging($total,$this->limit);
+		$content['total'] 	= gen_total($total,$this->limit,$offset);
+		$data['content'] 	= $this->load->view('contents/aset_tetap_hapus_detail_view', $content, TRUE);
 
 		$this->load->view('template_view', $data);
 	}
 
 	private function _set_rules()
 	{
-		$this->form_validation->set_rules('kode_barang', 'Kode Barang', 'trim|required');
-		$this->form_validation->set_rules('nama_barang', 'Nama Barang', 'trim|required');
-		$this->form_validation->set_rules('id_aset_tetap_detail', 'Nomor Perolehan', 'trim|required');
+		$this->form_validation->set_rules('id_aset_tetap_detail', 'Kode Unik', 'trim|required');
 	}
 	
 	private function _set_data($type = 'add')
 	{
 		$id_aset_tetap_hapus	= $this->input->post('id_aset_tetap_hapus');
 		$id_aset_tetap_detail	= $this->input->post('id_aset_tetap_detail');
-		$nomor	= $this->input->post('nomor');
-		$kode_unik	= $this->input->post('kode_unik');
-		$tahun	= $this->input->post('tahun');
-		$kib	= $this->input->post('kib');
-		$kode_barang	= $this->input->post('kode_barang');
-		$nama_barang	    = $this->input->post('nama_barang');
 		$info	    = $this->input->post('info');
 		$nilai	    = $this->input->post('nilai');
 
 		$data = array(
 			'id_aset_tetap_hapus' => $id_aset_tetap_hapus,
 			'id_aset_tetap_detail' => $id_aset_tetap_detail,
-			'kib' => $kib,
-			'kode_barang' => $kode_barang,
-			'nama_barang' => $nama_barang,
-			'tahun' => $tahun,
-			'nomor' => $nomor,
-			'kode_unik' => $kode_unik,
 			'info' => $info,
 			'nilai' => format_uang($nilai),
 		);
@@ -111,11 +102,6 @@ class Aset_tetap_hapus_detail extends MY_Controller {
 			$this->db->trans_start();
 			$data = $this->_set_data();
 			$this->db->insert($this->table, $data);
-			$this->db->update('aset_tetap_detail',[
-				'status'=>0,
-				'modified_by'=>$this->session_login['id'],
-				'modified_at'=>date('Y-m-d H:i:s'),
-			],['id'=>$data['id_aset_tetap_detail']]);
 			$this->db->trans_complete();
 			$error = $this->db->error();
 			if(empty($error['message'])){
@@ -132,12 +118,17 @@ class Aset_tetap_hapus_detail extends MY_Controller {
 	{
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
-			$this->db->where('id', $id);
-			$aset_tetap_hapus_detail_view['data'] = $this->db->get($this->table)->row();
-			$aset_tetap_hapus_detail_view['data']->nilai = number_format($aset_tetap_hapus_detail_view['data']->nilai);
-			$aset_tetap_hapus_detail_view['action'] = base_url('aset_tetap_hapus_detail/edit/'.$id).get_query_string();
+			$this->db->where($this->table.'.id', $id);
+			$this->db->select($this->table.'.*,barang.kode as kode_barang,barang.nama as nama_barang,barang.kib,aset_tetap.nomor, concat(DATE_FORMAT(aset_tetap_detail.created_at,"%Y%m%d"),aset_tetap_detail.id) as kode_unik');
+			$this->db->join('aset_tetap_detail', 'aset_tetap_detail.id='.$this->table.'.id_aset_tetap_detail', 'left');
+			$this->db->join('barang', 'barang.kode=aset_tetap_detail.kode_barang', 'left');
+			$this->db->join('aset_tetap', 'aset_tetap.id=aset_tetap_detail.id_aset_tetap', 'left');	
+			$content['data'] = $this->db->get($this->table)->row();
+			$content['data']->kib = config_item('kib')[$content['data']->kib]['id'];
+			$content['data']->nilai = number_format($content['data']->nilai);
+			$content['action'] = base_url('aset_tetap_hapus_detail/edit/'.$id).get_query_string();
 			$data['script'] = $this->load->view('script/aset_tetap_hapus_detail_script', '', true);
-			$data['content'] = $this->load->view('contents/form_aset_tetap_hapus_detail_view',$aset_tetap_hapus_detail_view,true);
+			$data['content'] = $this->load->view('contents/form_aset_tetap_hapus_detail_view',$content,true);
 
 			if(!validation_errors())
 			{

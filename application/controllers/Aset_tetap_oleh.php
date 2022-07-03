@@ -1,10 +1,10 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Aset_tetap extends MY_Controller {
+class Aset_tetap_oleh extends MY_Controller {
 
 	private $limit = 15;
-	private $table = 'aset_tetap';
-	public $module = 'aset_tetap';
+	private $table = 'aset_tetap_oleh';
+	public $module = 'aset_tetap_oleh';
 	public $title = 'Perolehan Aset Tetap';
 
 	function __construct()

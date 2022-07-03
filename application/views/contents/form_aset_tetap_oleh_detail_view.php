@@ -55,7 +55,7 @@
                         <tr>
                             <td><label>Nama Barang</label></td>
                             <td>
-                                <input type="text" id="nama_barang" name="nama_barang" class="form-control" value="<?php echo isset($data->nama_barang)?$data->nama_barang:'' ?>">        
+                                <input readonly type="text" id="nama_barang" name="nama_barang" class="form-control" value="<?php echo isset($data->nama_barang)?$data->nama_barang:'' ?>">        
                             </td>
                         </tr>
                         <tr>

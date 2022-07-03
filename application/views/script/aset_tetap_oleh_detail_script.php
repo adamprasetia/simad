@@ -1,7 +1,7 @@
 <script>
 $('#kib').focus();
 kib($('#kib').val());
-$('#kib').change(function(){
+$('#kib').on('change', function(){
     kib($(this).val());
 })
 function kib(val){
@@ -27,6 +27,8 @@ $("#general-modal-iframe").on('load',function () {
         data = JSON.parse(data);
         $('#kode_barang').val(data.kode);
         $('#nama_barang').val(data.nama);
+        $('#kib').val(data.kib);
+        kib(data.kib);
         $('#general-modal').modal('hide');
     });
 });

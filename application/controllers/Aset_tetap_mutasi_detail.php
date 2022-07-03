@@ -14,11 +14,17 @@ class Aset_tetap_mutasi_detail extends MY_Controller {
    	}
 	private function _filter()
 	{
+		$this->db->select($this->table.'.*,b1.kode as kode_barang,b1.nama as nama_barang,b2.nama as nama_barang_baru,b1.kib,b2.kib as kib_baru,aset_tetap.nomor, concat(DATE_FORMAT(aset_tetap_detail.created_at,"%Y%m%d"),aset_tetap_detail.id) as kode_unik');
+		$this->db->join('aset_tetap_detail', 'aset_tetap_detail.id='.$this->table.'.id_aset_tetap_detail', 'left');
+		$this->db->join('barang b1', 'b1.kode=aset_tetap_detail.kode_barang', 'left');
+		$this->db->join('barang b2', 'b2.kode=aset_tetap_mutasi_detail.kode_barang_baru', 'left');
+		$this->db->join('aset_tetap', 'aset_tetap.id=aset_tetap_detail.id_aset_tetap', 'left');
+
 		$search = $this->input->get('search');
 		if ($search) {
 			$this->db->group_start();
-			$this->db->like('kode_barang', $search);
-			$this->db->or_like('nama_barang', $search);
+			$this->db->like('b1.kode', $search);
+			$this->db->or_like('b1.barang', $search);
 			$this->db->group_end();
 		}
 		$parent = $this->input->get('id_'.$this->module_parent);
@@ -43,40 +49,24 @@ class Aset_tetap_mutasi_detail extends MY_Controller {
 
 	private function _set_rules()
 	{
-		$this->form_validation->set_rules('kode_barang', 'Kode Barang', 'trim');
-		$this->form_validation->set_rules('nama_barang', 'Nama Barang', 'trim');
+		$this->form_validation->set_rules('id_aset_tetap_detail', 'Kode Unik', 'trim|required');
+		$this->form_validation->set_rules('kode_barang_baru', 'Kode Barang Baru', 'trim|required');
+		$this->form_validation->set_rules('kode_skpd_baru', 'Nomor Perolehan Baru', 'trim|required');
+		$this->form_validation->set_rules('nomor_baru', 'Nomor Perolehan Baru', 'trim|required');
 	}
 	private function _set_data($type = 'add')
 	{
 		$id_parent	= $this->input->post('id_'.$this->module_parent);
 		$id_aset_tetap_detail	= $this->input->post('id_aset_tetap_detail');
-		$kode_unik	= $this->input->post('kode_unik');
-		$tahun	= $this->input->post('tahun');
-		$nomor	= $this->input->post('nomor');
-		$kib	= $this->input->post('kib');
-		$kode_skpd	= $this->input->post('kode_skpd');
-		$kode_barang	= $this->input->post('kode_barang');
-		$nama_barang	    = $this->input->post('nama_barang');
-		$nomor_baru	= $this->input->post('nomor_baru');
-		$kib_baru	= $this->input->post('kib_baru');
 		$kode_skpd_baru	= $this->input->post('kode_skpd_baru');
 		$kode_barang_baru	= $this->input->post('kode_barang_baru');
-		$nama_barang_baru	    = $this->input->post('nama_barang_baru');
+		$nomor_baru	= $this->input->post('nomor_baru');
 
 		$data = array(
 			'id_'.$this->module_parent => $id_parent,
 			'id_aset_tetap_detail' => $id_aset_tetap_detail,
-			'kode_unik' => $kode_unik,
-			'kib' => $kib,
-			'tahun' => $tahun,
-			'kode_skpd' => $kode_skpd,
-			'kode_barang' => $kode_barang,
-			'nama_barang' => $nama_barang,
-			'nomor' => $nomor,
-			'kib_baru' => $kib_baru,
 			'kode_skpd_baru' => $kode_skpd_baru,
 			'kode_barang_baru' => $kode_barang_baru,
-			'nama_barang_baru' => $nama_barang_baru,
 			'nomor_baru' => $nomor_baru,
 		);
 
@@ -119,43 +109,35 @@ class Aset_tetap_mutasi_detail extends MY_Controller {
 			$this->db->trans_start();
 			$data = $this->_set_data();
 			$this->db->insert($this->table, $data);
-			$nomor = $this->input->post('nomor_baru');
-			$kode_skpd = $this->input->post('kode_skpd_baru');
-			$aset_tetap = $this->db->where('kode_skpd', $kode_skpd)->where('nomor', $nomor)->get('aset_tetap')->row();
-			if(!empty($aset_tetap)){
-				$id_aset_tetap_baru = $aset_tetap->id;
-			}else{
-				$this->db->insert('aset_tetap', [
-					'kode_skpd'=>$data['kode_skpd_baru'],
-					'nomor'=>$data['nomor_baru'],
-					'tanggal'=>$this->input->post('tanggal'),
-					'uraian'=>'Mutasi dari '.$data['kode_skpd'],
-					'created_by' => $this->session_login['id'],
-					'created_at' => date('Y-m-d H:i:s'),	
-				]);
-				$id_aset_tetap_baru = $this->db->insert_id();
-			}
+			// $nomor_baru = $this->input->post('nomor_baru');
+			// $kode_skpd_baru = $this->input->post('kode_skpd_baru');
+			// $aset_tetap = $this->db->where('kode_skpd', $kode_skpd_baru)->where('nomor', $nomor_baru)->get('aset_tetap')->row();
+			// if(!empty($aset_tetap)){
+			// 	$id_aset_tetap_baru = $aset_tetap->id;
+			// }else{
+			// 	$this->db->insert('aset_tetap', [
+			// 		'kode_skpd'=>$data['kode_skpd_baru'],
+			// 		'nomor'=>$data['nomor_baru'],
+			// 		'tanggal'=>$this->input->post('tanggal'),
+			// 		'uraian'=>'Mutasi dari '.$this->session_login['skpd_session'],
+			// 		'created_by' => $this->session_login['id'],
+			// 		'created_at' => date('Y-m-d H:i:s'),	
+			// 	]);
+			// 	$id_aset_tetap_baru = $this->db->insert_id();
+			// }
 	
-
-			$this->db->update('aset_tetap_detail', [
-				'status'=>2,
-				'note'=>'Mutasi ke '.$data['kode_skpd_baru']
-			], ['id'=>$data['id_aset_tetap_detail']]);
-
-			$aset_tetap_detail = $this->db->where('id', $data['id_aset_tetap_detail'])->get('aset_tetap_detail')->row();
-			$this->db->insert('aset_tetap_detail', [
-				'id_aset_tetap'=>$id_aset_tetap_baru,
-				'kode_barang'=>$data['kode_barang_baru'],
-				'nama_barang'=>$data['nama_barang_baru'],
-				'kib'=>$data['kib_baru'],
-				'umur'=>$aset_tetap_detail->umur,
-				'nilai'=>$aset_tetap_detail->nilai,
-				'info'=>$aset_tetap_detail->info,
-				'info_lain'=>$aset_tetap_detail->info_lain,
-				'note'=>'Mutasi dari '.$data['kode_skpd'],
-				'created_by' => $this->session_login['id'],
-				'created_at' => date('Y-m-d H:i:s'),	
-			]);
+			// $aset_tetap_detail = $this->db->where('id', $data['id_aset_tetap_detail'])->get('aset_tetap_detail')->row();
+			// $this->db->insert('aset_tetap_detail', [
+			// 	'id_aset_tetap'=>$id_aset_tetap_baru,
+			// 	'kode_barang'=>$data['kode_barang_baru'],
+			// 	'umur'=>$aset_tetap_detail->umur,
+			// 	'nilai'=>$aset_tetap_detail->nilai,
+			// 	'info'=>$aset_tetap_detail->info,
+			// 	'info_lain'=>$aset_tetap_detail->info_lain,
+			// 	'note'=>'Mutasi dari '.$this->session_login['skpd_session'],
+			// 	'created_by' => $this->session_login['id'],
+			// 	'created_at' => date('Y-m-d H:i:s'),	
+			// ]);
 			$error = $this->db->error();
 			if(empty($error['message'])){
 				$response = array('id'=>$this->db->insert_id(), 'action'=>'insert', 'message'=>'Data berhasil disimpan');
@@ -172,7 +154,12 @@ class Aset_tetap_mutasi_detail extends MY_Controller {
 	{
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
-			$this->db->where('id', $id);
+			$this->db->where($this->table.'.id', $id);
+			$this->db->select($this->table.'.*,b1.kode as kode_barang,b1.nama as nama_barang,b2.nama as nama_barang_baru,b1.kib,b2.kib as kib_baru,aset_tetap.nomor, concat(DATE_FORMAT(aset_tetap_detail.created_at,"%Y%m%d"),aset_tetap_detail.id) as kode_unik');
+			$this->db->join('aset_tetap_detail', 'aset_tetap_detail.id='.$this->table.'.id_aset_tetap_detail', 'left');
+			$this->db->join('barang b1', 'b1.kode=aset_tetap_detail.kode_barang', 'left');
+			$this->db->join('barang b2', 'b2.kode=aset_tetap_mutasi_detail.kode_barang_baru', 'left');
+			$this->db->join('aset_tetap', 'aset_tetap.id=aset_tetap_detail.id_aset_tetap', 'left');	
 			$content['data'] = $this->db->get($this->table)->row();
 			$content['action'] = base_url($this->module.'/edit/'.$id).get_query_string();
 			$data['script'] = $this->load->view('script/'.$this->module.'_script', '', true);

@@ -30,47 +30,10 @@
                     <td colspan=2><i>Detail Barang</i></td>
                 </tr>
                 <tr>
-                    <td style="width:150px"><label>KIB *</label></td>
-                    <td>
-                    <select name="kib" id="kib" class="form-control">
-                        <?php foreach (config_item('kib') as $key => $value) { ?>
-                            <option <?php echo isset($data->kib) && $data->kib==$key?'selected':'' ?> value="<?php echo $key ?>"><?php echo $value['id'].' | '.$value['name'] ?></option>
-                        <?php } ?>
-                    </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label>Kode Barang *</label></td>
-                    <td>
-                        <div class="input-group">
-                            <input type="text" id="kode_barang" name="kode_barang" class="form-control" value="<?php echo isset($data->kode_barang)?$data->kode_barang:'' ?>">
-                            <span class="input-group-btn">
-                                <button type="button" data-title="Pilih Kode Barang" class="btn btn-success btn-flat btn-pilih-barang">Pilih</button>
-                            </span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label>Nama Barang *</label></td>
-                    <td>
-                        <input type="text" id="nama_barang" name="nama_barang" class="form-control" value="<?php echo isset($data->nama_barang)?$data->nama_barang:'' ?>">        
-                    </td>
-                </tr>
-                <tr>
-                    <td><label>Tahun Perolehan *</label></td>
-                    <td>
-                        <select name="tahun" id="tahun" class="form-control">
-                        <?php for ($i=date('Y'); $i >= date('Y')-5; $i--) { ?>
-                            <option <?php echo (isset($data->tahun) && $data->tahun==$i?'selected':'')?> value="<?php echo $i ?>"><?php echo $i ?></option>
-                        <?php } ?>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
                     <td><label>Kode Unik *</label></td>
                     <td>
                         <div class="input-group">
-                            <input type="text" id="kode_unik" name="kode_unik" class="form-control" value="<?php echo isset($data->kode_unik)?$data->kode_unik:'' ?>">        
+                            <input type="text" id="kode_unik" name="kode_unik" class="form-control" value="<?php echo isset($data->kode_unik)?$data->kode_unik:'' ?>">
                             <input type="hidden" id="id_aset_tetap_detail" name="id_aset_tetap_detail" value="<?php echo isset($data->id_aset_tetap_detail)?$data->id_aset_tetap_detail:'' ?>">
                             <span class="input-group-btn">
                                 <button type="button" data-title="Pilih Nomor Perolehan" class="btn btn-success btn-flat btn-pilih-aset-tetap-detail">Pilih</button>
@@ -79,15 +42,28 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><label>Nomor Perolehan *</label></td>
+                    <td><label>Nomor Perolehan</label></td>
                     <td>
-                        <input type="text" id="nomor" name="nomor" class="form-control" value="<?php echo isset($data->nomor)?$data->nomor:'' ?>">        
+                        <input readonly type="text" id="nomor" name="nomor" class="form-control" value="<?php echo isset($data->nomor)?$data->nomor:'' ?>">        
                     </td>
                 </tr>
-
                 <tr>
-                    <td><label>Info</label></td>
-                    <td><textarea name="info" id="info" cols="30" rows="2" class="form-control"><?php echo isset($data->info)?htmlentities($data->info):'' ?></textarea></td>
+                    <td><label>Kode Barang</label></td>
+                    <td>
+                        <input readonly type="text" id="kode_barang" name="kode_barang" class="form-control" value="<?php echo isset($data->kode_barang)?$data->kode_barang:'' ?>">        
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Nama Barang</label></td>
+                    <td>
+                        <input readonly type="text" id="nama_barang" name="nama_barang" class="form-control" value="<?php echo isset($data->nama_barang)?$data->nama_barang:'' ?>">        
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>KIB</label></td>
+                    <td>
+                        <input readonly type="text" id="kib" name="kib" class="form-control" value="<?php echo isset($data->kib)?$data->kib:'' ?>">        
+                    </td>
                 </tr>
                 <tr>
                     <td><label>Umur Bertambah *</label></td>

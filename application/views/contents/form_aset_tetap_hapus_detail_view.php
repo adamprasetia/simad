@@ -2,7 +2,7 @@
     <form id="form_data" method="post">
         <div class="box-header with-border">
             <div class="pull-left">
-                <h4><strong>FORMULIR PENAMBAHAN ASET TETAP DETAIL</strong></h4>
+                <h4><strong>FORMULIR PELEPASAN ASET TETAP DETAIL</strong></h4>
             </div>
         </div>
         <div class="box-body">
@@ -30,43 +30,6 @@
                     <td colspan=2><i>Detail Barang</i></td>
                 </tr>
                 <tr>
-                    <td style="width:150px"><label>KIB *</label></td>
-                    <td>
-                    <select name="kib" id="kib" class="form-control">
-                        <?php foreach (config_item('kib') as $key => $value) { ?>
-                            <option <?php echo isset($data->kib) && $data->kib==$key?'selected':'' ?> value="<?php echo $key ?>"><?php echo $value['id'].' | '.$value['name'] ?></option>
-                        <?php } ?>
-                    </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label>Kode Barang *</label></td>
-                    <td>
-                        <div class="input-group">
-                            <input type="text" id="kode_barang" name="kode_barang" class="form-control" value="<?php echo isset($data->kode_barang)?$data->kode_barang:'' ?>">
-                            <span class="input-group-btn">
-                                <button type="button" data-title="Pilih Kode Barang" class="btn btn-success btn-flat btn-pilih-barang">Pilih</button>
-                            </span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label>Nama Barang *</label></td>
-                    <td>
-                        <input type="text" id="nama_barang" name="nama_barang" class="form-control" value="<?php echo isset($data->nama_barang)?$data->nama_barang:'' ?>">        
-                    </td>
-                </tr>
-                <tr>
-                    <td><label>Tahun Perolehan *</label></td>
-                    <td>
-                        <select name="tahun" id="tahun" class="form-control">
-                        <?php for ($i=date('Y'); $i >= date('Y')-5; $i--) { ?>
-                            <option <?php echo (isset($data->tahun) && $data->tahun==$i?'selected':'')?> value="<?php echo $i ?>"><?php echo $i ?></option>
-                        <?php } ?>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
                     <td><label>Kode Unik *</label></td>
                     <td>
                         <div class="input-group">
@@ -79,9 +42,27 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><label>Nomor Perolehan *</label></td>
+                    <td><label>Nomor Perolehan</label></td>
                     <td>
-                        <input type="text" id="nomor" name="nomor" class="form-control" value="<?php echo isset($data->nomor)?$data->nomor:'' ?>">        
+                        <input readonly type="text" id="nomor" name="nomor" class="form-control" value="<?php echo isset($data->nomor)?$data->nomor:'' ?>">        
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Kode Barang</label></td>
+                    <td>
+                        <input readonly type="text" id="kode_barang" name="kode_barang" class="form-control" value="<?php echo isset($data->kode_barang)?$data->kode_barang:'' ?>">        
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Nama Barang</label></td>
+                    <td>
+                        <input readonly type="text" id="nama_barang" name="nama_barang" class="form-control" value="<?php echo isset($data->nama_barang)?$data->nama_barang:'' ?>">        
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>KIB</label></td>
+                    <td>
+                        <input readonly type="text" id="kib" name="kib" class="form-control" value="<?php echo isset($data->kib)?$data->kib:'' ?>">        
                     </td>
                 </tr>
                 <tr>
