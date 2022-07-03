@@ -53,31 +53,19 @@
                 <tr>
                     <td><label>Nama Barang *</label></td>
                     <td>
-                        <input type="text" id="nama_barang" name="nama_barang" class="form-control" value="<?php echo isset($data->nama_barang)?$data->nama_barang:'' ?>">        
+                        <input readonly type="text" id="nama_barang" name="nama_barang" class="form-control" value="<?php echo isset($data->nama_barang)?$data->nama_barang:'' ?>">        
                     </td>
                 </tr>
                 <tr>
-                    <td><label>Kode Unik *</label></td>
+                    <td><label>Satuan *</label></td>
                     <td>
-                        <div class="input-group">
-                            <input type="text" id="kode_unik" name="kode_unik" class="form-control" value="<?php echo isset($data->kode_unik)?$data->kode_unik:'' ?>">
-                            <input type="hidden" id="id_persediaan_detail" name="id_persediaan_detail" value="<?php echo isset($data->id_persediaan_detail)?$data->id_persediaan_detail:'' ?>">
-                            <span class="input-group-btn">
-                                <button type="button" data-title="Pilih Persediaan" class="btn btn-success btn-flat btn-pilih-persediaan-detail">Pilih</button>
-                            </span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label>Nomor Perolehan *</label></td>
-                    <td>
-                        <input type="text" id="nama_barang" name="nama_barang" class="form-control" value="<?php echo isset($data->nama_barang)?$data->nama_barang:'' ?>">        
+                        <input readonly type="text" id="satuan" name="satuan" class="form-control" value="<?php echo isset($data->satuan)?$data->satuan:'' ?>">        
                     </td>
                 </tr>
                 <tr>
                     <td><label>Jumlah Tersedia *</label></td>
                     <td>
-                        <input type="text" id="jumlah_tersedia" name="jumlah_tersedia" class="input-uang form-control" value="<?php echo isset($data->jumlah_tersedia)?$data->jumlah_tersedia:'' ?>">
+                        <input readonly type="text" id="jumlah_tersedia" name="jumlah_tersedia" class="input-uang form-control" value="<?php echo isset($data->jumlah_tersedia)?$data->jumlah_tersedia:'' ?>">
                     </td>
                 </tr>
                 <tr>

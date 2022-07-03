@@ -26,7 +26,6 @@ $('#jumlah, #nilai').on('change keyup', function(){
 function total(){
     var jumlah = parseInt($('#jumlah').val().replace(/,/g, ''));
     var nilai = parseFloat($('#nilai').val().replace(/,/g, ''));
-    console.log(nilai);
     $('#total').val(jumlah*nilai);
     $('.input-uang').priceFormat({
         prefix: '',

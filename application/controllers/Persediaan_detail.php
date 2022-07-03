@@ -46,6 +46,7 @@ class Persediaan_detail extends MY_Controller {
 	private function _set_rules()
 	{
 		$this->form_validation->set_rules('kode_barang', 'Kode Barang', 'trim|required');
+		$this->form_validation->set_rules('metode', 'Metode', 'trim|required');
 		$this->form_validation->set_rules('jumlah', 'Jumlah', 'trim|required');
 		$this->form_validation->set_rules('nilai', 'Nilai', 'trim|required');
 	}
@@ -54,6 +55,8 @@ class Persediaan_detail extends MY_Controller {
 	{
 		$id_parent	= $this->input->post('id_'.$this->module_parent);
 		$kode_barang	= $this->input->post('kode_barang');
+		$metode	= $this->input->post('metode');
+		$masa_berlaku	= $this->input->post('masa_berlaku');
 		$jumlah	    = $this->input->post('jumlah');
 		$nilai	    = $this->input->post('nilai');
 
@@ -61,6 +64,8 @@ class Persediaan_detail extends MY_Controller {
 			'id_'.$this->module_parent => $id_parent,
 			'kode_barang' => $kode_barang,
 			'jumlah' => format_uang($jumlah),
+			'metode' => $metode,
+			'masa_berlaku' => format_ymd($masa_berlaku),
 			'nilai' => format_uang($nilai)
 		);
 
@@ -179,6 +184,7 @@ class Persediaan_detail extends MY_Controller {
 	public function delete($id = '')
 	{
 		if ($id) {
+			$this->db->trans_start();
 			$before = $this->db->where('id', $id)->get($this->table)->row();
 			if(!empty($before)){
 				$this->db->where('kode_skpd', $this->session_login['skpd_session']);
@@ -188,6 +194,7 @@ class Persediaan_detail extends MY_Controller {
 			}
 
 			$this->db->delete($this->table, ['id'=>$id]);
+			$this->db->trans_complete();
 			$error = $this->db->error();
 			if(empty($error['message'])){
 				$response = array('id'=>$id, 'action'=>'delete', 'message'=>'Data berhasil dihapus');

@@ -148,7 +148,16 @@ class Persediaan_pakai extends MY_Controller {
 	public function delete($id = '')
 	{
 		if ($id) {
+			$this->db->trans_start();
+			$detail = $this->db->where('id_persediaan_pakai', $id)->get('persediaan_pakai_detail')->result();
+			foreach ($detail as $row) {
+				$this->db->where('kode_skpd', $this->session_login['skpd_session']);
+				$this->db->where('kode_barang', $row->kode_barang);
+				$this->db->set('stok', 'stok+'.$row->jumlah, FALSE);
+				$this->db->update('persediaan_stok');
+			}
 			$this->db->delete($this->table, ['id'=>$id]);
+			$this->db->trans_complete();
 			$error = $this->db->error();
 			if(empty($error['message'])){
 				$response = array('id'=>$id, 'action'=>'delete', 'message'=>'Data berhasil dihapus');

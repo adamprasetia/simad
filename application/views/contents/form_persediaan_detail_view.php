@@ -30,6 +30,16 @@
                     <td colspan=2><i>Detail Barang</i></td>
                 </tr>
                 <tr>
+                    <td style="width:150px"><label>Metode *</label></td>
+                    <td>
+                    <select name="metode" id="metode" class="form-control">
+                        <?php foreach (config_item('metode') as $key => $value) { ?>
+                            <option <?php echo isset($data->metode) && $data->metode==$key?'selected':'' ?> value="<?php echo $key ?>"><?php echo $value['name'] ?></option>
+                        <?php } ?>
+                    </select>
+                    </td>
+                </tr>
+                <tr>
                     <td><label>Kode Barang *</label></td>
                     <td>
                         <div class="input-group">
@@ -38,6 +48,12 @@
                                 <button type="button" class="btn btn-success btn-flat btn-pilih-barang-persediaan">Pilih</button>
                             </span>
                         </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Masa Berlaku</label></td>
+                    <td>
+                        <input type="text" id="masa_berlaku" name="masa_berlaku" class="form-control datetimepicker" value="<?php echo isset($data->masa_berlaku)?format_dmy($data->masa_berlaku):'' ?>">
                     </td>
                 </tr>
                 <tr>
