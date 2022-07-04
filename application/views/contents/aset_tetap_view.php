@@ -1,35 +1,18 @@
 <div class="box box-default">
+    <?php if(empty($this->input->get('popup'))): ?>
     <div class="box-header with-border">
-        <?php if(empty($this->input->get('popup'))): ?>
         <div class="pull-left">
             <h4><strong>DATA <?php echo strtoupper($this->title) ?></strong></h4>
         </div>
-        <?php endif ?>
-        <?php if(!empty($this->input->get('id_'.$this->module_parent))): ?>
-        <?php $parent = $this->db->where('id', $this->input->get('id_'.$this->module_parent))->get($this->module_parent)->row(); ?>
-        <table class="table table-bordered" style="margin-bottom:0px;">
-            <tr>
-                <td width="50px"><strong>Nomor</strong></td>
-                <td>: <?php echo $parent->nomor ?></td>
-            </tr>
-            <tr>
-                <td><strong>Tanggal</strong></td>
-                <td>: <?php echo format_dmy($parent->tanggal) ?></td>
-            </tr>
-            <tr>
-                <td><strong>Uraian</strong></td>
-                <td>: <?php echo $parent->uraian ?></td>
-            </tr>
-        </table>
-        <?php endif ?>
     </div>
+    <?php endif ?>
+    <?php if(empty($this->input->get('popup'))): ?>
     <div class="box-header with-border">
-        <?php if(empty($this->input->get('popup'))): ?>
-            <a href="<?php echo base_url($this->module.'/add').get_query_string() ?>" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> Tambah Detail</a>
-            <a href="<?php echo base_url($this->module_parent) ?>" class="btn btn-default btn-sm"><i class="fa fa-close"></i> Kembali</a>
-        <?php endif ?>
+        <a href="<?php echo base_url($this->module.'/add').get_query_string() ?>" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> Tambah Detail</a>
+        <a href="<?php echo base_url($this->module) ?>" class="btn btn-default btn-sm"><i class="fa fa-close"></i> Kembali</a>
         <a href="<?php echo now_url() ?>" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Refresh</a>
     </div>
+    <?php endif ?>
     <div class="box-header with-border">
         <div class="pull-left">
             <form id="form-filter" action="<?php echo base_url($this->module).get_query_string() ?>" method="get" class="form-inline">
@@ -59,13 +42,11 @@
                 <thead>
                     <tr>
                         <th width="50">No</th>
-                        <?php if(!empty($this->input->get('popup'))): ?>
-                            <th>Nomor Perolehan</th>
-                        <?php endif ?>
                         <th>Kode Unik</th>
-                        <th>KIB</th>
+                        <th>Nomor Perolehan</th>
                         <th>Kode Barang</th>
                         <th>Nama Barang</th>
+                        <th>KIB</th>
                         <th>Nilai</th>
                         <th width="100">Aksi</th>
                     </tr>
@@ -77,17 +58,15 @@
                       ?>
                     <tr>
                         <td><?php echo $no; ?></td>
-                        <?php if(!empty($this->input->get('popup'))): ?>
-                            <td><?php echo $value->nomor; ?></td>
-                        <?php endif ?>
                         <td><?php echo $value->kode_unik; ?></td>
-                        <td><?php echo config_item('kib')[$value->kib]['id']; ?></td>
+                        <td><?php echo $value->nomor; ?></td>
                         <td><?php echo $value->kode_barang; ?></td>
                         <td><?php echo $value->nama_barang; ?></td>
+                        <td><?php echo config_item('kib')[$value->kib]['id']; ?></td>
                         <td><?php echo number_format($value->nilai); ?></td>
                         <td>
                             <?php if(!empty($this->input->get('popup'))): ?>
-                                <button class="btn btn-primary btn-choose-aset-tetap-detail" type="button" name="button" data-id="<?php echo $value->id ?>"><i class="fa fa-use"></i> Pilih</button>
+                                <button class="btn btn-primary btn-choose-aset-tetap" type="button" name="button" data-id="<?php echo $value->id ?>"><i class="fa fa-use"></i> Pilih</button>
                                 <div style="display:none" id="data-<?php echo $value->id ?>"><?php $value->kib = config_item('kib')[$value->kib]['id'];$value->nilai = number_format($value->nilai);echo json_encode($value) ?></div>
                             <?php else: ?>                                
                                 <a class="btn btn-default" href="<?php echo base_url($this->module.'/edit/'.$value->id).get_query_string(); ?>"><i class="fa fa-edit"></i></a>

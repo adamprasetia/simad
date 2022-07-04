@@ -11,10 +11,9 @@ class Aset_tetap_hapus_detail extends MY_Controller {
    	}
 	private function _filter()
 	{
-		$this->db->select($this->table.'.*,barang.kode as kode_barang,barang.nama as nama_barang,barang.kib,aset_tetap.nomor, concat(DATE_FORMAT(aset_tetap_detail.created_at,"%Y%m%d"),aset_tetap_detail.id) as kode_unik');
-		$this->db->join('aset_tetap_detail', 'aset_tetap_detail.id='.$this->table.'.id_aset_tetap_detail', 'left');
-		$this->db->join('barang', 'barang.kode=aset_tetap_detail.kode_barang', 'left');
-		$this->db->join('aset_tetap', 'aset_tetap.id=aset_tetap_detail.id_aset_tetap', 'left');
+		$this->db->select($this->table.'.*,barang.kode as kode_barang,barang.nama as nama_barang,barang.kib,aset_tetap.nomor, concat(DATE_FORMAT(aset_tetap.tanggal,"%Y%m%d"),aset_tetap.id) as kode_unik');
+		$this->db->join('aset_tetap', 'aset_tetap.id='.$this->table.'.id_aset_tetap', 'left');
+		$this->db->join('barang', 'barang.kode=aset_tetap.kode_barang', 'left');
 
 		$search = $this->input->get('search');
 		if ($search) {
@@ -46,19 +45,19 @@ class Aset_tetap_hapus_detail extends MY_Controller {
 
 	private function _set_rules()
 	{
-		$this->form_validation->set_rules('id_aset_tetap_detail', 'Kode Unik', 'trim|required');
+		$this->form_validation->set_rules('id_aset_tetap', 'Kode Unik', 'trim|required');
 	}
 	
 	private function _set_data($type = 'add')
 	{
 		$id_aset_tetap_hapus	= $this->input->post('id_aset_tetap_hapus');
-		$id_aset_tetap_detail	= $this->input->post('id_aset_tetap_detail');
+		$id_aset_tetap	= $this->input->post('id_aset_tetap');
 		$info	    = $this->input->post('info');
 		$nilai	    = $this->input->post('nilai');
 
 		$data = array(
 			'id_aset_tetap_hapus' => $id_aset_tetap_hapus,
-			'id_aset_tetap_detail' => $id_aset_tetap_detail,
+			'id_aset_tetap' => $id_aset_tetap,
 			'info' => $info,
 			'nilai' => format_uang($nilai),
 		);
@@ -101,6 +100,10 @@ class Aset_tetap_hapus_detail extends MY_Controller {
 		}else{
 			$this->db->trans_start();
 			$data = $this->_set_data();
+
+			$this->db->where('id', $data['id_aset_tetap']);
+			$this->db->update('aset_tetap',['status'=>0]);
+
 			$this->db->insert($this->table, $data);
 			$this->db->trans_complete();
 			$error = $this->db->error();
@@ -119,10 +122,9 @@ class Aset_tetap_hapus_detail extends MY_Controller {
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
 			$this->db->where($this->table.'.id', $id);
-			$this->db->select($this->table.'.*,barang.kode as kode_barang,barang.nama as nama_barang,barang.kib,aset_tetap.nomor, concat(DATE_FORMAT(aset_tetap_detail.created_at,"%Y%m%d"),aset_tetap_detail.id) as kode_unik');
-			$this->db->join('aset_tetap_detail', 'aset_tetap_detail.id='.$this->table.'.id_aset_tetap_detail', 'left');
-			$this->db->join('barang', 'barang.kode=aset_tetap_detail.kode_barang', 'left');
-			$this->db->join('aset_tetap', 'aset_tetap.id=aset_tetap_detail.id_aset_tetap', 'left');	
+			$this->db->select($this->table.'.*,barang.kode as kode_barang,barang.nama as nama_barang,barang.kib,aset_tetap.nomor, concat(DATE_FORMAT(aset_tetap.tanggal,"%Y%m%d"),aset_tetap.id) as kode_unik');
+			$this->db->join('aset_tetap', 'aset_tetap.id='.$this->table.'.id_aset_tetap', 'left');
+			$this->db->join('barang', 'barang.kode=aset_tetap.kode_barang', 'left');
 			$content['data'] = $this->db->get($this->table)->row();
 			$content['data']->kib = config_item('kib')[$content['data']->kib]['id'];
 			$content['data']->nilai = number_format($content['data']->nilai);
@@ -140,8 +142,19 @@ class Aset_tetap_hapus_detail extends MY_Controller {
 			}
 
 		}else{
+			$this->db->trans_start();
 			$data = $this->_set_data('edit');
+			$before = $this->db->where('id', $id)->get($this->table)->row();
+			if($before->id_aset_tetap != $data['id_aset_tetap']){
+				$this->db->where('id', $before->id_aset_tetap);
+				$this->db->update('aset_tetap',['status'=>1]);
+			}
+
+			$this->db->where('id', $data['id_aset_tetap']);
+			$this->db->update('aset_tetap',['status'=>0]);
+
 			$this->db->update($this->table, $data, ['id'=>$id]);
+			$this->db->trans_complete();
 			$error = $this->db->error();
 			if(empty($error['message'])){
 				$response = array('id'=>$id, 'action'=>'update', 'message'=>'Data berhasil disimpan');
@@ -156,7 +169,13 @@ class Aset_tetap_hapus_detail extends MY_Controller {
 	public function delete($id = '')
 	{
 		if ($id) {
+			$this->db->trans_start();
+			$before = $this->db->where('id', $id)->get($this->table)->row();
+			$this->db->where('id', $before->id_aset_tetap);
+			$this->db->update('aset_tetap',['status'=>1]);
+
 			$this->db->delete($this->table, ['id'=>$id]);
+			$this->db->trans_complete();
 			$error = $this->db->error();
 			if(empty($error['message'])){
 				$response = array('id'=>$id, 'action'=>'delete', 'message'=>'Data berhasil dihapus');

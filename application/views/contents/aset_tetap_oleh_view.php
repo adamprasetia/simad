@@ -37,7 +37,7 @@
                         <td><?php echo format_dmy($value->tanggal); ?></td>
                         <td><?php echo $value->uraian; ?></td>
                         <td>
-                            <a class="btn btn-default btn-sm" href="<?php echo base_url($this->module.'_detail?id_'.$this->module.'='.$value->id).get_query_string('id_'.$this->module); ?>"><i class="fa fa-list"></i> Detail</a>
+                            <a class="btn btn-default btn-sm" href="<?php echo base_url($this->module.'_detail?id_'.$this->module.'='.$value->id); ?>"><i class="fa fa-list"></i> Detail</a>
                         </td>
                         <td>
                             <a class="btn btn-default btn-sm" href="<?php echo base_url($this->module.'/edit/'.$value->id).get_query_string(); ?>"><i class="fa fa-edit"></i></a>
