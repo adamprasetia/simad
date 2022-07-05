@@ -13,6 +13,12 @@
                             <td colspan=2><i>Detail Barang</i></td>
                         </tr>
                         <tr>
+                            <td><label>Tanggal *</label></td>
+                            <td>
+                                <input type="text" id="tanggal" name="tanggal" class="form-control datetimepicker" value="<?php echo isset($data->tanggal)?format_dmy($data->tanggal):'' ?>">
+                            </td>
+                        </tr>
+                        <tr>
                             <td><label>Kode Barang *</label></td>
                             <td>
                                 <div class="input-group">

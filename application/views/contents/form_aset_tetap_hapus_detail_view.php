@@ -42,12 +42,6 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><label>Nomor Perolehan</label></td>
-                    <td>
-                        <input readonly type="text" id="nomor" name="nomor" class="form-control" value="<?php echo isset($data->nomor)?$data->nomor:'' ?>">        
-                    </td>
-                </tr>
-                <tr>
                     <td><label>Kode Barang</label></td>
                     <td>
                         <input readonly type="text" id="kode_barang" name="kode_barang" class="form-control" value="<?php echo isset($data->kode_barang)?$data->kode_barang:'' ?>">        

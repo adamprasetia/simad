@@ -138,9 +138,7 @@ class Aset_tetap_oleh_detail extends MY_Controller {
 				$aset_tetap = $data;
 				unset($aset_tetap['id_aset_tetap_oleh']);
 				$aset_tetap['kode_skpd'] = $this->session_login['skpd_session'];
-				$aset_tetap['nomor'] = $aset_tetap_oleh->nomor;
 				$aset_tetap['tanggal'] = $aset_tetap_oleh->tanggal;
-				$aset_tetap['uraian'] = $aset_tetap_oleh->uraian;
 				$this->db->insert('aset_tetap', $aset_tetap);
 				$aset_tetap_detail = $data;
 				$aset_tetap_detail['id_aset_tetap'] = $this->db->insert_id();

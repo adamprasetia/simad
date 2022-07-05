@@ -5,7 +5,7 @@ class Aset_tetap_mutasi extends MY_Controller {
 	private $limit = 15;
 	private $table = 'aset_tetap_mutasi';
 	public $module = 'aset_tetap_mutasi';
-	public $title = 'Mutasi Aset Tetap';
+	public $title = 'MUTASI ASET TETAP';
 
 	function __construct()
    	{
@@ -13,15 +13,18 @@ class Aset_tetap_mutasi extends MY_Controller {
    	}
 	private function _filter()
 	{
-		$tahun_session = $this->session_login['tahun_session'];
-		if(!empty($tahun_session)){
-			$this->db->where('year(tanggal)', $tahun_session);
-		}
+		$this->db->select($this->table.'.*,b1.nama as nama_barang_lama,b2.nama as nama_barang_baru,b1.kib as kib_lama,b2.kib as kib_baru, s1.nama as nama_skpd_lama, s2.nama as nama_skpd_baru, concat(DATE_FORMAT(aset_tetap.tanggal,"%Y%m%d"),aset_tetap.id) as kode_unik');
+		$this->db->join('aset_tetap', 'aset_tetap.id='.$this->table.'.id_aset_tetap', 'left');
+		$this->db->join('barang b1', 'b1.kode='.$this->table.'.kode_barang_lama', 'left');
+		$this->db->join('barang b2', 'b2.kode='.$this->table.'.kode_barang_baru', 'left');
+		$this->db->join('skpd s1', 's1.kode='.$this->table.'.kode_skpd_lama', 'left');
+		$this->db->join('skpd s2', 's2.kode='.$this->table.'.kode_skpd_baru', 'left');
+
 		$search = $this->input->get('search');
 		if ($search) {
 			$this->db->group_start();
-			$this->db->like('nomor', $search);
-			$this->db->or_like('uraian', $search);
+			$this->db->like('b1.kode', $search);
+			$this->db->or_like('b1.barang', $search);
 			$this->db->group_end();
 		}
 	}
@@ -31,33 +34,40 @@ class Aset_tetap_mutasi extends MY_Controller {
 		$this->_filter();
 		$total = $this->db->count_all_results($this->table);
 		$this->_filter();
-		$content['data'] 	= $this->db->order_by('id desc')->get($this->table, $this->limit, $offset)->result();
+		$content['data'] 	= $this->db->get($this->table, $this->limit, $offset)->result();
 		$content['offset'] = $offset;
 		$content['paging'] = gen_paging($total,$this->limit);
 		$content['total'] 	= gen_total($total,$this->limit,$offset);
 		$data['content'] 	= $this->load->view('contents/'.$this->module.'_view', $content, TRUE);
 
-		$this->load->view(!empty($this->input->get('popup'))?'modals/template_view':'template_view', $data);
-
+		$this->load->view('template_view', $data);
 	}
 
 	private function _set_rules()
 	{
-		$this->form_validation->set_rules('nomor', 'Nomor', 'trim|required');
-		$this->form_validation->set_rules('tanggal', 'Tanggal', 'trim');
-		$this->form_validation->set_rules('uraian', 'Uraian', 'trim');
+		$this->form_validation->set_rules('id_aset_tetap', 'Kode Unik', 'trim|required');
+		$this->form_validation->set_rules('tanggal', 'Tanggal', 'trim|required');
+		$this->form_validation->set_rules('kode_barang_lama', 'Kode Barang Lama', 'trim|required');
+		$this->form_validation->set_rules('kode_barang_baru', 'Kode Barang Baru', 'trim|required');
+		$this->form_validation->set_rules('kode_skpd_lama', 'Kode SKPD Lama', 'trim|required');
+		$this->form_validation->set_rules('kode_skpd_baru', 'Kode SKPD Baru', 'trim|required');
 	}
-	
 	private function _set_data($type = 'add')
 	{
-		$nomor		= $this->input->post('nomor');
+		$id_aset_tetap	= $this->input->post('id_aset_tetap');
 		$tanggal	= $this->input->post('tanggal');
-		$uraian	    = $this->input->post('uraian');
+		$kode_skpd_lama	= $this->input->post('kode_skpd_lama');
+		$kode_barang_lama	= $this->input->post('kode_barang_lama');
+		$kode_skpd_baru	= $this->input->post('kode_skpd_baru');
+		$kode_barang_baru	= $this->input->post('kode_barang_baru');
 
 		$data = array(
-			'nomor' => $nomor,
+			'id_aset_tetap' => $id_aset_tetap,
 			'tanggal' => format_ymd($tanggal),
-			'uraian' => $uraian,
+			'kode_skpd_lama' => $kode_skpd_lama,
+			'kode_barang_lama' => $kode_barang_lama,
+			'kode_skpd_baru' => $kode_skpd_baru,
+			'kode_barang_baru' => $kode_barang_baru,
 		);
 
 		if($type == 'add'){
@@ -81,8 +91,9 @@ class Aset_tetap_mutasi extends MY_Controller {
 	{
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
+			$data['script'] = $this->load->view('script/'.$this->module.'_script', '', true);
 			$data['content'] = $this->load->view('contents/form_'.$this->module.'_view', [
-				'action'=>base_url($this->module.'/add').get_query_string(),
+				'action'=>base_url($this->module.'/add').get_query_string()
 			],true);
 
 			if(!validation_errors())
@@ -95,15 +106,23 @@ class Aset_tetap_mutasi extends MY_Controller {
 			}
 
 		}else{
+			$this->db->trans_start();
 			$data = $this->_set_data();
 			$this->db->insert($this->table, $data);
-			$id = $this->db->insert_id();
+
+			$this->db->update('aset_tetap', [
+				'kode_skpd'=>$data['kode_skpd_baru'],
+				'kode_barang'=>$data['kode_barang_baru'],
+			], ['id'=>$data['id_aset_tetap']]);
+
+			$this->db->trans_complete();
 			$error = $this->db->error();
 			if(empty($error['message'])){
-				$response = array('id'=>$id, 'redirect'=>base_url($this->module.'_detail/add?id_'.$this->module.'='.$id), 'action'=>'insert', 'message'=>'Data berhasil disimpan');
+				$response = array('id'=>$this->db->insert_id(), 'action'=>'insert', 'message'=>'Data berhasil disimpan');
 			}else{
 				$response = array('tipe'=>'warning', 'title'=>'Terjadi Kesalahan!', 'message'=>$error['message']);
 			}
+			$this->db->trans_complete();
 
 			echo json_encode($response);
 		}
@@ -113,9 +132,16 @@ class Aset_tetap_mutasi extends MY_Controller {
 	{
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
-			$this->db->where('id', $id);
+			$this->db->where($this->table.'.id', $id);
+			$this->db->select($this->table.'.*,b1.nama as nama_barang_lama,b2.nama as nama_barang_baru,b1.kib as kib_lama,b2.kib as kib_baru, s1.nama as nama_skpd_lama, s2.nama as nama_skpd_baru, concat(DATE_FORMAT(aset_tetap.tanggal,"%Y%m%d"),aset_tetap.id) as kode_unik');
+			$this->db->join('aset_tetap', 'aset_tetap.id='.$this->table.'.id_aset_tetap', 'left');
+			$this->db->join('barang b1', 'b1.kode='.$this->table.'.kode_barang_lama', 'left');
+			$this->db->join('barang b2', 'b2.kode='.$this->table.'.kode_barang_baru', 'left');
+			$this->db->join('skpd s1', 's1.kode='.$this->table.'.kode_skpd_lama', 'left');
+			$this->db->join('skpd s2', 's2.kode='.$this->table.'.kode_skpd_baru', 'left');
 			$content['data'] = $this->db->get($this->table)->row();
 			$content['action'] = base_url($this->module.'/edit/'.$id).get_query_string();
+			$data['script'] = $this->load->view('script/'.$this->module.'_script', '', true);
 			$data['content'] = $this->load->view('contents/form_'.$this->module.'_view',$content,true);
 
 			if(!validation_errors())
@@ -129,7 +155,18 @@ class Aset_tetap_mutasi extends MY_Controller {
 
 		}else{
 			$data = $this->_set_data('edit');
+			$this->db->trans_start();
+			$before = $this->db->where('id', $id)->get($this->table)->row();
+			$this->db->update('aset_tetap', [
+				'kode_skpd'=>$before->kode_skpd_lama,
+				'kode_barang'=>$before->kode_barang_lama,
+			], ['id'=>$before->id_aset_tetap]);
 			$this->db->update($this->table, $data, ['id'=>$id]);
+			$this->db->update('aset_tetap', [
+				'kode_skpd'=>$data['kode_skpd_baru'],
+				'kode_barang'=>$data['kode_barang_baru'],
+			], ['id'=>$data['id_aset_tetap']]);
+			$this->db->trans_complete();
 			$error = $this->db->error();
 			if(empty($error['message'])){
 				$response = array('id'=>$id, 'action'=>'update', 'message'=>'Data berhasil disimpan');
@@ -144,7 +181,14 @@ class Aset_tetap_mutasi extends MY_Controller {
 	public function delete($id = '')
 	{
 		if ($id) {
+			$this->db->trans_start();
+			$before = $this->db->where('id', $id)->get($this->table)->row();
+			$this->db->update('aset_tetap', [
+				'kode_skpd'=>$before->kode_skpd_lama,
+				'kode_barang'=>$before->kode_barang_lama,
+			], ['id'=>$before->id_aset_tetap]);
 			$this->db->delete($this->table, ['id'=>$id]);
+			$this->db->trans_complete();
 			$error = $this->db->error();
 			if(empty($error['message'])){
 				$response = array('id'=>$id, 'action'=>'delete', 'message'=>'Data berhasil dihapus');
@@ -154,4 +198,5 @@ class Aset_tetap_mutasi extends MY_Controller {
 			echo json_encode($response);
 		}
 	}
+
 }

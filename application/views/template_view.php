@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="<?php echo base_url('assets/').'plugins/sweetalert/css/sweetalert.css'; ?>">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="<?php echo base_url('assets/').'css/jquery-ui-timepicker-addon.min.css'?>">
+    <link rel="stylesheet" href="<?php echo base_url('assets/').'css/general.css'?>">
 
     <?php echo isset($css)?$css:'' ?>
 

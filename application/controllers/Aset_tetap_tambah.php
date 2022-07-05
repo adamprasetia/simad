@@ -149,7 +149,16 @@ class Aset_tetap_tambah extends MY_Controller {
 	public function delete($id = '')
 	{
 		if ($id) {
+			$this->db->trans_start();
+			$detail = $this->db->where('id_aset_tetap_tambah', $id)->get('aset_tetap_tambah_detail')->result();
+			foreach ($detail as $row) {
+				$this->db->where('id', $row->id_aset_tetap);
+				$this->db->set('umur', 'umur-'.$row->umur, FALSE);
+				$this->db->set('nilai', 'nilai-'.$row->nilai, FALSE);
+				$this->db->update('aset_tetap');
+			}
 			$this->db->delete($this->table, ['id'=>$id]);
+			$this->db->trans_complete();
 			$error = $this->db->error();
 			if(empty($error['message'])){
 				$response = array('id'=>$id, 'action'=>'delete', 'message'=>'Data berhasil dihapus');

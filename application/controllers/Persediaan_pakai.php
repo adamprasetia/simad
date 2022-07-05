@@ -154,7 +154,7 @@ class Persediaan_pakai extends MY_Controller {
 				$this->db->where('kode_skpd', $this->session_login['skpd_session']);
 				$this->db->where('kode_barang', $row->kode_barang);
 				$this->db->set('stok', 'stok+'.$row->jumlah, FALSE);
-				$this->db->update('persediaan_stok');
+				$this->db->update('persediaan');
 			}
 			$this->db->delete($this->table, ['id'=>$id]);
 			$this->db->trans_complete();

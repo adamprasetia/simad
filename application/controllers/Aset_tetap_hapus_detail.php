@@ -11,7 +11,7 @@ class Aset_tetap_hapus_detail extends MY_Controller {
    	}
 	private function _filter()
 	{
-		$this->db->select($this->table.'.*,barang.kode as kode_barang,barang.nama as nama_barang,barang.kib,aset_tetap.nomor, concat(DATE_FORMAT(aset_tetap.tanggal,"%Y%m%d"),aset_tetap.id) as kode_unik');
+		$this->db->select($this->table.'.*,barang.kode as kode_barang,barang.nama as nama_barang,barang.kib, concat(DATE_FORMAT(aset_tetap.tanggal,"%Y%m%d"),aset_tetap.id) as kode_unik');
 		$this->db->join('aset_tetap', 'aset_tetap.id='.$this->table.'.id_aset_tetap', 'left');
 		$this->db->join('barang', 'barang.kode=aset_tetap.kode_barang', 'left');
 
@@ -122,7 +122,7 @@ class Aset_tetap_hapus_detail extends MY_Controller {
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
 			$this->db->where($this->table.'.id', $id);
-			$this->db->select($this->table.'.*,barang.kode as kode_barang,barang.nama as nama_barang,barang.kib,aset_tetap.nomor, concat(DATE_FORMAT(aset_tetap.tanggal,"%Y%m%d"),aset_tetap.id) as kode_unik');
+			$this->db->select($this->table.'.*,barang.kode as kode_barang,barang.nama as nama_barang,barang.kib, concat(DATE_FORMAT(aset_tetap.tanggal,"%Y%m%d"),aset_tetap.id) as kode_unik');
 			$this->db->join('aset_tetap', 'aset_tetap.id='.$this->table.'.id_aset_tetap', 'left');
 			$this->db->join('barang', 'barang.kode=aset_tetap.kode_barang', 'left');
 			$content['data'] = $this->db->get($this->table)->row();

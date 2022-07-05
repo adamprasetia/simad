@@ -13,7 +13,7 @@ class Aset_tetap extends MY_Controller {
    	}
 	private function _filter()
 	{
-		$this->db->select($this->table.'.*, concat(DATE_FORMAT('.$this->table.'.tanggal, "%Y%m%d"),'.$this->table.'.id) as kode_unik, '.$this->table.'.nomor, barang.nama as nama_barang,barang.kib');
+		$this->db->select($this->table.'.*, concat(DATE_FORMAT('.$this->table.'.tanggal, "%Y%m%d"),'.$this->table.'.id) as kode_unik, barang.nama as nama_barang,barang.kib');
 		
 		$kode_skpd = $this->input->get('kode_skpd');
 		if(!empty($kode_skpd)){
@@ -31,6 +31,8 @@ class Aset_tetap extends MY_Controller {
 		$tahun = $this->input->get('tahun');
 		if ($tahun) {
 			$this->db->where('year('.$this->table.'.tanggal)', $tahun);
+		}else{
+			$this->db->where('year('.$this->table.'.tanggal)', $this->session_login['tahun_session']);
 		}
 		$kode_barang = $this->input->get('kode_barang');
 		if ($kode_barang) {
@@ -63,12 +65,14 @@ class Aset_tetap extends MY_Controller {
 
 	private function _set_rules()
 	{
+		$this->form_validation->set_rules('tanggal', 'Tanggal', 'trim|required');
 		$this->form_validation->set_rules('kode_barang', 'Kode Barang', 'trim|required');
 	}
 	
 	private function _set_data($type = 'add')
 	{
 		$kode_barang	= $this->input->post('kode_barang');
+		$tanggal	= $this->input->post('tanggal');
 		$kib	= $this->input->post('kib');
 		$umur	    = $this->input->post('umur');
 		$nilai	    = $this->input->post('nilai');
@@ -76,6 +80,7 @@ class Aset_tetap extends MY_Controller {
 
 		$data = array(
 			'kode_skpd' => $this->session_login['skpd_session'],
+			'tanggal' => format_ymd($tanggal),
 			'kode_barang' => $kode_barang,
 			'umur' => format_uang($umur),
 			'nilai' => format_uang($nilai),

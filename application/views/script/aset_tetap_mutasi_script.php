@@ -37,12 +37,14 @@ $(this).contents().find('.btn-choose-skpd').click(function () {
     data = JSON.parse(data);
     if($('#general-modal-title').html() == 'Pilih SKPD Lama'){
         $('#kode_skpd_lama').val(data.kode);
+        $('#nama_skpd_lama').val(data.nama);
         $('#kode_barang_lama').val('');
         $('#nama_barang_lama').val('');
         $('#kode_nomor').val('');
         $('#kib_lama').val('');
     }else{
         $('#kode_skpd_baru').val(data.kode);
+        $('#nama_skpd_baru').val(data.nama);
     }
     $('#general-modal').modal('hide');
 });

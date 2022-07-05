@@ -7,7 +7,7 @@
         </div>
     <?php endif ?>    
     <div class="box-header with-border">
-        <a href="<?php echo base_url('persediaan_stok/add').get_query_string() ?>" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> Tambah Stok Opname</a>
+        <a href="<?php echo base_url('persediaan/add').get_query_string() ?>" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> Tambah Persediaan</a>
         <a href="<?php echo now_url() ?>" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Refresh</a>
         <div class="pull-right">
             <div class="has-feedback">

@@ -146,7 +146,14 @@ class Aset_tetap_hapus extends MY_Controller {
 	public function delete($id = '')
 	{
 		if ($id) {
+			$this->db->trans_start();
+			$detail = $this->db->where('id_aset_tetap_hapus', $id)->get('aset_tetap_hapus_detail')->result();
+			foreach ($detail as $row) {
+				$this->db->where('id', $row->id_aset_tetap);
+				$this->db->update('aset_tetap', ['status'=>1]);
+			}
 			$this->db->delete($this->table, ['id'=>$id]);
+			$this->db->trans_complete();
 			$error = $this->db->error();
 			if(empty($error['message'])){
 				$response = array('id'=>$id, 'action'=>'delete', 'message'=>'Data berhasil dihapus');

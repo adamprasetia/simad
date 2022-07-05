@@ -17,15 +17,13 @@
 -- Dumping structure for table aset.aset_tetap
 CREATE TABLE IF NOT EXISTS `aset_tetap` (
   `id` int NOT NULL AUTO_INCREMENT,
+  `tanggal` date NOT NULL DEFAULT '0000-00-00',
   `kode_skpd` varchar(50) COLLATE latin1_general_ci DEFAULT NULL,
-  `nomor` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
-  `tanggal` date DEFAULT NULL,
-  `uraian` text COLLATE latin1_general_ci,
   `kode_barang` varchar(50) COLLATE latin1_general_ci DEFAULT NULL,
   `nilai` decimal(20,6) DEFAULT NULL,
   `umur` decimal(20,6) DEFAULT NULL,
-  `info` text CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
-  `info_lain` text CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `info` text COLLATE latin1_general_ci,
+  `info_lain` text COLLATE latin1_general_ci,
   `status` int NOT NULL DEFAULT '1',
   `created_by` int DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -33,20 +31,13 @@ CREATE TABLE IF NOT EXISTS `aset_tetap` (
   `modified_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 -- Dumping data for table aset.aset_tetap: ~19 rows (approximately)
-INSERT INTO `aset_tetap` (`id`, `kode_skpd`, `nomor`, `tanggal`, `uraian`, `kode_barang`, `nilai`, `umur`, `info`, `info_lain`, `status`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
-	(24, '1.01.01.00', '001', '2022-07-05', 'perolehan', '02.03.01.05.01', 17000000.000000, 15.000000, '', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, 1, '2022-07-05 11:58:11', NULL, NULL, NULL),
-	(25, '1.01.01.00', '001', '2022-07-05', 'perolehan', '02.03.01.05.01', 17000000.000000, 15.000000, '', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, 1, '2022-07-05 11:58:11', NULL, NULL, NULL),
-	(26, '1.01.01.00', '001', '2022-07-05', 'perolehan', '02.03.01.05.01', 17000000.000000, 15.000000, '', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, 1, '2022-07-05 11:58:11', NULL, NULL, NULL),
-	(27, '1.01.01.00', '001', '2022-07-05', 'perolehan', '02.03.01.05.01', 17000000.000000, 15.000000, '', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, 1, '2022-07-05 11:58:11', NULL, NULL, NULL),
-	(28, '1.01.01.00', '001', '2022-07-05', 'perolehan', '02.03.01.05.01', 17000000.000000, 15.000000, '', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, 1, '2022-07-05 11:58:11', NULL, NULL, NULL),
-	(29, '1.01.01.00', '001', '2022-07-05', 'perolehan', '02.03.01.05.01', 17000000.000000, 15.000000, '', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, 1, '2022-07-05 11:58:11', NULL, NULL, NULL),
-	(30, '1.01.01.00', '001', '2022-07-05', 'perolehan', '02.03.01.05.01', 17000000.000000, 15.000000, '', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, 1, '2022-07-05 11:58:11', NULL, NULL, NULL),
-	(31, '1.01.01.00', '001', '2022-07-05', 'perolehan', '02.03.01.05.01', 17000000.000000, 15.000000, '', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, 1, '2022-07-05 11:58:11', NULL, NULL, NULL),
-	(32, '1.01.01.00', '001', '2022-07-05', 'perolehan', '02.03.01.05.01', 17000000.000000, 15.000000, '', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, 1, '2022-07-05 11:58:11', NULL, NULL, NULL),
-	(33, '1.01.01.00', '001', '2022-07-05', 'perolehan', '02.03.01.05.01', 17000000.000000, 15.000000, '', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, 1, '2022-07-05 11:58:11', NULL, NULL, NULL);
+INSERT INTO `aset_tetap` (`id`, `tanggal`, `kode_skpd`, `kode_barang`, `nilai`, `umur`, `info`, `info_lain`, `status`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
+	(34, '2022-07-05', '2.05.01.00', '01.01.11.02.02', 17000000.000000, 20.000000, '', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"110cc","bahan_02":"bensin","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, 1, '2022-07-05 19:49:05', 1, '2022-07-05 19:55:08', NULL),
+	(35, '2022-07-05', '1.02.01.00', '02.03.01.05.01', 17000000.000000, 20.000000, 'motor dinas', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, 1, '2022-07-05 19:54:28', 1, '2022-07-05 19:55:27', NULL),
+	(51, '2022-07-05', '1.01.01.00', '02.03.01.04.05', 10000000.000000, 10.000000, '', '{"noreg_02":"","merk_02":"","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, 1, '2022-07-05 21:50:29', NULL, NULL, NULL);
 
 -- Dumping structure for table aset.aset_tetap_hapus
 CREATE TABLE IF NOT EXISTS `aset_tetap_hapus` (
@@ -65,8 +56,6 @@ CREATE TABLE IF NOT EXISTS `aset_tetap_hapus` (
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table aset.aset_tetap_hapus: ~2 rows (approximately)
-INSERT INTO `aset_tetap_hapus` (`id`, `nomor`, `kode_skpd`, `tanggal`, `uraian`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
-	(10, '001', '1.01.01.00', '2022-07-05', 'pelepasan', 1, '2022-07-05 09:27:58', NULL, NULL, NULL);
 
 -- Dumping structure for table aset.aset_tetap_hapus_detail
 CREATE TABLE IF NOT EXISTS `aset_tetap_hapus_detail` (
@@ -85,34 +74,15 @@ CREATE TABLE IF NOT EXISTS `aset_tetap_hapus_detail` (
   KEY `aset_tetap_nomor` (`id_aset_tetap`) USING BTREE,
   CONSTRAINT `FK_aset_tetap_hapus_detail_aset_tetap` FOREIGN KEY (`id_aset_tetap`) REFERENCES `aset_tetap` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_aset_tetap_hapus_detail_aset_tetap_hapus` FOREIGN KEY (`id_aset_tetap_hapus`) REFERENCES `aset_tetap_hapus` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table aset.aset_tetap_hapus_detail: ~2 rows (approximately)
 
 -- Dumping structure for table aset.aset_tetap_mutasi
 CREATE TABLE IF NOT EXISTS `aset_tetap_mutasi` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `nomor` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
-  `tanggal` date NOT NULL,
-  `uraian` text CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
-  `created_by` int DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `modified_by` int DEFAULT NULL,
-  `modified_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `nomor_skpd_tahun` (`nomor`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
-
--- Dumping data for table aset.aset_tetap_mutasi: ~2 rows (approximately)
-INSERT INTO `aset_tetap_mutasi` (`id`, `nomor`, `tanggal`, `uraian`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
-	(14, '001', '2022-07-05', 'mutasi', 1, '2022-07-05 11:12:43', NULL, NULL, NULL);
-
--- Dumping structure for table aset.aset_tetap_mutasi_detail
-CREATE TABLE IF NOT EXISTS `aset_tetap_mutasi_detail` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `id_aset_tetap_mutasi` int NOT NULL DEFAULT '0',
   `id_aset_tetap` int NOT NULL DEFAULT '0',
+  `tanggal` date NOT NULL DEFAULT '0000-00-00',
   `kode_skpd_lama` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
   `kode_skpd_baru` varchar(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
   `kode_barang_lama` varchar(50) COLLATE latin1_general_ci NOT NULL,
@@ -123,13 +93,14 @@ CREATE TABLE IF NOT EXISTS `aset_tetap_mutasi_detail` (
   `modified_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  KEY `id_aset_tetap_mutasi` (`id_aset_tetap_mutasi`),
   KEY `id_aset_tetap_detail` (`id_aset_tetap`) USING BTREE,
-  CONSTRAINT `FK_aset_tetap_mutasi_detail_aset_tetap` FOREIGN KEY (`id_aset_tetap`) REFERENCES `aset_tetap` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_aset_tetap_mutasi_detail_aset_tetap_mutasi` FOREIGN KEY (`id_aset_tetap_mutasi`) REFERENCES `aset_tetap_mutasi` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+  CONSTRAINT `FK_aset_tetap_mutasi_detail_aset_tetap` FOREIGN KEY (`id_aset_tetap`) REFERENCES `aset_tetap` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table aset.aset_tetap_mutasi_detail: ~0 rows (approximately)
+-- Dumping data for table aset.aset_tetap_mutasi: ~0 rows (approximately)
+INSERT INTO `aset_tetap_mutasi` (`id`, `id_aset_tetap`, `tanggal`, `kode_skpd_lama`, `kode_skpd_baru`, `kode_barang_lama`, `kode_barang_baru`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
+	(25, 34, '2022-07-05', '1.01.01.00', '2.05.01.00', '02.03.01.05.01', '01.01.11.02.02', 1, '2022-07-05 20:30:57', 1, '2022-07-05 20:59:41', NULL),
+	(26, 35, '2022-07-05', '1.01.01.00', '1.02.01.00', '02.03.01.05.01', '02.03.01.05.01', 1, '2022-07-05 20:47:19', NULL, NULL, NULL);
 
 -- Dumping structure for table aset.aset_tetap_oleh
 CREATE TABLE IF NOT EXISTS `aset_tetap_oleh` (
@@ -145,11 +116,9 @@ CREATE TABLE IF NOT EXISTS `aset_tetap_oleh` (
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nomor_skpd_tahun` (`nomor`,`kode_skpd`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 -- Dumping data for table aset.aset_tetap_oleh: ~1 rows (approximately)
-INSERT INTO `aset_tetap_oleh` (`id`, `nomor`, `kode_skpd`, `tanggal`, `uraian`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
-	(29, '001', '1.01.01.00', '2022-07-05', 'perolehan', 1, '2022-07-05 09:03:18', NULL, NULL, NULL);
 
 -- Dumping structure for table aset.aset_tetap_oleh_detail
 CREATE TABLE IF NOT EXISTS `aset_tetap_oleh_detail` (
@@ -174,20 +143,9 @@ CREATE TABLE IF NOT EXISTS `aset_tetap_oleh_detail` (
   KEY `id_aset_tetap` (`id_aset_tetap`),
   CONSTRAINT `FK_aset_tetap_detail_aset_tetap` FOREIGN KEY (`id_aset_tetap_oleh`) REFERENCES `aset_tetap_oleh` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_aset_tetap_oleh_detail_aset_tetap` FOREIGN KEY (`id_aset_tetap`) REFERENCES `aset_tetap` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=144 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=163 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 -- Dumping data for table aset.aset_tetap_oleh_detail: ~19 rows (approximately)
-INSERT INTO `aset_tetap_oleh_detail` (`id`, `id_aset_tetap_oleh`, `id_aset_tetap`, `kode_barang`, `umur`, `nilai`, `info`, `info_lain`, `status`, `note`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
-	(134, 29, 24, '02.03.01.05.01', 15.000000, 17000000.000000, '', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, '', 1, '2022-07-05 11:58:11', NULL, NULL, NULL),
-	(135, 29, 25, '02.03.01.05.01', 15.000000, 17000000.000000, '', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, '', 1, '2022-07-05 11:58:11', NULL, NULL, NULL),
-	(136, 29, 26, '02.03.01.05.01', 15.000000, 17000000.000000, '', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, '', 1, '2022-07-05 11:58:11', NULL, NULL, NULL),
-	(137, 29, 27, '02.03.01.05.01', 15.000000, 17000000.000000, '', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, '', 1, '2022-07-05 11:58:11', NULL, NULL, NULL),
-	(138, 29, 28, '02.03.01.05.01', 15.000000, 17000000.000000, '', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, '', 1, '2022-07-05 11:58:11', NULL, NULL, NULL),
-	(139, 29, 29, '02.03.01.05.01', 15.000000, 17000000.000000, '', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, '', 1, '2022-07-05 11:58:11', NULL, NULL, NULL),
-	(140, 29, 30, '02.03.01.05.01', 15.000000, 17000000.000000, '', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, '', 1, '2022-07-05 11:58:11', NULL, NULL, NULL),
-	(141, 29, 31, '02.03.01.05.01', 15.000000, 17000000.000000, '', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, '', 1, '2022-07-05 11:58:11', NULL, NULL, NULL),
-	(142, 29, 32, '02.03.01.05.01', 15.000000, 17000000.000000, '', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, '', 1, '2022-07-05 11:58:11', NULL, NULL, NULL),
-	(143, 29, 33, '02.03.01.05.01', 15.000000, 17000000.000000, '', '{"noreg_02":"","merk_02":"yamaha","ukuran_02":"","bahan_02":"","nopab_02":"","norang_02":"","nomes_02":"","nopol_02":"","nobpkp_02":"","asal_02":""}', 1, '', 1, '2022-07-05 11:58:11', NULL, NULL, NULL);
 
 -- Dumping structure for table aset.aset_tetap_tambah
 CREATE TABLE IF NOT EXISTS `aset_tetap_tambah` (
@@ -206,8 +164,6 @@ CREATE TABLE IF NOT EXISTS `aset_tetap_tambah` (
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table aset.aset_tetap_tambah: ~2 rows (approximately)
-INSERT INTO `aset_tetap_tambah` (`id`, `nomor`, `kode_skpd`, `tanggal`, `uraian`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
-	(11, '001', '1.01.01.00', '2022-07-05', 'penambahan', 1, '2022-07-05 09:25:57', NULL, NULL, NULL);
 
 -- Dumping structure for table aset.aset_tetap_tambah_detail
 CREATE TABLE IF NOT EXISTS `aset_tetap_tambah_detail` (
@@ -226,7 +182,7 @@ CREATE TABLE IF NOT EXISTS `aset_tetap_tambah_detail` (
   KEY `aset_tetap_nomor` (`id_aset_tetap`) USING BTREE,
   CONSTRAINT `FK_aset_tetap_tambah_detail_aset_tetap` FOREIGN KEY (`id_aset_tetap`) REFERENCES `aset_tetap` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_aset_tetap_tambah_detail_aset_tetap_tambah` FOREIGN KEY (`id_aset_tetap_tambah`) REFERENCES `aset_tetap_tambah` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table aset.aset_tetap_tambah_detail: ~2 rows (approximately)
 
@@ -23889,7 +23845,7 @@ INSERT INTO `persediaan` (`id`, `kode_skpd`, `kode_barang`, `stok`, `created_by`
 	(2, '1.01.01.00', '117010101002', 50, NULL, NULL, NULL, NULL, NULL),
 	(3, '1.01.01.00', '117010101001', 10, NULL, NULL, 1, '2022-07-05 07:15:02', NULL),
 	(4, '2.05.01.00', '117010702002', 30, NULL, NULL, NULL, NULL, NULL),
-	(5, '2.05.01.00', '117010101002', 100, NULL, NULL, NULL, NULL, NULL),
+	(5, '2.05.01.00', '117010101002', 70, NULL, NULL, NULL, NULL, NULL),
 	(7, '1.01.01.00', '135030201005', 0, NULL, NULL, NULL, NULL, NULL);
 
 -- Dumping structure for table aset.persediaan_oleh
@@ -23955,12 +23911,13 @@ CREATE TABLE IF NOT EXISTS `persediaan_pakai` (
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `nomor_skpd_tahun` (`nomor`,`kode_skpd`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table aset.persediaan_pakai: ~1 rows (approximately)
 INSERT INTO `persediaan_pakai` (`id`, `nomor`, `kode_skpd`, `tanggal`, `uraian`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
 	(11, '001', '1.01.01.00', '2022-07-03', 'pemakaian semen', 1, '2022-07-03 07:09:57', NULL, NULL, NULL),
-	(12, '002', '1.01.01.00', '2022-07-05', 'kurban', 1, '2022-07-05 06:57:52', NULL, NULL, NULL);
+	(12, '002', '1.01.01.00', '2022-07-05', 'kurban', 1, '2022-07-05 06:57:52', NULL, NULL, NULL),
+	(13, '001', '2.05.01.00', '2022-07-05', 'pemakaian', 1, '2022-07-05 21:15:22', NULL, NULL, NULL);
 
 -- Dumping structure for table aset.persediaan_pakai_detail
 CREATE TABLE IF NOT EXISTS `persediaan_pakai_detail` (
@@ -23978,13 +23935,14 @@ CREATE TABLE IF NOT EXISTS `persediaan_pakai_detail` (
   KEY `aset_tetap_id` (`id_persediaan_pakai`) USING BTREE,
   KEY `kode_barang` (`kode_barang`),
   CONSTRAINT `FK_persediaan_pakai_detail_persediaan_pakai` FOREIGN KEY (`id_persediaan_pakai`) REFERENCES `persediaan_pakai` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table aset.persediaan_pakai_detail: ~1 rows (approximately)
 INSERT INTO `persediaan_pakai_detail` (`id`, `id_persediaan_pakai`, `kode_barang`, `jumlah`, `metode`, `created_by`, `created_at`, `modified_by`, `modified_at`, `deleted_at`) VALUES
 	(13, 11, '117010101002', 50, 1, 1, '2022-07-03 07:12:11', NULL, NULL, NULL),
 	(16, 12, '135030201005', 1, 1, 1, '2022-07-05 07:42:24', NULL, NULL, NULL),
-	(17, 12, '135030201005', 4, 1, 1, '2022-07-05 07:45:45', NULL, NULL, NULL);
+	(17, 12, '135030201005', 4, 1, 1, '2022-07-05 07:45:45', NULL, NULL, NULL),
+	(18, 13, '117010101002', 30, 1, 1, '2022-07-05 21:15:37', 1, '2022-07-05 21:16:00', NULL);
 
 -- Dumping structure for table aset.role
 CREATE TABLE IF NOT EXISTS `role` (
