@@ -6,27 +6,8 @@
             </div>
         </div>
         <div class="box-body">
-            <input type="hidden" name="id_<?php echo $this->module_parent ?>" value="<?php echo $this->input->get('id_'.$this->module_parent) ?>">
             <div class="row">
                 <div class="col-md-6">
-                    <?php $parent = $this->db->where('id', $this->input->get('id_'.$this->module_parent))->get($this->module_parent)->row(); ?>
-                    <table class="table table-bordered" style="margin-bottom:0px;">
-                        <tr>
-                            <td colspan=2><i>Dokumen</i></td>
-                        </tr>
-                        <tr>
-                            <td width="50px"><strong>Nomor</strong></td>
-                            <td>: <?php echo $parent->nomor ?></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Tanggal</strong></td>
-                            <td>: <?php echo format_dmy($parent->tanggal) ?></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Uraian</strong></td>
-                            <td>: <?php echo $parent->uraian ?></td>
-                        </tr>
-                    </table>
                     <table class="table table-bordered">
                         <tr>
                             <td colspan=2><i>Detail Barang</i></td>
@@ -51,11 +32,11 @@
                         <tr>
                             <td><label>KIB</label></td>
                             <td>
-                                <input readonly type="text" id="kib" name="kib" class="form-control" value="<?php echo isset($data->kib)?$data->kib:'' ?>">        
+                                <input readonly type="text" id="kib" name="kib" class="form-control" value="<?php echo isset($data->kib)?$data->kib:'' ?>">
                             </td>
                         </tr>
                         <tr>
-                            <td><label>Umur Aset</label></td>
+                            <td><label>Umur</label></td>
                             <td>
                                 <div class="input-group">
                                     <input type="text" id="umur" name="umur" class="input-uang form-control" value="<?php echo isset($data->umur)?$data->umur:'' ?>">
@@ -63,12 +44,6 @@
                                 </div>
                             </td>
                         </tr>
-                        <?php if($this->uri->segment(2)=='add'):?>
-                        <tr>
-                            <td><label>Jumlah</label></td>
-                            <td><input type="text" id="jumlah" name="jumlah" class="input-uang form-control" value="<?php echo isset($data->jumlah)?$data->jumlah:'1' ?>"></td>
-                        </tr>
-                        <?php endif?>
                         <tr>
                             <td><label>Nilai</label></td>
                             <td><input type="text" id="nilai" name="nilai" class="input-uang form-control" value="<?php echo isset($data->nilai)?$data->nilai:'' ?>"></td>

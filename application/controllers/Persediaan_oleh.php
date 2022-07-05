@@ -1,11 +1,11 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Aset_tetap extends MY_Controller {
+class Persediaan_oleh extends MY_Controller {
 
 	private $limit = 15;
-	private $table = 'aset_tetap';
-	public $module = 'aset_tetap';
-	public $title = 'ASET TETAP';
+	private $table = 'persediaan_oleh';
+	public $module = 'persediaan_oleh';
+	public $title = 'Perolehan Persediaan';
 
 	function __construct()
    	{
@@ -13,36 +13,19 @@ class Aset_tetap extends MY_Controller {
    	}
 	private function _filter()
 	{
-		$this->db->select($this->table.'.*, concat(DATE_FORMAT('.$this->table.'.tanggal, "%Y%m%d"),'.$this->table.'.id) as kode_unik, '.$this->table.'.nomor, barang.nama as nama_barang,barang.kib');
-		
-		$kode_skpd = $this->input->get('kode_skpd');
-		if(!empty($kode_skpd)){
-			$this->db->where('kode_skpd', $kode_skpd);
-		}else{
-			$this->db->where('kode_skpd', $this->session_login['skpd_session']);
+		$skpd_session = $this->session_login['skpd_session'];
+		if(!empty($skpd_session)){
+			$this->db->where('kode_skpd', $skpd_session);
 		}
-		$this->db->join('barang','barang.kode='.$this->table.'.kode_barang','left');
-
-		$this->db->where('status', 1);
-		$kib = $this->input->get('kib');
-		if ($kib) {
-			$this->db->where('barang.kib', $kib);
-		}
-		$tahun = $this->input->get('tahun');
-		if ($tahun) {
-			$this->db->where('year('.$this->table.'.tanggal)', $tahun);
-		}
-		$kode_barang = $this->input->get('kode_barang');
-		if ($kode_barang) {
-			$this->db->where('barang.kode', $kode_barang);
+		$tahun_session = $this->session_login['tahun_session'];
+		if(!empty($tahun_session)){
+			$this->db->where('year(tanggal)', $tahun_session);
 		}
 		$search = $this->input->get('search');
 		if ($search) {
 			$this->db->group_start();
-			$this->db->like('barang.kode', $search);
-			$this->db->or_like($this->table.'.nomor', $search);
-			$this->db->or_like('barang.nama', $search);
-			$this->db->or_like('concat(kib,DATE_FORMAT('.$this->table.'.tanggal,"%Y%m%d"),'.$this->table.'.id)', $search);
+			$this->db->like('nomor', $search);
+			$this->db->or_like('uraian', $search);
 			$this->db->group_end();
 		}
 	}
@@ -52,42 +35,34 @@ class Aset_tetap extends MY_Controller {
 		$this->_filter();
 		$total = $this->db->count_all_results($this->table);
 		$this->_filter();
-		$content['data'] 	= $this->db->get($this->table, $this->limit, $offset)->result();
+		$content['data'] 	= $this->db->order_by('id desc')->get($this->table, $this->limit, $offset)->result();
 		$content['offset'] = $offset;
 		$content['paging'] = gen_paging($total,$this->limit);
 		$content['total'] 	= gen_total($total,$this->limit,$offset);
 		$data['content'] 	= $this->load->view('contents/'.$this->module.'_view', $content, TRUE);
 
-		$this->load->view(!empty($this->input->get('popup'))?'modals/template_view':'template_view', $data);
+		$this->load->view('template_view', $data);
 	}
 
 	private function _set_rules()
 	{
-		$this->form_validation->set_rules('kode_barang', 'Kode Barang', 'trim|required');
+		$this->form_validation->set_rules('nomor', 'Nomor', 'trim|required');
+		$this->form_validation->set_rules('tanggal', 'Tanggal', 'trim');
+		$this->form_validation->set_rules('uraian', 'Uraian', 'trim');
 	}
 	
 	private function _set_data($type = 'add')
 	{
-		$kode_barang	= $this->input->post('kode_barang');
-		$kib	= $this->input->post('kib');
-		$umur	    = $this->input->post('umur');
-		$nilai	    = $this->input->post('nilai');
-		$info	    = $this->input->post('info');
+		$nomor		= $this->input->post('nomor');
+		$tanggal	= $this->input->post('tanggal');
+		$uraian	    = $this->input->post('uraian');
 
 		$data = array(
+			'nomor' => $nomor,
+			'tanggal' => format_ymd($tanggal),
+			'uraian' => $uraian,
 			'kode_skpd' => $this->session_login['skpd_session'],
-			'kode_barang' => $kode_barang,
-			'umur' => format_uang($umur),
-			'nilai' => format_uang($nilai),
-			'info' => $info,
 		);
-		/* kib */
-		$kib_info = $this->db->select('a.*, b.nomor')->where('nomor',$kib)->order_by('urutan asc')->join('kib b','a.id_kib=b.id','left')->get('kib_info a')->result();
-		$info_lain = [];
-		foreach ($kib_info as $row) {
-			$info_lain[$row->kode] = $this->input->post($row->kode);
-		}
-		$data['info_lain'] = json_encode($info_lain);
 
 		if($type == 'add'){
 			$data['created_by'] = $this->session_login['id'];
@@ -110,9 +85,8 @@ class Aset_tetap extends MY_Controller {
 	{
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
-			$data['script'] = $this->load->view('script/'.$this->module.'_script', '', true);
 			$data['content'] = $this->load->view('contents/form_'.$this->module.'_view', [
-				'action'=>base_url($this->module.'/add').get_query_string()
+				'action'=>base_url($this->module.'/add').get_query_string(),
 			],true);
 
 			if(!validation_errors())
@@ -125,13 +99,12 @@ class Aset_tetap extends MY_Controller {
 			}
 
 		}else{
-			$this->db->trans_start();
 			$data = $this->_set_data();
-			$this->db->insert('aset_tetap', $data);			
-			$this->db->trans_complete();
+			$this->db->insert($this->table, $data);
+			$id = $this->db->insert_id();
 			$error = $this->db->error();
 			if(empty($error['message'])){
-				$response = array('id'=>$this->db->insert_id(), 'action'=>'insert', 'message'=>'Data berhasil disimpan');
+				$response = array('id'=>$id, 'redirect'=>base_url($this->module.'_detail/add?id_'.$this->module.'='.$id), 'action'=>'insert', 'message'=>'Data berhasil disimpan');
 			}else{
 				$response = array('tipe'=>'warning', 'title'=>'Terjadi Kesalahan!', 'message'=>$error['message']);
 			}
@@ -144,15 +117,9 @@ class Aset_tetap extends MY_Controller {
 	{
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
-			$this->db->select('a.*, b.nama as nama_barang, b.kib');
-			$this->db->where('a.id', $id);
-			$this->db->join('barang b', 'a.kode_barang=b.kode', 'left');
-			$content['data'] = $this->db->get($this->table.' a')->row();
-			$content['data']->nilai = number_format($content['data']->nilai);
-			$content['data']->umur = number_format($content['data']->umur);
-			$content['data']->info_lain = json_decode($content['data']->info_lain);
+			$this->db->where('id', $id);
+			$content['data'] = $this->db->get($this->table)->row();
 			$content['action'] = base_url($this->module.'/edit/'.$id).get_query_string();
-			$data['script'] = $this->load->view('script/'.$this->module.'_script', '', true);
 			$data['content'] = $this->load->view('contents/form_'.$this->module.'_view',$content,true);
 
 			if(!validation_errors())
@@ -165,11 +132,8 @@ class Aset_tetap extends MY_Controller {
 			}
 
 		}else{
-			$this->db->trans_start();
 			$data = $this->_set_data('edit');
 			$this->db->update($this->table, $data, ['id'=>$id]);
-			$this->db->update('aset_tetap', $data, ['id'=>$id]);
-			$this->db->trans_complete();
 			$error = $this->db->error();
 			if(empty($error['message'])){
 				$response = array('id'=>$id, 'action'=>'update', 'message'=>'Data berhasil disimpan');
@@ -185,8 +149,14 @@ class Aset_tetap extends MY_Controller {
 	{
 		if ($id) {
 			$this->db->trans_start();
+			$detail = $this->db->where('id_persediaan', $id)->get('persediaan_detail')->result();
+			foreach ($detail as $row) {
+				$this->db->where('kode_skpd', $this->session_login['skpd_session']);
+				$this->db->where('kode_barang', $row->kode_barang);
+				$this->db->set('stok', 'stok-'.$row->jumlah, FALSE);
+				$this->db->update('persediaan_stok');
+			}
 			$this->db->delete($this->table, ['id'=>$id]);
-			$this->db->delete('aset_tetap', ['id'=>$id]);
 			$this->db->trans_complete();
 			$error = $this->db->error();
 			if(empty($error['message'])){

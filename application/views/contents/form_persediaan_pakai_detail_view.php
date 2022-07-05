@@ -45,7 +45,7 @@
                         <div class="input-group">
                             <input type="text" id="kode_barang" name="kode_barang" class="form-control" value="<?php echo isset($data->kode_barang)?$data->kode_barang:'' ?>">
                             <span class="input-group-btn">
-                                <button type="button" data-title="Pilih Kode Barang" class="btn btn-success btn-flat btn-pilih-barang-persediaan">Pilih</button>
+                                <button type="button" data-title="Pilih Kode Barang" class="btn btn-success btn-flat btn-pilih-persediaan">Pilih</button>
                             </span>
                         </div>
                     </td>

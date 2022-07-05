@@ -11,14 +11,6 @@ class Barang_persediaan extends MY_Controller {
    	}
 	private function _filter()
 	{
-		$this->db->select('a.*, b.stok');
-		$this->db->join('persediaan_stok b','a.kode=b.kode_barang','left');
-		$this->db->group_start();
-		$this->db->where('b.kode_skpd', $this->session_login['skpd_session']);
-		if(empty($this->input->get('popup'))){
-			$this->db->or_where('b.kode_skpd', null);
-		}
-		$this->db->group_end();
 		$this->db->where('a.deleted_at', null);
 		$search = $this->input->get('search');
 		if ($search) {

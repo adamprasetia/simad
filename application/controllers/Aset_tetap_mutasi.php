@@ -13,10 +13,6 @@ class Aset_tetap_mutasi extends MY_Controller {
    	}
 	private function _filter()
 	{
-		$skpd_session = $this->session_login['skpd_session'];
-		if(!empty($skpd_session)){
-			$this->db->where('kode_skpd', $skpd_session);
-		}
 		$tahun_session = $this->session_login['tahun_session'];
 		if(!empty($tahun_session)){
 			$this->db->where('year(tanggal)', $tahun_session);
@@ -62,7 +58,6 @@ class Aset_tetap_mutasi extends MY_Controller {
 			'nomor' => $nomor,
 			'tanggal' => format_ymd($tanggal),
 			'uraian' => $uraian,
-			'kode_skpd' => $this->session_login['skpd_session'],
 		);
 
 		if($type == 'add'){

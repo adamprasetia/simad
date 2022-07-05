@@ -135,13 +135,16 @@ class Aset_tetap_oleh_detail extends MY_Controller {
 			$aset_tetap_oleh = $this->db->where('id', $data['id_aset_tetap_oleh'])->get('aset_tetap_oleh')->row();
 			$jumlah = $this->input->post('jumlah');
 			for ($i=1; $i <= $jumlah; $i++) { 
-				$this->db->insert($this->table, $data);
-				$data['id'] = $this->db->insert_id();
-				$data['kode_skpd'] = $this->session_login['skpd_session'];
-				$data['nomor'] = $aset_tetap_oleh->nomor;
-				$data['tanggal'] = $aset_tetap_oleh->tanggal;
-				$data['uraian'] = $aset_tetap_oleh->uraian;
-				$this->db->insert('aset_tetap', $data);
+				$aset_tetap = $data;
+				unset($aset_tetap['id_aset_tetap_oleh']);
+				$aset_tetap['kode_skpd'] = $this->session_login['skpd_session'];
+				$aset_tetap['nomor'] = $aset_tetap_oleh->nomor;
+				$aset_tetap['tanggal'] = $aset_tetap_oleh->tanggal;
+				$aset_tetap['uraian'] = $aset_tetap_oleh->uraian;
+				$this->db->insert('aset_tetap', $aset_tetap);
+				$aset_tetap_detail = $data;
+				$aset_tetap_detail['id_aset_tetap'] = $this->db->insert_id();
+				$this->db->insert($this->table, $aset_tetap_detail);
 			}
 			$this->db->trans_complete();
 			$error = $this->db->error();
@@ -182,8 +185,11 @@ class Aset_tetap_oleh_detail extends MY_Controller {
 		}else{
 			$this->db->trans_start();
 			$data = $this->_set_data('edit');
+			$detail = $this->db->where('id', $id)->get($this->table)->row();
 			$this->db->update($this->table, $data, ['id'=>$id]);
-			$this->db->update('aset_tetap', $data, ['id'=>$id]);
+			$aset_tetap = $data;
+			unset($aset_tetap['id_aset_tetap_oleh']);
+			$this->db->update('aset_tetap', $aset_tetap, ['id'=>$detail->id_aset_tetap]);
 			$this->db->trans_complete();
 			$error = $this->db->error();
 			if(empty($error['message'])){
@@ -200,8 +206,9 @@ class Aset_tetap_oleh_detail extends MY_Controller {
 	{
 		if ($id) {
 			$this->db->trans_start();
+			$detail = $this->db->where('id', $id)->get($this->table)->row();
 			$this->db->delete($this->table, ['id'=>$id]);
-			$this->db->delete('aset_tetap', ['id'=>$id]);
+			$this->db->delete('aset_tetap', ['id'=>$detail->id_aset_tetap]);
 			$this->db->trans_complete();
 			$error = $this->db->error();
 			if(empty($error['message'])){

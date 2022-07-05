@@ -1,11 +1,11 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Persediaan_detail extends MY_Controller {
+class Persediaan_oleh_detail extends MY_Controller {
 
 	private $limit = 15;
-	private $table = 'persediaan_detail';
-	public $module = 'persediaan_detail';
-	public $module_parent = 'persediaan';
+	private $table = 'persediaan_oleh_detail';
+	public $module = 'persediaan_oleh_detail';
+	public $module_parent = 'persediaan_oleh';
 	public $title = 'Perolehan Persediaan';
 
 	function __construct()
@@ -109,13 +109,13 @@ class Persediaan_detail extends MY_Controller {
 			$this->db->trans_start();
 			$this->db->insert($this->table, $data);
 
-			$persediaan_stok = $this->db->where('kode_skpd', $this->session_login['skpd_session'])->where('kode_barang', $data['kode_barang'])->get('persediaan_stok')->row();
-			if(!empty($persediaan_stok)){
-				$this->db->where('id', $persediaan_stok->id);
+			$persediaan = $this->db->where('kode_skpd', $this->session_login['skpd_session'])->where('kode_barang', $data['kode_barang'])->get('persediaan')->row();
+			if(!empty($persediaan)){
+				$this->db->where('id', $persediaan->id);
 				$this->db->set('stok', 'stok+'.$data['jumlah'], FALSE);
-				$this->db->update('persediaan_stok');
+				$this->db->update('persediaan');
 			}else{
-				$this->db->insert('persediaan_stok',[
+				$this->db->insert('persediaan',[
 					'kode_skpd'=>$this->session_login['skpd_session'],
 					'kode_barang'=>$data['kode_barang'],
 					'stok'=>$data['jumlah']
@@ -162,11 +162,11 @@ class Persediaan_detail extends MY_Controller {
 			$data = $this->_set_data('edit');
 			$before = $this->db->where('id', $id)->get($this->table)->row();
 			$selisih = $data['jumlah'] - $before->jumlah;
-			$persediaan_stok = $this->db->where('kode_skpd', $this->session_login['skpd_session'])->where('kode_barang', $data['kode_barang'])->get('persediaan_stok')->row();
-			if(!empty($persediaan_stok)){
-				$this->db->where('id', $persediaan_stok->id);
+			$persediaan = $this->db->where('kode_skpd', $this->session_login['skpd_session'])->where('kode_barang', $data['kode_barang'])->get('persediaan')->row();
+			if(!empty($persediaan)){
+				$this->db->where('id', $persediaan->id);
 				$this->db->set('stok', 'stok+'.$selisih, FALSE);
-				$this->db->update('persediaan_stok');
+				$this->db->update('persediaan');
 			}
 			$this->db->update($this->table, $data, ['id'=>$id]);
 			$this->db->trans_complete();
@@ -190,7 +190,7 @@ class Persediaan_detail extends MY_Controller {
 				$this->db->where('kode_skpd', $this->session_login['skpd_session']);
 				$this->db->where('kode_barang', $before->kode_barang);
 				$this->db->set('stok', 'stok-'.$before->jumlah, FALSE);
-				$this->db->update('persediaan_stok');
+				$this->db->update('persediaan');
 			}
 
 			$this->db->delete($this->table, ['id'=>$id]);

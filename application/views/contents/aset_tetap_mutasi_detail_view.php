@@ -43,7 +43,6 @@
                         <th>Nama Barang</th>
                         <th>KIB</th>
                         <th>Kode SKPD Baru</th>
-                        <th>Nomor Perolehan Baru</th>
                         <th>Kode Barang Baru</th>
                         <th>Nama Barang Baru</th>
                         <th>KIB Baru</th>
@@ -63,7 +62,6 @@
                         <td><?php echo $value->nama_barang; ?></td>
                         <td><?php echo config_item('kib')[$value->kib]['id']; ?></td>
                         <td><?php echo $value->kode_skpd_baru; ?></td>
-                        <td><?php echo $value->nomor_baru; ?></td>
                         <td><?php echo $value->kode_barang_baru; ?></td>
                         <td><?php echo $value->nama_barang_baru; ?></td>
                         <td><?php echo config_item('kib')[$value->kib_baru]['id']; ?></td>

@@ -33,13 +33,24 @@
                             <td colspan=2><i>Detail Lama</i></td>
                         </tr>
                         <tr>
+                            <td><label>Kode SKPD *</label></td>
+                            <td>
+                                <div class="input-group">
+                                    <input type="text" id="kode_skpd_lama" name="kode_skpd_lama" class="form-control" value="<?php echo isset($data->kode_skpd_lama)?$data->kode_skpd_lama:'' ?>">
+                                    <span class="input-group-btn">
+                                        <button type="button" data-title="Pilih Kode SKPD" class="btn btn-success btn-flat btn-pilih-skpd-lama">Pilih</button>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
                             <td><label>Kode Unik *</label></td>
                             <td>
                                 <div class="input-group">
                                     <input type="text" id="kode_unik" name="kode_unik" class="form-control" value="<?php echo isset($data->kode_unik)?$data->kode_unik:'' ?>">
-                                    <input type="hidden" id="id_aset_tetap_detail" name="id_aset_tetap_detail" value="<?php echo isset($data->id_aset_tetap_detail)?$data->id_aset_tetap_detail:'' ?>">
+                                    <input type="hidden" id="id_aset_tetap" name="id_aset_tetap" value="<?php echo isset($data->id_aset_tetap)?$data->id_aset_tetap:'' ?>">
                                     <span class="input-group-btn">
-                                        <button type="button" data-title="Pilih Nomor Perolehan" class="btn btn-success btn-flat btn-pilih-aset-tetap-detail">Pilih</button>
+                                        <button type="button" data-title="Pilih Nomor Perolehan" class="btn btn-success btn-flat btn-pilih-aset-tetap">Pilih</button>
                                     </span>
                                 </div>
                             </td>
@@ -53,19 +64,19 @@
                         <tr>
                             <td><label>Kode Barang</label></td>
                             <td>
-                                <input readonly type="text" id="kode_barang" name="kode_barang" class="form-control" value="<?php echo isset($data->kode_barang)?$data->kode_barang:'' ?>">        
+                                <input readonly type="text" id="kode_barang_lama" name="kode_barang_lama" class="form-control" value="<?php echo isset($data->kode_barang_lama)?$data->kode_barang_lama:'' ?>">        
                             </td>
                         </tr>
                         <tr>
                             <td><label>Nama Barang</label></td>
                             <td>
-                                <input readonly type="text" id="nama_barang" name="nama_barang" class="form-control" value="<?php echo isset($data->nama_barang)?$data->nama_barang:'' ?>">        
+                                <input readonly type="text" id="nama_barang_lama" name="nama_barang_lama" class="form-control" value="<?php echo isset($data->nama_barang_lama)?$data->nama_barang_lama:'' ?>">        
                             </td>
                         </tr>
                         <tr>
                             <td><label>KIB</label></td>
                             <td>
-                                <input readonly type="text" id="kib" name="kib" class="form-control" value="<?php echo isset($data->kib)?$data->kib:'' ?>">        
+                                <input readonly type="text" id="kib_lama" name="kib_lama" class="form-control" value="<?php echo isset($data->kib_lama)?$data->kib_lama:'' ?>">        
                             </td>
                         </tr>
      
@@ -82,7 +93,7 @@
                                 <div class="input-group">
                                     <input type="text" id="kode_skpd_baru" name="kode_skpd_baru" class="form-control" value="<?php echo isset($data->kode_skpd_baru)?$data->kode_skpd_baru:'' ?>">
                                     <span class="input-group-btn">
-                                        <button type="button" data-title="Pilih Kode SKPD" class="btn btn-success btn-flat btn-pilih-skpd">Pilih</button>
+                                        <button type="button" data-title="Pilih Kode SKPD" class="btn btn-success btn-flat btn-pilih-skpd-baru">Pilih</button>
                                     </span>
                                 </div>
                             </td>
@@ -105,12 +116,11 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><label>Nomor Perolehan *</label></td>
+                            <td><label>KIB *</label></td>
                             <td>
-                                <input type="text" id="nomor_baru" name="nomor_baru" class="form-control" value="<?php echo isset($data->nomor_baru)?$data->nomor_baru:'' ?>">        
+                                <input readonly type="text" id="kib_baru" name="kib_baru" class="form-control" value="<?php echo isset($data->kib_baru)?$data->kib_baru:'' ?>">        
                             </td>
-                        </tr>      
-
+                        </tr>
                     </table>                    
                 </div>
             </div>

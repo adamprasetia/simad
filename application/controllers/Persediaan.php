@@ -4,8 +4,7 @@ class Persediaan extends MY_Controller {
 
 	private $limit = 15;
 	private $table = 'persediaan';
-	public $module = 'persediaan';
-	public $title = 'Perolehan Persediaan';
+	private $module = 'persediaan';
 
 	function __construct()
    	{
@@ -13,19 +12,17 @@ class Persediaan extends MY_Controller {
    	}
 	private function _filter()
 	{
-		$skpd_session = $this->session_login['skpd_session'];
-		if(!empty($skpd_session)){
-			$this->db->where('kode_skpd', $skpd_session);
-		}
-		$tahun_session = $this->session_login['tahun_session'];
-		if(!empty($tahun_session)){
-			$this->db->where('year(tanggal)', $tahun_session);
+		$this->db->select('a.*, b.nama as nama_barang,b.satuan as satuan');
+		$this->db->join('barang_persediaan b','a.kode_barang=b.kode','left');
+		$this->db->where('a.kode_skpd', $this->session_login['skpd_session']);
+		if(!empty($this->input->get('popup'))){
+			$this->db->where('a.stok >', 0);
 		}
 		$search = $this->input->get('search');
 		if ($search) {
 			$this->db->group_start();
-			$this->db->like('nomor', $search);
-			$this->db->or_like('uraian', $search);
+			$this->db->like('a.kode', $search);
+			$this->db->or_like('b.nama', $search);
 			$this->db->group_end();
 		}
 	}
@@ -33,35 +30,32 @@ class Persediaan extends MY_Controller {
 	{
 		$offset = gen_offset($this->limit);
 		$this->_filter();
-		$total = $this->db->count_all_results($this->table);
+		$total = $this->db->count_all_results($this->table.' a');
 		$this->_filter();
-		$content['data'] 	= $this->db->order_by('id desc')->get($this->table, $this->limit, $offset)->result();
+		$content['data'] 	= $this->db->get($this->table.' a', $this->limit, $offset)->result();
 		$content['offset'] = $offset;
 		$content['paging'] = gen_paging($total,$this->limit);
 		$content['total'] 	= gen_total($total,$this->limit,$offset);
 		$data['content'] 	= $this->load->view('contents/'.$this->module.'_view', $content, TRUE);
 
-		$this->load->view('template_view', $data);
+		$this->load->view(!empty($this->input->get('popup'))?'modals/template_view':'template_view', $data);
 	}
 
 	private function _set_rules()
 	{
-		$this->form_validation->set_rules('nomor', 'Nomor', 'trim|required');
-		$this->form_validation->set_rules('tanggal', 'Tanggal', 'trim');
-		$this->form_validation->set_rules('uraian', 'Uraian', 'trim');
+		$this->form_validation->set_rules('kode_barang', 'Kode Barang', 'trim|required');
+		$this->form_validation->set_rules('stok', 'Jumlah Tersedia', 'trim|required');
 	}
 	
 	private function _set_data($type = 'add')
 	{
-		$nomor		= $this->input->post('nomor');
-		$tanggal	= $this->input->post('tanggal');
-		$uraian	    = $this->input->post('uraian');
+		$kode_barang	= $this->input->post('kode_barang');
+		$stok		= $this->input->post('stok');
 
 		$data = array(
-			'nomor' => $nomor,
-			'tanggal' => format_ymd($tanggal),
-			'uraian' => $uraian,
-			'kode_skpd' => $this->session_login['skpd_session'],
+            'kode_skpd'=>$this->session_login['skpd_session'],
+			'kode_barang' => $kode_barang,
+			'stok' => $stok,
 		);
 
 		if($type == 'add'){
@@ -85,13 +79,14 @@ class Persediaan extends MY_Controller {
 	{
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
-			$data['content'] = $this->load->view('contents/form_'.$this->module.'_view', [
-				'action'=>base_url($this->module.'/add').get_query_string(),
+            $data['script'] = $this->load->view('script/persediaan_script', '', true);
+			$data['content'] = $this->load->view('contents/form_persediaan_view', [
+				'action'=>base_url('persediaan/add').get_query_string()
 			],true);
 
 			if(!validation_errors())
 			{
-				$this->load->view('template_view',$data);
+				$this->load->view(!empty($this->input->get('popup'))?'modals/template_view':'template_view', $data);
 			}
 			else
 			{
@@ -101,10 +96,9 @@ class Persediaan extends MY_Controller {
 		}else{
 			$data = $this->_set_data();
 			$this->db->insert($this->table, $data);
-			$id = $this->db->insert_id();
 			$error = $this->db->error();
 			if(empty($error['message'])){
-				$response = array('id'=>$id, 'redirect'=>base_url($this->module.'_detail/add?id_'.$this->module.'='.$id), 'action'=>'insert', 'message'=>'Data berhasil disimpan');
+				$response = array('id'=>$this->db->insert_id(), 'action'=>'insert', 'message'=>'Data berhasil disimpan');
 			}else{
 				$response = array('tipe'=>'warning', 'title'=>'Terjadi Kesalahan!', 'message'=>$error['message']);
 			}
@@ -117,14 +111,17 @@ class Persediaan extends MY_Controller {
 	{
 		$this->_set_rules();
 		if ($this->form_validation->run()===FALSE) {
-			$this->db->where('id', $id);
-			$content['data'] = $this->db->get($this->table)->row();
-			$content['action'] = base_url($this->module.'/edit/'.$id).get_query_string();
-			$data['content'] = $this->load->view('contents/form_'.$this->module.'_view',$content,true);
+			$this->db->select('a.*, b.nama as nama_barang, b.satuan as satuan');
+			$this->db->where('a.id', $id);
+			$this->db->join('barang_persediaan b', 'a.kode_barang=b.kode', 'left');
+			$content['data'] = $this->db->get($this->table.' a')->row();
+			$content['action'] = base_url('persediaan/edit/'.$id).get_query_string();
+            $data['script'] = $this->load->view('script/persediaan_script', '', true);
+			$data['content'] = $this->load->view('contents/form_persediaan_view',$content,true);
 
 			if(!validation_errors())
 			{
-				$this->load->view('template_view',$data);
+				$this->load->view(!empty($this->input->get('popup'))?'modals/template_view':'template_view', $data);
 			}
 			else
 			{
@@ -148,16 +145,8 @@ class Persediaan extends MY_Controller {
 	public function delete($id = '')
 	{
 		if ($id) {
-			$this->db->trans_start();
-			$detail = $this->db->where('id_persediaan', $id)->get('persediaan_detail')->result();
-			foreach ($detail as $row) {
-				$this->db->where('kode_skpd', $this->session_login['skpd_session']);
-				$this->db->where('kode_barang', $row->kode_barang);
-				$this->db->set('stok', 'stok-'.$row->jumlah, FALSE);
-				$this->db->update('persediaan_stok');
-			}
-			$this->db->delete($this->table, ['id'=>$id]);
-			$this->db->trans_complete();
+			$data = $this->_set_data('delete');
+			$this->db->update($this->table, $data,['id'=>$id]);
 			$error = $this->db->error();
 			if(empty($error['message'])){
 				$response = array('id'=>$id, 'action'=>'delete', 'message'=>'Data berhasil dihapus');
@@ -167,4 +156,21 @@ class Persediaan extends MY_Controller {
 			echo json_encode($response);
 		}
 	}
+	
+	public function api()
+	{
+		$search = $this->input->get('search');
+		$kib = $this->input->get('kib');
+		if(!empty($kib)){
+			$this->db->like('kode',$kib,'after');
+		}
+		$this->db->group_start();
+		$this->db->like('nama', $search);
+		$this->db->or_like('kode', $search);
+		$this->db->group_end();
+		$result = $this->db->select('kode as id,concat(kode," | ",nama) as text')->get($this->table, 10, 0)->result_array();
+		// echo $this->db->last_query();exit;
+		echo json_encode(['results'=>$result]);
+	}
+
 }

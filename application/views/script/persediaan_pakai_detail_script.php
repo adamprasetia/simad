@@ -1,17 +1,18 @@
 <script>
 $('#kib').focus();
-$('.btn-pilih-barang-persediaan').click(function(){
+$('.btn-pilih-persediaan').click(function(){
     $('#general-modal-title').html('Pilih Barang');
-    $('#general-modal-iframe').attr('src', '<?php echo base_url('barang_persediaan?popup=1') ?>');
+    $('#general-modal-iframe').attr('src', '<?php echo base_url('persediaan?popup=1') ?>');
     $('#general-modal').modal('show');
 })
 $("#general-modal-iframe").on('load',function () {
-    $(this).contents().find('.btn-choose-barang-persediaan').click(function () {
+    $(this).contents().find('.btn-choose-persediaan').click(function () {
         var id = $(this).attr('data-id');
         var data = $("#general-modal-iframe").contents().find('#data-'+id).html();
         data = JSON.parse(data);
-        $('#kode_barang').val(data.kode);
-        $('#nama_barang').val(data.nama);
+        console.log(data)
+        $('#kode_barang').val(data.kode_barang);
+        $('#nama_barang').val(data.nama_barang);
         $('#satuan').val(data.satuan);
         $('#jumlah_tersedia').val(data.stok);
         $('#general-modal').modal('hide');

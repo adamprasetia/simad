@@ -108,7 +108,7 @@ class Persediaan_pakai_detail extends MY_Controller {
 			$this->db->where('kode_skpd', $this->session_login['skpd_session']);
 			$this->db->where('kode_barang', $data['kode_barang']);				
 			$this->db->set('stok', 'stok-'.$data['jumlah'], FALSE);
-			$this->db->update('persediaan_stok');
+			$this->db->update('persediaan');
 
 			$this->db->trans_complete();
 
@@ -153,11 +153,11 @@ class Persediaan_pakai_detail extends MY_Controller {
 			$data = $this->_set_data('edit');
 			$before = $this->db->where('id', $id)->get($this->table)->row();
 			$selisih = $before->jumlah - $data['jumlah'];
-			$persediaan_stok = $this->db->where('kode_skpd', $this->session_login['skpd_session'])->where('kode_barang', $data['kode_barang'])->get('persediaan_stok')->row();
-			if(!empty($persediaan_stok)){
-				$this->db->where('id', $persediaan_stok->id);
+			$persediaan = $this->db->where('kode_skpd', $this->session_login['skpd_session'])->where('kode_barang', $data['kode_barang'])->get('persediaan')->row();
+			if(!empty($persediaan)){
+				$this->db->where('id', $persediaan->id);
 				$this->db->set('stok', 'stok+'.$selisih, FALSE);
-				$this->db->update('persediaan_stok');
+				$this->db->update('persediaan');
 			}
 
 			$this->db->update($this->table, $data, ['id'=>$id]);
@@ -182,7 +182,7 @@ class Persediaan_pakai_detail extends MY_Controller {
 				$this->db->where('kode_skpd', $this->session_login['skpd_session']);
 				$this->db->where('kode_barang', $before->kode_barang);
 				$this->db->set('stok', 'stok+'.$before->jumlah, FALSE);
-				$this->db->update('persediaan_stok');
+				$this->db->update('persediaan');
 			}
 
 			$this->db->delete($this->table, ['id'=>$id]);

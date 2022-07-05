@@ -24,7 +24,6 @@
                         <th>Kode</th>
                         <th>Nama Barang</th>
                         <th>Satuan</th>
-                        <th>Jumlah Tersedia</th>
                         <th width="100">Aksi</th>
                     </tr>
                 </thead>
@@ -38,7 +37,6 @@
                         <td><?php echo $value->kode; ?></td>
                         <td><?php echo $value->nama; ?></td>
                         <td><?php echo $value->satuan; ?></td>
-                        <td><?php echo number_format($value->stok); ?></td>
                         <td style="width:200px">
                             <?php if(!empty($this->input->get('popup'))): ?>
                                 <button class="btn btn-primary btn-choose-barang-persediaan" type="button" name="button" data-id="<?php echo $value->id ?>">Pilih</button>

@@ -42,6 +42,7 @@
                         <th width="50">No</th>
                         <th>Kode</th>
                         <th>Nama Barang</th>
+                        <th>KIB</th>
                         <th width="100">Aksi</th>
                     </tr>
                 </thead>
@@ -54,6 +55,7 @@
                         <td><?php echo $no; ?></td>
                         <td><?php echo $value->kode; ?></td>
                         <td><?php echo $value->nama; ?></td>
+                        <td><?php echo $value->kib; ?></td>
                         <td>
                             <?php if(!empty($this->input->get('popup'))): ?>
                                 <button class="btn btn-primary btn-choose-barang" type="button" name="button" data-id="<?php echo $value->id ?>"><i class="fa fa-use"></i> Pilih</button>
