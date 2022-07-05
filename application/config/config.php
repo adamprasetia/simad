@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $protocol = 'http';
-if (strpos($_SERVER['HTTP_HOST'], '.kompas.com') !== false) {
+if (in_array($_SERVER['HTTP_HOST'], ['simad.adamprasetia.online', 'adamprasetia.online'])) {
     $protocol = 'https';
 }
 $root = $protocol."://".$_SERVER['HTTP_HOST'];

@@ -99,6 +99,6 @@ if (in_array($_SERVER['HTTP_HOST'], ['simad.adamprasetia.online', 'adamprasetia.
 	$db['default']['hostname'] = 'localhost';
 	$db['default']['username'] = 'u1474150_simad';
 	$db['default']['database'] = 'u1474150_simad';
-	$db['default']['password'] = 'm3g4KGm3d14';
+	$db['default']['password'] = ')@a^Ma^H%sEP';
 }
 
