@@ -94,3 +94,11 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
+if (in_array($_SERVER['HTTP_HOST'], ['simad.adamprasetia.online', 'adamprasetia.online'])) {
+	$db['default']['hostname'] = 'localhost';
+	$db['default']['username'] = 'u1474150_simad';
+	$db['default']['database'] = 'u1474150_simad';
+	$db['default']['password'] = 'm3g4KGm3d14';
+}
+
