@@ -13,7 +13,7 @@ class User extends MY_Controller {
 	{
 		$search = $this->input->get('search');
 		if ($search) {
-			$this->db->like('name', $search);
+			$this->db->like('fullname', $search);
 		}
 	}
 	public function index()
@@ -28,7 +28,7 @@ class User extends MY_Controller {
 		$user_view['total'] 	= gen_total($total,$this->limit,$offset);
 		$data['content'] 	= $this->load->view('contents/user_view', $user_view, TRUE);
 
-		$this->load->view('template_view', $data);
+		$this->load->view(!empty($this->input->get('popup'))?'modals/template_view':'template_view', $data);
 	}
 
 	private function _set_rules($type = 'add')
@@ -91,7 +91,7 @@ class User extends MY_Controller {
 
 			if(!validation_errors())
 			{
-				$this->load->view('template_view',$data);
+				$this->load->view(!empty($this->input->get('popup'))?'modals/template_view':'template_view', $data);
 			}
 			else
 			{
@@ -171,7 +171,7 @@ class User extends MY_Controller {
 
 			if(!validation_errors())
 			{
-				$this->load->view('template_view',$data);
+				$this->load->view(!empty($this->input->get('popup'))?'modals/template_view':'template_view', $data);
 			}
 			else
 			{

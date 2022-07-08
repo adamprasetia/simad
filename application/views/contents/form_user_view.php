@@ -8,7 +8,7 @@
         <div class="box-body">
             <div class="form-group">
                 <input type="hidden" id="id" name="id" value="<?php echo isset($data->id)?$data->id:'' ?>">
-                <label>Fullname *</label>
+                <label>Nama Lengkap *</label>
                 <input type="text" id="fullname" name="fullname" class="form-control" value="<?php echo isset($data->fullname)?htmlentities($data->fullname):'' ?>">
             </div>
             <div class="form-group">

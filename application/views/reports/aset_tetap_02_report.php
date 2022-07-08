@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KIB A Report</title>
+    <title>KIB B Report</title>
     <link rel="stylesheet" href="<?php echo base_url('assets/').'css/bootstrap.min.css'; ?>">
     <link rel="stylesheet" href="<?php echo base_url('assets/').'css/AdminLTE.min.css'; ?>">
     <style>
@@ -26,7 +26,7 @@
             <th style="font-size:14px;border:0px !important;">KARTU INVENTARIS BARANG</th>
         </tr>
         <tr>
-            <th style="font-size:14px;border:0px !important;">A.TANAH</th>
+            <th style="font-size:14px;border:0px !important;">B. PERALATAN & MESIN</th>
         </tr>
         <tr>
             <td style="border:0px !important;">No. Kode Lokasi : <?php echo $lokasi ?></td>
@@ -35,30 +35,28 @@
     <table>
         <thead style="background:#eee">
             <tr>
-                <th rowspan=3>No</th>
-                <th rowspan=3>Jenis Barang/Nama Barang</th>
-                <th colspan=2>Nomor</th>
-                <th rowspan=3>Luas</th>
-                <th rowspan=3>Tahun Pengadaan</th>
-                <th rowspan=3>Letak/Alamat</th>
-                <th colspan=3>Status Tanah</th>
-                <th rowspan=3>Penggunaan</th>
-                <th rowspan=3>Asal Usul</th>
-                <th rowspan=3>Harga (Ribuan Rp)</th>
-                <th rowspan=3>Keterangan</th>
-            </tr>
-            <tr>
+                <th rowspan=2>No</th>
                 <th rowspan=2>Kode Barang</th>
-                <th rowspan=2>Register</th>
-                <th rowspan=2>Hak</th>
-                <th colspan=2>Sertifikat</th>
+                <th rowspan=2>Jenis Barang/Nama Barang</th>
+                <th rowspan=2>Nomor Register</th>
+                <th rowspan=2>Merk/Type</th>
+                <th rowspan=2>Ukuran/CC</th>
+                <th rowspan=2>Bahan</th>
+                <th rowspan=2>Tahun Pembelian</th>
+                <th colspan=5>Nomor</th>
+                <th rowspan=2>Asal Usul Perolehan</th>
+                <th rowspan=2>Harga (Rp)</th>
+                <th rowspan=2>Keterangan</th>
             </tr>
             <tr>
-                <th>Tanggal</th>
-                <th>Nomor</th>
+                <th>Pabrik</th>
+                <th>Rangka</th>
+                <th>Mesin</th>
+                <th>Polisi</th>
+                <th>BPKB</th>
             </tr>
             <tr>
-                <?php for ($i=1; $i <=14 ; $i++) { ?> 
+                <?php for ($i=1; $i <=16 ; $i++) { ?> 
                     <th><?php echo $i ?></th>
                 <?php } ?>
             </tr>
@@ -71,17 +69,19 @@
                 ?>
             <tr>
                 <td style="text-align:center"><?php echo $no; ?></td>
-                <td style="text-align:left"><?php echo $value->nama_barang; ?></td>
                 <td><?php echo $value->kode_barang; ?></td>
-                <td><?php echo $info_lain->noreg_01; ?></td>
-                <td><?php echo $info_lain->luas_01; ?> m2</td>
+                <td style="text-align:left"><?php echo $value->nama_barang; ?></td>
+                <td><?php echo $info_lain->noreg_02; ?></td>
+                <td><?php echo $info_lain->merk_02; ?></td>
+                <td><?php echo $info_lain->ukuran_02; ?></td>
+                <td><?php echo $info_lain->bahan_02; ?></td>
                 <td><?php echo $value->tahun; ?></td>
-                <td style="text-align:left"><?php echo $info_lain->alamat_01; ?></td>
-                <td><?php echo $info_lain->hak_01; ?></td>
-                <td><?php echo $info_lain->tglser_01; ?></td>
-                <td><?php echo $info_lain->noser_01; ?></td>
-                <td style="text-align:left"><?php echo $info_lain->penggu_01; ?></td>
-                <td style="text-align:left"><?php echo $info_lain->asal_01; ?></td>
+                <td><?php echo $info_lain->nopab_02; ?></td>
+                <td><?php echo $info_lain->norang_02; ?></td>
+                <td><?php echo $info_lain->nomes_02; ?></td>
+                <td><?php echo $info_lain->nopol_02; ?></td>
+                <td><?php echo $info_lain->nobpkb_02; ?></td>
+                <td style="text-align:left"><?php echo $info_lain->asal_02; ?></td>
                 <td style="text-align:right"><?php echo number_format($value->nilai); ?></td>
                 <td style="text-align:left"><?php echo $value->info; ?></td>
             </tr>

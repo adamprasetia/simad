@@ -5,7 +5,7 @@ class Aset_tetap_report extends MY_Controller {
 	private $limit = 15;
 	private $table = 'aset_tetap';
 	public $module = 'aset_tetap_report';
-	public $title = 'ASET TETAP';
+	public $title = 'KARTU INVENTARIS';
 
 	function __construct()
    	{
@@ -50,150 +50,32 @@ class Aset_tetap_report extends MY_Controller {
 	}
 	public function index()
 	{
+		$data['script'] = $this->load->view('script/'.$this->module.'_script', '', true);
+		$data['content'] = $this->load->view('contents/form_'.$this->module.'_view', [
+			'action'=> base_url('aset_tetap_report/show')
+		], true);
+		$this->load->view('template_view',$data);
+	}
+
+	public function show(){
         $kib = $this->input->get('kib');
+        $format = $this->input->get('format');
 		$this->_filter();
-		$content['lokasi'] 	= $this->session_login['skpd_session'];
 		$content['data'] 	= $this->db->get($this->table)->result();
+		$lokasi = $this->db->where('kode', $this->session_login['skpd_session'])->get('skpd')->row();
+		$content['lokasi'] 	= $lokasi->kode.' / '.$lokasi->nama;
+
+		if($format=='excel'){
+			header("Cache-Control: no-cache, no-store, must-revalidate");
+			header("Content-Type: application/vnd.ms-excel");
+			header("Content-Disposition: attachment; filename=kartu-inventaris-$kib.xls");
+		}else if($format=='doc'){
+			header("Cache-Control: no-cache, no-store, must-revalidate");
+			header("Content-Type: application/vnd.ms-word");
+			header("Content-Disposition: attachment; filename=kartu-inventaris-$kib.doc");
+		}
 		$this->load->view('reports/'.$this->table.'_'.$kib.'_report', $content);
-	}
+		
 
-	private function _set_rules()
-	{
-		$this->form_validation->set_rules('tanggal', 'Tanggal', 'trim|required');
-		$this->form_validation->set_rules('kode_barang', 'Kode Barang', 'trim|required');
-	}
-	
-	private function _set_data($type = 'add')
-	{
-		$kode_barang	= $this->input->post('kode_barang');
-		$tanggal	= $this->input->post('tanggal');
-		$kib	= $this->input->post('kib');
-		$umur	    = $this->input->post('umur');
-		$nilai	    = $this->input->post('nilai');
-		$info	    = $this->input->post('info');
-
-		$data = array(
-			'kode_skpd' => $this->session_login['skpd_session'],
-			'tanggal' => format_ymd($tanggal),
-			'kode_barang' => $kode_barang,
-			'umur' => format_uang($umur),
-			'nilai' => format_uang($nilai),
-			'info' => $info,
-		);
-		/* kib */
-		$kib_info = $this->db->select('a.*, b.nomor')->where('nomor',$kib)->order_by('urutan asc')->join('kib b','a.id_kib=b.id','left')->get('kib_info a')->result();
-		$info_lain = [];
-		foreach ($kib_info as $row) {
-			$info_lain[$row->kode] = $this->input->post($row->kode);
-		}
-		$data['info_lain'] = json_encode($info_lain);
-
-		if($type == 'add'){
-			$data['created_by'] = $this->session_login['id'];
-			$data['created_at'] = date('Y-m-d H:i:s');
-		}
-		else if($type == 'edit'){
-			$data['modified_by'] = $this->session_login['id'];
-			$data['modified_at'] = date('Y-m-d H:i:s');
-		}
-		else if($type == 'delete'){
-			$data = [
-				'modified_by' => $this->session_login['id'],
-				'deleted_at' => date('Y-m-d H:i:s')
-			];
-		}
-
-		return $data;
-	}
-	public function add()
-	{
-		$this->_set_rules();
-		if ($this->form_validation->run()===FALSE) {
-			$data['script'] = $this->load->view('script/'.$this->module.'_script', '', true);
-			$data['content'] = $this->load->view('contents/form_'.$this->module.'_view', [
-				'action'=>base_url($this->module.'/add').get_query_string()
-			],true);
-
-			if(!validation_errors())
-			{
-				$this->load->view('template_view',$data);
-			}
-			else
-			{
-				echo json_encode(array('tipe'=>'warning', 'title'=>'Terjadi Kesalahan!', 'message'=>strip_tags(validation_errors())));
-			}
-
-		}else{
-			$this->db->trans_start();
-			$data = $this->_set_data();
-			$this->db->insert('aset_tetap', $data);			
-			$this->db->trans_complete();
-			$error = $this->db->error();
-			if(empty($error['message'])){
-				$response = array('id'=>$this->db->insert_id(), 'action'=>'insert', 'message'=>'Data berhasil disimpan');
-			}else{
-				$response = array('tipe'=>'warning', 'title'=>'Terjadi Kesalahan!', 'message'=>$error['message']);
-			}
-
-			echo json_encode($response);
-		}
-	}
-
-	public function edit($id='')
-	{
-		$this->_set_rules();
-		if ($this->form_validation->run()===FALSE) {
-			$this->db->select('a.*, b.nama as nama_barang, b.kib');
-			$this->db->where('a.id', $id);
-			$this->db->join('barang b', 'a.kode_barang=b.kode', 'left');
-			$content['data'] = $this->db->get($this->table.' a')->row();
-			$content['data']->nilai = number_format($content['data']->nilai);
-			$content['data']->umur = number_format($content['data']->umur);
-			$content['data']->info_lain = json_decode($content['data']->info_lain);
-			$content['action'] = base_url($this->module.'/edit/'.$id).get_query_string();
-			$data['script'] = $this->load->view('script/'.$this->module.'_script', '', true);
-			$data['content'] = $this->load->view('contents/form_'.$this->module.'_view',$content,true);
-
-			if(!validation_errors())
-			{
-				$this->load->view('template_view',$data);
-			}
-			else
-			{
-				echo json_encode(array('tipe'=>'error', 'title'=>'Terjadi Kesalahan !', 'message'=>strip_tags(validation_errors())));
-			}
-
-		}else{
-			$this->db->trans_start();
-			$data = $this->_set_data('edit');
-			$this->db->update($this->table, $data, ['id'=>$id]);
-			$this->db->update('aset_tetap', $data, ['id'=>$id]);
-			$this->db->trans_complete();
-			$error = $this->db->error();
-			if(empty($error['message'])){
-				$response = array('id'=>$id, 'action'=>'update', 'message'=>'Data berhasil disimpan');
-			}else{
-				$response = array('tipe'=>'warning', 'title'=>'Terjadi Kesalahan!', 'message'=>$error['message']);
-			}
-
-			echo json_encode($response);
-		}
-	}
-
-	public function delete($id = '')
-	{
-		if ($id) {
-			$this->db->trans_start();
-			$this->db->delete($this->table, ['id'=>$id]);
-			$this->db->delete('aset_tetap', ['id'=>$id]);
-			$this->db->trans_complete();
-			$error = $this->db->error();
-			if(empty($error['message'])){
-				$response = array('id'=>$id, 'action'=>'delete', 'message'=>'Data berhasil dihapus');
-			}else{
-				$response = array('tipe'=>'warning', 'title'=>'Terjadi Kesalahan!', 'message'=>$error['message']);
-			}
-			echo json_encode($response);
-		}
 	}
 }
