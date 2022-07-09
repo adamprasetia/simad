@@ -38,11 +38,11 @@
                 <th rowspan=2>No</th>
                 <th rowspan=2>Kode Barang</th>
                 <th rowspan=2>Jenis Barang/Nama Barang</th>
+                <th rowspan=2>Tahun Pembelian</th>
                 <th rowspan=2>Nomor Register</th>
                 <th rowspan=2>Merk/Type</th>
                 <th rowspan=2>Ukuran/CC</th>
                 <th rowspan=2>Bahan</th>
-                <th rowspan=2>Tahun Pembelian</th>
                 <th colspan=5>Nomor</th>
                 <th rowspan=2>Asal Usul Perolehan</th>
                 <th rowspan=2>Harga (Rp)</th>
@@ -71,17 +71,10 @@
                 <td style="text-align:center"><?php echo $no; ?></td>
                 <td><?php echo $value->kode_barang; ?></td>
                 <td style="text-align:left"><?php echo $value->nama_barang; ?></td>
-                <td><?php echo $info_lain->noreg_02; ?></td>
-                <td><?php echo $info_lain->merk_02; ?></td>
-                <td><?php echo $info_lain->ukuran_02; ?></td>
-                <td><?php echo $info_lain->bahan_02; ?></td>
                 <td><?php echo $value->tahun; ?></td>
-                <td><?php echo $info_lain->nopab_02; ?></td>
-                <td><?php echo $info_lain->norang_02; ?></td>
-                <td><?php echo $info_lain->nomes_02; ?></td>
-                <td><?php echo $info_lain->nopol_02; ?></td>
-                <td><?php echo $info_lain->nobpkb_02; ?></td>
-                <td style="text-align:left"><?php echo $info_lain->asal_02; ?></td>
+                <?php foreach ($info_lain as $info_lain_key => $info_lain_row) { ?>
+                    <td><?php echo $info_lain_row; ?></td>    
+                <?php } ?>
                 <td style="text-align:right"><?php echo number_format($value->nilai); ?></td>
                 <td style="text-align:left"><?php echo $value->info; ?></td>
             </tr>
