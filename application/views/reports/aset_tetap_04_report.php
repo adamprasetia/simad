@@ -66,7 +66,9 @@
         <tbody>
                 <?php
                     $no=1;
+                    $total=0;
                     foreach ($data as $key => $value){
+                        $total += $value->nilai;
                         $info_lain = json_decode($value->info_lain);
                 ?>
             <tr>
@@ -80,6 +82,12 @@
                 <td style="text-align:left"><?php echo $value->info; ?></td>
             </tr>
                 <?php $no++; } ?>
+                <tr>
+                    <td colspan="<?php echo $i-3 ?>" style="text-align:right"><strong>Total</strong></td>
+                    <td style="text-align:right"><strong><?php echo number_format($total); ?></strong></td>
+                    <td></td>
+                </tr>
+
         </tbody>
     </table>
     <table style="margin-top:10px;border:0px !important;">

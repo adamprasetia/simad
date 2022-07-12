@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KIB A Report</title>
+    <title>KIB E Report</title>
     <link rel="stylesheet" href="<?php echo base_url('assets/').'css/bootstrap.min.css'; ?>">
     <link rel="stylesheet" href="<?php echo base_url('assets/').'css/AdminLTE.min.css'; ?>">
     <style>
@@ -26,7 +26,7 @@
             <th style="font-size:14px;border:0px !important;">KARTU INVENTARIS BARANG</th>
         </tr>
         <tr>
-            <th style="font-size:14px;border:0px !important;">A.TANAH</th>
+            <th style="font-size:14px;border:0px !important;">E. ASET TETAP LAINNYA</th>
         </tr>
         <tr>
             <td style="border:0px !important;">No. Kode Lokasi : <?php echo $lokasi ?></td>
@@ -35,30 +35,30 @@
     <table>
         <thead style="background:#eee">
             <tr>
-                <th rowspan=3>No</th>
-                <th rowspan=3>Jenis Barang/Nama Barang</th>
-                <th rowspan=3>Tahun Pengadaan</th>
+                <th rowspan=2>No</th>
+                <th rowspan=2>Jenis Barang/Nama Barang</th>
+                <th rowspan=2>Tahun Pembelian</th>
                 <th colspan=2>Nomor</th>
-                <th rowspan=3>Luas</th>
-                <th rowspan=3>Letak/Alamat</th>
-                <th colspan=3>Status Tanah</th>
-                <th rowspan=3>Penggunaan</th>
-                <th rowspan=3>Asal Usul</th>
-                <th rowspan=3>Harga (Ribuan Rp)</th>
-                <th rowspan=3>Keterangan</th>
+                <th colspan=2>Buku Kepustakaan</th>
+                <th colspan=3>Barang Bercorak Kesenian/Kebudayaan</th>
+                <th colspan=2>Hewan/Ternak dan Tumbuhan</th>
+                <th rowspan=2>Asal-usul Cara Perolehan</th>
+                <th rowspan=2>Harga (Rp)</th>
+                <th rowspan=2>Ket</th>
             </tr>
             <tr>
-                <th rowspan=2>Kode Barang</th>
-                <th rowspan=2>Register</th>
-                <th rowspan=2>Hak</th>
-                <th colspan=2>Sertifikat</th>
+                <th>Kode Barang</th>
+                <th>Register</th>
+                <th>Judul/Pencipta</th>
+                <th>Spesifikasi</th>
+                <th>Asal Daerah</th>
+                <th>Pencipta</th>
+                <th>Bahan</th>
+                <th>Jenis</th>
+                <th>Ukuran</th>
             </tr>
             <tr>
-                <th>Tanggal</th>
-                <th>Nomor</th>
-            </tr>
-            <tr>
-                <?php for ($i=1; $i <=14 ; $i++) { ?> 
+                <?php for ($i=1; $i <=15 ; $i++) { ?> 
                     <th><?php echo $i ?></th>
                 <?php } ?>
             </tr>
@@ -66,7 +66,7 @@
         <tbody>
                 <?php
                     $no=1;
-                    $total = 0;
+                    $total=0;
                     foreach ($data as $key => $value){
                         $total += $value->nilai;
                         $info_lain = json_decode($value->info_lain);
@@ -76,7 +76,7 @@
                 <td style="text-align:left"><?php echo $value->nama_barang; ?></td>
                 <td><?php echo $value->tahun; ?></td>
                 <td><?php echo $value->kode_barang; ?></td>
-                <?php foreach ($info_lain as $info_lain_key => $info_lain_row) { ?>
+                <?php foreach ($info_lain as $info_lain_row) { ?>
                     <td><?php echo $info_lain_row; ?></td>    
                 <?php } ?>
                 <td style="text-align:right"><?php echo number_format($value->nilai); ?></td>
@@ -88,6 +88,7 @@
                     <td style="text-align:right"><strong><?php echo number_format($total); ?></strong></td>
                     <td></td>
                 </tr>
+
         </tbody>
     </table>
     <table style="margin-top:10px;border:0px !important;">
