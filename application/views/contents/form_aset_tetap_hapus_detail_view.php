@@ -60,7 +60,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><label>Info</label></td>
+                    <td><label>Keterangan</label></td>
                     <td><textarea name="info" id="info" cols="30" rows="2" class="form-control"><?php echo isset($data->info)?htmlentities($data->info):'' ?></textarea></td>
                 </tr>
                 <tr>
