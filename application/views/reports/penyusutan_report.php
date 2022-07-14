@@ -51,7 +51,7 @@
                 <?php
                     $no=1;
                     foreach ($data as $key => $value){
-                        $selisih = (date('Y')-$value->tahun)+1;
+                        $selisih = (date('Y')-$value->tahun);
                         $penyusutan = $value->umur!=0?$value->nilai/$value->umur:$value->nilai;
                         $akm_penyusutan_lalu = $penyusutan*$selisih;
                         $penyusutan_ini = $value->umur!=0?$penyusutan:0;
